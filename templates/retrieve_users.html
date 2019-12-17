@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Retrieve Users{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">Retrieve Users</h1>
+    <div>
+        {% if count == 0 %}
+            <p>There are no users.</p>
+        {% elif count == 1 %}
+            <p>There is 1 user.</p>
+        {% else %}
+            <p>There are {{ count }} users.</p>
+        {% endif %}
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Membership</th>
+                <th>Gender</th>
+                <th>Remarks</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in usersList %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    {% if user.membership == "F" %}
+                        <td>Fellow</td>
+                    {% elif user.membership == "S" %}
+                        <td>Senior</td>
+                    {% elif user.membership == "P" %}
+                        <td>Professional</td>
+                    {% endif %}
+                    <td>{{ user.gender }}</td>
+                    <td>{{ user.remarks }}</td>
+                    <td><a href="#" class="btn btn-warning">Update</a></td>
+                    <td>
+                        <form action="" method="POST">
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
