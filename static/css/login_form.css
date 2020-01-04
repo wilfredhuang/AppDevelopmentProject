@@ -1,0 +1,29 @@
+
+body, html {
+    height:100%;
+    overflow: hidden;
+}
+
+.txt {
+    //font-family:Montserrat-SemiBold;
+    font-size:20px;
+    color:#555;
+    line-height:1.5
+}
+
+.test {
+    color:blue;
+    font-size: 50px;
+}
+
+.vertical-center {
+    width: 100%;
+    height: 100%;
+    margin: 10% auto 10% auto;
+}
+
+.login-container {
+    
+}
+
+
