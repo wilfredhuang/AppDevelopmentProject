@@ -13,3 +13,14 @@ class CreateUserForm(Form):
 class LoginForm(Form):
     username = StringField('Username', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
+
+
+class SignUpForm(Form):
+    username = StringField('Username', [validators.DataRequired()])
+    password = PasswordField('Password', [validators.DataRequired()])
+    email = StringField('Username', [validators.DataRequired()])
+    confirm_pass = PasswordField('CPassword', [validators.DataRequired()])
+    postal_code = StringField('Username', [validators.DataRequired()])
+    address = StringField('Address', [validators.DataRequired()])
+
+

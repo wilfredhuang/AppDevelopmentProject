@@ -18,16 +18,36 @@ def users(name):
     return 'Test successful, name is {}'.format(name)
 
 
+@app.route('/login/<code>')
+def logged_in(code):
+    return 'Test successful, button pressed is {}'.format(code)
+
+@app.route('/signup')
+def sign_up():
+    return render_template('signUp.html', form=signup_form)
+
 # Called when user press submit at main page
 # Two methods, GET is called when website request the page
 # There is POST request only when user click the submit button
 # HF
-@app.route('/login', methods=['POST', 'GET'])
-def login():
+@app.route('/loginMenu', methods=['POST', 'GET'])
+def loginMenu():
     login_form = LoginForm(request.form)
 
     # Validate only on a POST request
-    if request.method == 'POST' and login_form.validate():
+    if request.method == 'POST':
+        btn_pressed = request.form['submit']
+
+        if login_form.validate() and btn_pressed == "Login":
+            user = login_form.username.data
+            #return redirect(url_for('login', code=temp))
+            return redirect(url_for('users', name=user))
+
+        elif btn_pressed == "Sign Up":
+            # TODO Signup page
+            return redirect(url_for('sign_up'))
+
+
         # TODO
         # access storage and compare details
 
@@ -43,7 +63,7 @@ def login():
         user = login_form.username.data
 
         # TODO change this to logged in state
-        return redirect(url_for('users', name=user))
+        #return redirect(url_for('users', name=user))
 
     # Get request will be skipped to this
 

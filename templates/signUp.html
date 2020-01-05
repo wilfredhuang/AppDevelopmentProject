@@ -1,6 +1,4 @@
-<!--TODO-->
-<!-- HF -->
-<!-- NEED TO DO BOOTSTRAP-->
+<!-- NEED TO DO BOOSTRAP-->
 {% extends "main_Base.html" %}
 {% block title %}User Login{% endblock %}
 
@@ -8,12 +6,13 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login_form.css') }}" >
 {% endblock %}
 
+
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
 
-        <div class="container vertical-center ">
-            <div class="login-container">
-                <h1 class="test">Login</h1>
+    <div class="container vertical-center ">
+        <div class="login-container">
+                <h1 class="test">Create New Account</h1>
                 <form novalidate method="POST" action="">
 
                     <div class="form-group">
@@ -29,6 +28,6 @@
                     </div>
                 </form>
             </div>
-        </div>
+    </div>
 
 {% endblock %}
