@@ -11,6 +11,13 @@ def home():
     return render_template('home.html')
 
 
+# Called For testing
+# HF
+@app.route('/testing/<code>')
+def testing(code):
+    return 'Test successful, code is {}'.format(code)
+
+
 # Called when user successful logged in
 # HF
 @app.route('/users/<name>')
@@ -26,11 +33,14 @@ def logged_in(code):
 # Called when sign up button is clicked from the login page
 # HF
 # TODO Signup page
-@app.route('/signup')
+@app.route('/signup', methods=['POST', 'GET'])
 def sign_up():
     signup_form = SignUpForm(request.form)
+    if request.method == 'POST' and signup_form.validate():
+        return redirect(url_for('testing', code="SIGN UP PAGE IS DONE"))
 
     return render_template('signUp.html', form=signup_form)
+
 
 # Called when user press submit at main page
 # Two methods, GET is called when website request the page
