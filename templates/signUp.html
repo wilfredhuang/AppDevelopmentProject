@@ -1,9 +1,9 @@
 <!-- NEED TO DO BOOSTRAP-->
 {% extends "main_Base.html" %}
-{% block title %}User Login{% endblock %}
+{% block title %}User Sign Up{% endblock %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login_form.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup_form.css') }}" >
 {% endblock %}
 
 
@@ -12,22 +12,99 @@
 
     <div class="container vertical-center ">
         <div class="login-container">
-                <h1 class="test">Create New Account</h1>
+                <h1 class="title">Create New Account</h1>
+
                 <form novalidate method="POST" action="">
 
-                    <div class="form-group">
-                    {{ render_field(form.username, class="form-control txt") }}
+                    <div class="form-section"> <!-- form section -->
+                        <h4>Personal Information</h4>
+                        <!-- First group of Form Elements - Personal Information -->
+                        <div class="border border-secondary">
+                            <div class="p-info"> <!-- Personal Information Elements -->
+                                <div class="row"> <!-- Name -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.first_name, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.last_name, class="form-control txt") }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Name -->
+
+                                <div class="form-group"> <!-- Username -->
+                                {{ render_field(form.username, class="form-control txt") }}
+                                </div> <!-- End of Username -->
+
+                                <div class="row"> <!-- Password -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.password, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.confirm_pass, class="form-control txt") }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Password -->
+                            </div> <!-- End of Personal Information Elements -->
+                        </div> <!-- End of First group of Form Elements - Personal Information -->
+                    </div> <!-- End of form section -->
+
+                    <div class="form-section"> <!-- form section -->
+                        <h4>Shipping Address</h4>
+                        <!-- Second group of Form Elements - Shipping Address -->
+                        <div class="border border-secondary">
+                            <div class="s-info"> <!-- Personal Information Elements -->
+                                <div class="row"> <!-- Country -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.country, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.city, class="form-control txt") }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Country -->
+
+                                <div class="form-group"> <!-- Street Address -->
+                                {{ render_field(form.address, class="form-control txt") }}
+                                </div> <!-- End of Street Address -->
+
+                                <div class="row"> <!-- Detailed -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.unit_number, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.postal_code, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                </div> <!-- End of Detailed -->
+                            </div> <!-- End of Shipping Address Elements -->
+                        </div> <!-- End of Second group of Form Elements - Shipping Address -->
+                    </div> <!-- End of form section-->
+
+                    <div class="container su-btn">
+                        <input type="Submit" name="submit" value="Sign Up" class="btn btn-secondary"/>
                     </div>
 
-                    <div class="form-group">
-                    {{ render_field(form.password, class="form-control") }}
-                    </div>
-                    <div class="container">
-                        <input type="Submit" name="submit" value="Login" class="btn btn-primary"/>
-                        <input type="Submit" name="submit" value="Sign Up" class="btn btn-primary"/>
-                    </div>
                 </form>
             </div>
     </div>
+
+</div>
 
 {% endblock %}

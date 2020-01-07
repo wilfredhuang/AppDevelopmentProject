@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from Forms import CreateUserForm, LoginForm
+from Forms import CreateUserForm, LoginForm, SignUpForm
 import shelve, User
 
 app = Flask(__name__)
@@ -22,8 +22,14 @@ def users(name):
 def logged_in(code):
     return 'Test successful, button pressed is {}'.format(code)
 
+
+# Called when sign up button is clicked from the login page
+# HF
+# TODO Signup page
 @app.route('/signup')
 def sign_up():
+    signup_form = SignUpForm(request.form)
+
     return render_template('signUp.html', form=signup_form)
 
 # Called when user press submit at main page
@@ -34,36 +40,29 @@ def sign_up():
 def loginMenu():
     login_form = LoginForm(request.form)
 
-    # Validate only on a POST request
+    # When a button is clicked
     if request.method == 'POST':
         btn_pressed = request.form['submit']
 
+        # Login clicked
+        # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
             user = login_form.username.data
             #return redirect(url_for('login', code=temp))
+
+            # TODO
+            # access storage and compare details
+
+            # TODO
+            # If correct, login
+
+            # TODO
+            # If wrong, Show feedback aka error
             return redirect(url_for('users', name=user))
 
+        # Sign up clicked
         elif btn_pressed == "Sign Up":
-            # TODO Signup page
             return redirect(url_for('sign_up'))
-
-
-        # TODO
-        # access storage and compare details
-
-        # TODO
-        # If correct, login
-
-        # TODO
-        # If wrong, Show feedback aka error
-
-        # Test code below
-        #user = request.form['name']
-
-        user = login_form.username.data
-
-        # TODO change this to logged in state
-        #return redirect(url_for('users', name=user))
 
     # Get request will be skipped to this
 
