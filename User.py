@@ -1,47 +1,71 @@
 class User:
     countID = 0
 
-    def __init__(self, firstName, lastName, gender, membership, remarks):
+    def __init__(self, first_name, last_name, username, password, postal_code, address, country, city, unit_number):
         User.countID += 1
-        self.__userID = User.countID
-        self.__firstName = firstName
-        self.__lastName = lastName
-        self.__gender = gender
-        self.__membership = membership
-        self.__remarks = remarks
+        self.__username = username
+        self.__firstName = first_name
+        self.__lastName = last_name
 
-    def get_userID(self):
-        return self.__userID
+        self.__password = password
+        self.__postal_code = postal_code
+        self.__address = address
 
-    def get_firstName(self):
+        self.__country = country
+        self.__city = city
+        self.__unitNumber = unit_number
+
+    def get_username(self):
+        return self.__username
+
+    def get_first_name(self):
         return self.__firstName
 
-    def get_lastName(self):
+    def get_last_name(self):
         return self.__lastName
 
-    def get_gender(self):
-        return self.__gender
+    def get_password(self):
+        return self.__password
 
-    def get_membership(self):
-        return self.__membership
+    def get_postal_code(self):
+        return self.__postal_code
 
-    def get_remarks(self):
-        return self.__remarks
+    def get_address(self):
+        return self.__address
 
-    def set_userID(self, userID):
-        self.__userID = userID
+    def get_country(self):
+        return self.__country
 
-    def set_firstName(self, firstName):
+    def get_city(self):
+        return self.__city
+
+    def get_unit_numbers(self):
+        return self.__unitNumber
+
+    def set_username(self, username):
+        self.__username = username
+
+    def set_first_name(self, firstName):
         self.__firstName = firstName
 
-    def set_lastName(self, lastName):
+    def set_last_name(self, lastName):
         self.__lastName = lastName
 
-    def set_gender(self, gender):
-        self.__gender = gender
+    def set_password(self, password):
+        self.__password = password
 
-    def set_membership(self, membership):
-        self.__membership = membership
+    def set_postal_code(self, postal_code):
+        self.__postal_code = postal_code
 
-    def set_remarks(self, remarks):
-        self.__remarks = remarks
+    def set_address(self, address):
+        self.__address = address
+
+    def set__country(self, country):
+        self.__country = country
+
+    def set_city(self, city):
+        self.__city = city
+
+    def set_unit_number(self, unit_number):
+        self.__unitNumber = unit_number
+

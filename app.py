@@ -1,8 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from Forms import CreateUserForm, LoginForm, SignUpForm
 import shelve, User
+import main
+import StorageManager as SM
+
 
 app = Flask(__name__)
+main.init()
 
 # Main page
 # Current is Login Page
@@ -22,22 +26,24 @@ def testing(code):
 # HF
 @app.route('/users/<name>')
 def users(name):
-    return 'Test successful, name is {}'.format(name)
-
-
-@app.route('/login/<code>')
-def logged_in(code):
-    return 'Test successful, button pressed is {}'.format(code)
+    return render_template('users.html')
 
 
 # Called when sign up button is clicked from the login page
 # HF
-# TODO Signup page
 @app.route('/signup', methods=['POST', 'GET'])
 def sign_up():
     signup_form = SignUpForm(request.form)
     if request.method == 'POST' and signup_form.validate():
-        return redirect(url_for('testing', code="SIGN UP PAGE IS DONE"))
+
+        user = User.User(signup_form.first_name.data, signup_form.last_name.data, signup_form.username.data.lower(),
+                         signup_form.password.data, signup_form.postal_code.data, signup_form.address.data,
+                         signup_form.country.data, signup_form.city.data, signup_form.unit_number.data)
+
+        # to create and check if the storage exist
+        main.db.get_storage('Users', True, True)
+        main.db.add_item('Users', user.get_username(), user)
+        return redirect(url_for('users', name=user.get_username(), user_details=user))
 
     return render_template('signUp.html', form=signup_form)
 
@@ -57,18 +63,19 @@ def loginMenu():
         # Login clicked
         # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
-            user = login_form.username.data
+            login_name = login_form.username.data.lower()
             #return redirect(url_for('login', code=temp))
 
-            # TODO
-            # access storage and compare details
+            temp = main.db.return_keys("Users")
 
-            # TODO
-            # If correct, login
+            if temp != None and login_name in temp:
+                temp2 = main.db.get_storage("Users")
+                user = temp2[login_name]
+                return redirect(url_for('users', name=user.get_username(), user_details=user))
 
-            # TODO
-            # If wrong, Show feedback aka error
-            return redirect(url_for('users', name=user))
+            else:
+                print("ERRORRRRRR")
+
 
         # Sign up clicked
         elif btn_pressed == "Sign Up":
