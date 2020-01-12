@@ -17,10 +17,10 @@ def home():
 
 # Called For testing
 # HF
-@app.route('/testing/<code>')
-def testing(code):
-    return 'Test successful, code is {}'.format(code)
-
+@app.route('/testing')
+def testing():
+    #return 'Test successful, code is {}'.format(code)
+    return render_template('users.html')
 
 # Called when user successful logged in
 # HF
