@@ -15,10 +15,22 @@ ul {
 
 }
 li a{
+    color: #4d4d4d;
+}
+li a:hover{
+    color: #3366ff;
     text-decoration: none;
 }
 
 .sub-title{
     font-weight: bold;
     font-size: 20px;
+}
+
+.welcome{
+    margin-top: 20px;
+}
+
+.active{
+    color: #3366ff
 }
