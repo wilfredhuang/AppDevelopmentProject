@@ -8,7 +8,6 @@
 
 {% block content %}
 
-<h1 class="display-4">WELCOME IDK</h1>
     <div class="container-fluid main">
         <div class="row">
             <div class=" col-md-2 side-nav offset-md-1 ">
@@ -40,11 +39,20 @@
 
             </div>
             {%  if menu == 1 %}
-                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU ONE</div>
+                <div class=" content col-xd col-md-7 offset-md-1">
+                    <h4>Profile</h4>
+
+                </div>
             {%  elif menu == 2 %}
-                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU TWO</div>
+                <div class=" content col-xd col-md-7 offset-md-1">
+                    <h4>Address</h4>
+
+                </div>
             {% elif menu == 3 %}
-                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU THREE</div>
+                <div class=" content col-xd col-md-7 offset-md-1">
+                    <h4>THIS IS MENU THREE</h4>
+
+                </div>
             {%  endif %}
         </div>
     </div>

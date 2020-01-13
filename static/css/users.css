@@ -1,9 +1,13 @@
+html, body{
+    background: #f0f0f0;
+}
+
 .side-nav{
     background:#d2d4d6;
 }
 
 .content{
-    background: aqua;
+    background: #FFFFFF;
 }
 
 .main {
@@ -33,4 +37,13 @@ li a:hover{
 
 .active{
     color: #3366ff
+}
+
+.menu-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h4{
+    margin-top: 20px;
 }
