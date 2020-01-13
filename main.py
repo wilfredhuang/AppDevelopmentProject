@@ -5,6 +5,7 @@
     Note: Do not modify this before asking me (HF)
 """
 from StorageManager import StorageManager
+from Admin import Admin
 db = None
 
 # HF
@@ -37,7 +38,7 @@ def test_mode():
     #db.delete_storage("Users")
     #db.return_keys()
     #print(db.return_keys("Users"))
-    temp = db.get_storage("Users")
-    print("TEST")
-    print(list(temp.keys()))
+    temp = db.return_keys()
+    #print("TEST")
+    print(list(temp))
 test_mode()

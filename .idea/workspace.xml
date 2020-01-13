@@ -2,13 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0b18200-42ca-4f34-bcf7-1d4a8fc4a169" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/css/users.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/StorageManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/User.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/users.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/users.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage.db.bak" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage.db.dat" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage.db.dir" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.dir" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/includes/_navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/includes/_navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users.html" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,9 +26,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Flask Main" />
-        <option value="HTML File" />
-        <option value="Python Script" />
         <option value="CSS File" />
+        <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -58,18 +66,6 @@
       <recent name="C:\Users\HuiFeng\Desktop\AppDevelopmentProject\static\css" />
       <recent name="C:\Users\HuiFeng\Desktop\AppDevelopmentProject\templates" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Flask server.Flask (app.py)">
     <configuration name="StorageManager" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -138,7 +134,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="storageManager" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="flask" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -151,7 +147,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\HuiFeng\Desktop\AppDevelopmentProject\StorageManager.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,11 +190,23 @@
       <list>
         <item itemvalue="Flask server.Flask (app.py)" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.test main" />
         <item itemvalue="Python.User" />
         <item itemvalue="Python.StorageManager" />
-        <item itemvalue="Python.storageManager" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -232,6 +240,7 @@
       <workItem from="1578451969060" duration="1452000" />
       <workItem from="1578810446095" duration="22738000" />
       <workItem from="1578878381144" duration="6102000" />
+      <workItem from="1578909086869" duration="10395000" />
     </task>
     <servers />
   </component>
@@ -243,7 +252,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -254,51 +265,51 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="0" y="178" key="#com.intellij.execution.impl.EditConfigurationsDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578236582232" />
-    <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578043936085">
+    <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578918597818">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578043936085" />
-    <state x="234" y="155" key="FileChooserDialogImpl" timestamp="1578839319901">
+    <state x="210" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578918597818" />
+    <state x="234" y="155" key="FileChooserDialogImpl" timestamp="1578913566648">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="-1733" y="124" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1576500672903" />
-    <state x="234" y="155" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578839319901" />
-    <state width="1877" height="187" key="GridCell.Tab.0.bottom" timestamp="1578843692340">
+    <state x="234" y="155" key="FileChooserDialogImpl/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578913566648" />
+    <state width="1877" height="187" key="GridCell.Tab.0.bottom" timestamp="1578922026713">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="191" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1578386967141" />
-    <state width="1877" height="187" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692340" />
-    <state width="1877" height="187" key="GridCell.Tab.0.center" timestamp="1578843692340">
+    <state width="1877" height="187" key="GridCell.Tab.0.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578922026713" />
+    <state width="1877" height="187" key="GridCell.Tab.0.center" timestamp="1578922026713">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="191" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1578386967140" />
-    <state width="1877" height="187" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692340" />
-    <state width="1877" height="187" key="GridCell.Tab.0.left" timestamp="1578843692340">
+    <state width="1877" height="187" key="GridCell.Tab.0.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578922026713" />
+    <state width="1877" height="187" key="GridCell.Tab.0.left" timestamp="1578922026713">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="191" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1578386967140" />
-    <state width="1877" height="187" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692340" />
-    <state width="1877" height="187" key="GridCell.Tab.0.right" timestamp="1578843692340">
+    <state width="1877" height="187" key="GridCell.Tab.0.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578922026713" />
+    <state width="1877" height="187" key="GridCell.Tab.0.right" timestamp="1578922026713">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="191" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@-1920.0.1536.832" timestamp="1578386967141" />
-    <state width="1877" height="187" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692340" />
-    <state width="914" height="347" key="GridCell.Tab.1.bottom" timestamp="1578843692337">
+    <state width="1877" height="187" key="GridCell.Tab.0.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578922026713" />
+    <state width="1877" height="444" key="GridCell.Tab.1.bottom" timestamp="1578918257943">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="347" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692337" />
-    <state width="914" height="347" key="GridCell.Tab.1.center" timestamp="1578843692337">
+    <state width="1877" height="444" key="GridCell.Tab.1.bottom/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578918257943" />
+    <state width="1877" height="444" key="GridCell.Tab.1.center" timestamp="1578918257943">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="347" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692337" />
-    <state width="914" height="347" key="GridCell.Tab.1.left" timestamp="1578843692337">
+    <state width="1877" height="444" key="GridCell.Tab.1.center/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578918257943" />
+    <state width="1877" height="444" key="GridCell.Tab.1.left" timestamp="1578918257943">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="347" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692337" />
-    <state width="914" height="347" key="GridCell.Tab.1.right" timestamp="1578843692337">
+    <state width="1877" height="444" key="GridCell.Tab.1.left/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578918257943" />
+    <state width="1877" height="444" key="GridCell.Tab.1.right" timestamp="1578918257943">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="347" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578843692337" />
+    <state width="1877" height="444" key="GridCell.Tab.1.right/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578918257943" />
     <state x="-1643" y="54" key="SettingsEditor" timestamp="1576500696337">
       <screen x="-1920" y="0" width="1536" height="832" />
     </state>
@@ -317,12 +328,13 @@
     <state x="143" y="230" width="672" height="678" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1578233435824" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/AppDevelopmentProject$test_main.coverage" NAME="test main Coverage Results" MODIFIED="1578918551996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AppDevelopmentProject$StorageManager.coverage" NAME="StorageManager Coverage Results" MODIFIED="1578818700377" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AppDevelopmentProject$User.coverage" NAME="User Coverage Results" MODIFIED="1578824994780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AppDevelopmentProject$Forms.coverage" NAME="Forms Coverage Results" MODIFIED="1578381208108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AppDevelopmentProject$User.coverage" NAME="User Coverage Results" MODIFIED="1578824994780" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AppDevelopmentProject$storageManager.coverage" NAME="storageManager Coverage Results" MODIFIED="1578416087686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AppDevelopmentProject$main.coverage" NAME="main Coverage Results" MODIFIED="1578833984757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AppDevelopmentProject$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1578922026705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/flask$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1576503986352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/AppDevelopmentProject$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1578898358632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AppDevelopmentProject$main.coverage" NAME="main Coverage Results" MODIFIED="1578919168720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

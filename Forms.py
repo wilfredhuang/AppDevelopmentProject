@@ -3,7 +3,6 @@ from wtforms.validators import EqualTo, Email, ValidationError
 import main
 
 password_holder = None
-
 class CreateUserForm(Form):
     firstName = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     lastName = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])
@@ -21,21 +20,32 @@ def username_duplication_check(form, field):
 
         raise ValidationError('Username have been used')
 
+    elif (field.data).lower() == "admin":
+
+        raise ValidationError('Username have been used')
+
 def username_login_check(form, field):
+    global password_holder
+    password_holder = None
     temp = main.db.get_storage("Users")
     keys = temp.keys()
+    admin_acc = main.db.get_storage("ADMIN")
 
     if temp != None and (field.data).lower() in keys:
 
-        global password_holder
+
         password_holder = temp[(field.data).lower()].get_password()
+
+    elif admin_acc.get_username() == (field.data).lower():
+
+        password_holder = admin_acc.get_password()
 
     else:
         raise ValidationError('Username not found')
 
 def password_login_check(form, field):
     if not field.data == password_holder:
-
+        print("correct pass is {}".format(password_holder))
         raise ValidationError('Password incorrect')
 
 

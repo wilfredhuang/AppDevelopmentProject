@@ -16,16 +16,34 @@ def home():
 
 # Called For testing
 # HF
-@app.route('/testing')
-def testing():
+@app.route('/testing/<choice>')
+def testing(choice):
     #return 'Test successful, code is {}'.format(code)
-    return render_template('users.html', count=0)
+    return render_template('users.html')
+
 
 # Called when user successful logged in
 # HF
-@app.route('/users/<name>')
-def users(user_details):
-    return render_template('users.html', menu=1, user=user_details, count=0)
+@app.route('/users/<username>/<int:choice>')
+def users(choice, username):
+    print("TESTTTTT")
+    temp = main.db.return_keys("Users")
+
+    if temp != None and username in temp:
+        temp2 = main.db.get_storage("Users")
+        user_details = temp2[username]
+
+    else:
+        print("ERRORRRRRR")
+
+    return render_template('users.html', menu=choice, user=user_details)
+
+
+#Called when admin login
+@app.route('/admin')
+def admin():
+
+    return render_template('admin.html')
 
 
 # Called when sign up button is clicked from the login page
@@ -42,7 +60,12 @@ def sign_up():
         # to create and check if the storage exist
         main.db.get_storage('Users', True, True)
         main.db.add_item('Users', user.get_username(), user)
-        return redirect(url_for('users', user_details=user))
+
+        # create temporary storage
+        main.db.get_storage("TEMP", True, True)
+        main.db.add_item('TEMP', "username", user.get_username())
+
+        return redirect(url_for('users', choice=1, username=user.get_username()))
 
     return render_template('signUp.html', form=signup_form)
 
@@ -55,6 +78,18 @@ def sign_up():
 def loginMenu():
     login_form = LoginForm(request.form)
 
+    # login if user already logged in before
+    temp_exist = main.db.check_exist('TEMP')
+    if temp_exist == True:
+
+        session = main.db.get_storage('TEMP')
+        s_keys = session.keys()
+
+        if "username" in s_keys:
+            username = session['username']
+            return redirect(url_for('users', choice=1, username=username))
+
+
     # When a button is clicked
     if request.method == 'POST':
         btn_pressed = request.form['submit']
@@ -64,12 +99,23 @@ def loginMenu():
         if login_form.validate() and btn_pressed == "Login":
             login_name = login_form.username.data.lower()
 
+
+            admin_acc = main.db.get_storage("ADMIN")
             temp = main.db.return_keys("Users")
 
-            if temp != None and login_name in temp:
+            if admin_acc.get_username() == login_name:
+                print("Admin Login")
+                return redirect(url_for('admin'))
+
+            elif temp != None and login_name in temp:
                 temp2 = main.db.get_storage("Users")
                 user = temp2[login_name]
-                return redirect(url_for('users', user_details=user))
+
+                # create temporary storage
+                main.db.get_storage("TEMP", True, True)
+                main.db.add_item('TEMP', "username", user.get_username())
+
+                return redirect(url_for('users', choice=1, username=user.get_username()))
 
             else:
                 print("ERRORRRRRR")

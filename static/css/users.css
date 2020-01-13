@@ -9,3 +9,16 @@
 .main {
     margin-top: 50px;
 }
+
+ul {
+    list-style-type: none;
+
+}
+li a{
+    text-decoration: none;
+}
+
+.sub-title{
+    font-weight: bold;
+    font-size: 20px;
+}

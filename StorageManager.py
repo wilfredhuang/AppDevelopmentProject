@@ -15,6 +15,8 @@ class StorageManager():
         except Exception:
             print("Storage not found")
 
+        self.delete_storage('TEMP')
+
     def is_key_found(self, name):
 
         keys = self.__db.keys()
@@ -120,6 +122,15 @@ class StorageManager():
             self.__db.close()
 
 
+    def check_exist(self, name):
+        self.__db = shelve.open('storage.db', 'c')
+
+        if (self.is_key_found(name) == True):
+            self.__db.close()
+            return True
+        else:
+            self.__db.close()
+            return False
 
 
     # TEST USE ONLY
