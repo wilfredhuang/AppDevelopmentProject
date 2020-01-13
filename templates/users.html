@@ -1,3 +1,4 @@
+{% set menu      = 2 %}
 <!-- NEED TO DO BOOSTRAP-->
 {% extends "main_Base.html" %}
 {% block title %}User Login{% endblock %}
@@ -12,16 +13,24 @@
     <div class="container-fluid main">
         <div class="row">
             <div class=" col-md-2 side-nav offset-md-1 ">
+                {% if user %}
+                <p> Welcome user.get_username()</p>
+                {% endif %}
                 <li class="nav-item">
                     <a href="/">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a href="/">Address</a>
                 </li>
-
+            <p> THE VALUE OF MENU IS -{{ menu }} - NUM</p>
             </div>
-
-            <div class=" content col-xd col-md-7 offset-md-1">.col-md-4 .offset-md-4</div>
+            {%  if menu == 1 %}
+                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU ONE</div>
+            {%  elif menu == 2 %}
+                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU TWO</div>
+            {% elif menu == 3 %}
+                <div class=" content col-xd col-md-7 offset-md-1">THIS IS MENU THREE</div>
+            {%  endif %}
         </div>
     </div>
 

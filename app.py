@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from Forms import CreateUserForm, LoginForm, SignUpForm
-import shelve, User
+import User
 import main
-import StorageManager as SM
 
 
 app = Flask(__name__)
@@ -20,13 +19,13 @@ def home():
 @app.route('/testing')
 def testing():
     #return 'Test successful, code is {}'.format(code)
-    return render_template('users.html')
+    return render_template('users.html', count=0)
 
 # Called when user successful logged in
 # HF
 @app.route('/users/<name>')
-def users(name):
-    return render_template('users.html')
+def users(user_details):
+    return render_template('users.html', menu=1, user=user_details, count=0)
 
 
 # Called when sign up button is clicked from the login page
@@ -43,7 +42,7 @@ def sign_up():
         # to create and check if the storage exist
         main.db.get_storage('Users', True, True)
         main.db.add_item('Users', user.get_username(), user)
-        return redirect(url_for('users', name=user.get_username(), user_details=user))
+        return redirect(url_for('users', user_details=user))
 
     return render_template('signUp.html', form=signup_form)
 
@@ -64,14 +63,13 @@ def loginMenu():
         # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
             login_name = login_form.username.data.lower()
-            #return redirect(url_for('login', code=temp))
 
             temp = main.db.return_keys("Users")
 
             if temp != None and login_name in temp:
                 temp2 = main.db.get_storage("Users")
                 user = temp2[login_name]
-                return redirect(url_for('users', name=user.get_username(), user_details=user))
+                return redirect(url_for('users', user_details=user))
 
             else:
                 print("ERRORRRRRR")
