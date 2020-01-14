@@ -148,7 +148,7 @@ class StorageManager():
 
             self.__db.close()
 
-    # check if storage exitm returns true or false
+    # check if storage exist returns true or false
     def check_exist(self, name):
         self.__db = shelve.open('storage.db', 'c')
 
