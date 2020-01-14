@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0b18200-42ca-4f34-bcf7-1d4a8fc4a169" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/users.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/users.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage.db.dat" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/StorageManager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +33,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flask" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -232,6 +229,7 @@
       <workItem from="1578878381144" duration="6102000" />
       <workItem from="1578909086869" duration="13766000" />
       <workItem from="1578931714044" duration="532000" />
+      <workItem from="1579010694481" duration="1380000" />
     </task>
     <servers />
   </component>

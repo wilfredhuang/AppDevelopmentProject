@@ -13,6 +13,7 @@ def init():
     global db
     db = StorageManager()
 
+# DO NOT TOUCH, UNLESS ASKED
 def reset():
     StorageManager.reset()
 

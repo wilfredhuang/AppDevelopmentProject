@@ -4,19 +4,29 @@
 # HF
 
 import shelve
+""" 
+EXPLANATION
+* Everything will be stored in "storage.db" shelve
+* anything can be stored in database and shelve works like dictionary so we need
+* 1. items to be stored at
+* 2. the key used to store those items
 
+ 
+"""
 class StorageManager():
 
     def __init__(self):
-        # error checking
+        # error checking only
         try:
             self.__db = shelve.open('storage.db', 'r')
             self.__db.close()
         except Exception:
             print("Storage not found")
 
+        # This works like a session storage, things can be stored at 'TEMP' but will be deleted when restart
         self.delete_storage('TEMP')
 
+    # This function can only be use inside this class
     def is_key_found(self, name):
 
         keys = self.__db.keys()
@@ -25,7 +35,8 @@ class StorageManager():
         else:
             return False
 
-
+    # Resets storage, delete everything inside db
+    # !!!! do not anyhow use
     def reset(self):
         self.__db = shelve.open('storage.db', 'c')
         keys = list(self.__db.keys())
@@ -34,27 +45,38 @@ class StorageManager():
             del self.__db[p]
         self.__db.close()
 
+    # create not storage
     def create_new_storage(self, name, items=None, dict=True):
         self.__db = shelve.open('storage.db', 'c')
         # items must be a dictionary or list
         if(self.is_key_found(name) == False):
 
+            # If no item is specified
             if items == None:
 
+                # Default will create a dictionary inside the db with the name parameter as key
+                # Unless dict parameter is false which will create list instead
+                # eg. db[name] = empty dictionary / list
                 if dict == True:
                     self.__db[name] = {}
                     print("Created dictionary")
                 elif dict == False:
                     self.__db[name] = []
                     print("Created list")
+
+            # If items are specified
             else:
                 self.__db[name] = items
                 print("Created storage")
+        # if storage with the name parameter is found, will prompt the storage name is in used
         else:
             print("existing name of storage found")
         self.__db.close()
 
+    # delete whole storage with the key as the name
+
     def delete_storage(self, name):
+
         self.__db = shelve.open('storage.db', 'c')
         if(self.is_key_found(name) == True):
             del self.__db[name]
@@ -63,6 +85,7 @@ class StorageManager():
             print("no keys found with the given name")
         self.__db.close()
 
+    # Set the whole storage as item with the key as the name
     def set_storage(self, name, item):
         self.__db = shelve.open('storage.db', 'c')
         if(self.is_key_found(name) == True):
@@ -73,6 +96,7 @@ class StorageManager():
             print("Unable to set item due to storage name not found")
         self.__db.close()
 
+    # add a single item after going INTO the storage using the name
     def add_item(self, storage_name, key_to_use, item):
         self.__db = shelve.open('storage.db', 'c')
         if(self.is_key_found(storage_name) == True):
@@ -80,11 +104,13 @@ class StorageManager():
 
             print(self.__db[storage_name])
 
+            # if item exist inside the storage
             if key_to_use in self.__db[storage_name].keys():
                 print("Key is in used")
                 print("ALL USERS: ")
                 print(self.__db[storage_name].keys())
 
+            # add, if item does not exit
             else:
                 temp = self.__db[storage_name]
                 print("Key is not in used")
@@ -93,12 +119,13 @@ class StorageManager():
                 print("ALL USERS: ")
                 print(self.__db[storage_name].keys())
 
-
+        # if item storage does not exit
         else:
             print("Unable to set item due to storage name not found")
 
         self.__db.close()
 
+    # get the whole storage back using the name
     def get_storage(self, name, create=False, dict=False):
         self.__db = shelve.open('storage.db', 'c')
 
@@ -121,7 +148,7 @@ class StorageManager():
 
             self.__db.close()
 
-
+    # check if storage exist returns true or false
     def check_exist(self, name):
         self.__db = shelve.open('storage.db', 'c')
 
