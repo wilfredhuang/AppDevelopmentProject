@@ -68,3 +68,12 @@ class SignUpForm(Form):
     city = StringField('City', [validators.DataRequired()])
     unit_number = StringField('Unit Number', [validators.DataRequired()])
 
+# HF
+class UserDetails(Form):
+    first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    last_name = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    username = StringField('Username',
+                           [validators.Length(min=6, max=15), username_duplication_check, validators.DataRequired()])
+    password = PasswordField('Password', [validators.Length(min=6, max=15), validators.DataRequired(),
+                                          EqualTo('confirm_pass', message='Passwords must match')])
+    confirm_pass = PasswordField('Confirm Password', [validators.DataRequired()])

@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+{% from "includes/_formHelper.html" import render_field %}
 
     <div class="container-fluid main">
         <div class="row">
@@ -41,6 +42,7 @@
             {%  if menu == 1 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
                     <h4>Profile</h4>
+                    
 
                 </div>
             {%  elif menu == 2 %}

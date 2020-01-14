@@ -29,16 +29,19 @@ def users(choice, username):
     temp = main.db.return_keys("Users")
 
     if temp != None and username in temp:
+
         temp2 = main.db.get_storage("Users")
         user_details = temp2[username]
+        return render_template('users.html', menu=choice, user=user_details)
 
     else:
         print("ERRORRRRRR")
 
-    return render_template('users.html', menu=choice, user=user_details)
 
 
-#Called when admin login
+
+# Called when admin login
+# HF
 @app.route('/admin')
 def admin():
 
