@@ -152,4 +152,8 @@ class StorageManager():
     # TESTS WROTE BY JH
     def return_object(self, name):
         self.__db = shelve.open('storage.db', 'c')
-        return self.__db[name]
+        temp = self.db
+        self.__db.close()
+
+        return temp
+    
