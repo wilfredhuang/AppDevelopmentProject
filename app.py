@@ -131,8 +131,16 @@ def loginMenu():
 
 # Figuring out carting system
 # JH
+# STILL TESTING
 @app.route("/testAddItem", methods=["GET", "POST"])
 def testAddItem():
+
+    # if request.method == "POST":
+    #     if request.form["submit_button"] == "Add":
+    #         print("Add item button pressed")
+    #     elif request.form["submit_button"] == "Delete":
+    #         print("Delete item button pressed")
+
     if request.method == "POST":
         # Create the product object
         product = Product.Product(1, "Airpods", 239.00)
@@ -145,6 +153,18 @@ def testAddItem():
         print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
         print("-- TEST --")
     return render_template("test.html")
+
+
+# Shopping cart page
+# JH
+# STILL TESTING
+@app.route("/cart")
+def cart():
+    main.db.get_storage("Cart", True, True)
+    product_object = main.db.return_object("Cart")
+    product_object = product_object["TestUser"]
+    return render_template("userCart.html", item=product_object)
+
 
 
 if __name__ == '__main__':
