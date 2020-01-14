@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from Forms import CreateUserForm, LoginForm, SignUpForm
-import User
-import main
+import User, main, Product
 
 
 app = Flask(__name__)
@@ -129,6 +128,23 @@ def loginMenu():
 
     return render_template('userLogin.html', form=login_form)
 
+
+# Figuring out carting system
+# JH
+@app.route("/testAddItem", methods=["GET", "POST"])
+def testAddItem():
+    if request.method == "POST":
+        # Create the product object
+        product = Product.Product(1, "Airpods", 239.00)
+        # Add it into the database
+        main.db.get_storage("Cart", True , True)
+        main.db.add_item("Cart", "TestUser", product)
+        print("-- TEST --")
+        test = main.db.return_object("Cart")
+        test = test["TestUser"]
+        print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
+        print("-- TEST --")
+    return render_template("test.html")
 
 
 if __name__ == '__main__':

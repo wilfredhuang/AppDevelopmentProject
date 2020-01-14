@@ -148,3 +148,8 @@ class StorageManager():
             return temp
         else:
             return None
+
+    # TESTS WROTE BY JH
+    def return_object(self, name):
+        self.__db = shelve.open('storage.db', 'c')
+        return self.__db[name]
