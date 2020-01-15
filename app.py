@@ -212,9 +212,9 @@ def testAddItem():
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
     if request.method == "POST":
+        item = main.db.return_object("Cart")
+        item = item["TestUser"]
         if request.form["cart_button"][0] == "+":
-            item = main.db.return_object("Cart")
-            item = item["TestUser"]
             print("---TEST---")
             print(item)
             for i in item:
@@ -227,11 +227,18 @@ def cart():
                     main.db.get_storage("Cart", True, True)
                     main.db.add_item("Cart", "TestUser", item)
             print("---TEST---")
-        if request.form["cart_button"] == "test":
-            item = main.db.return_object("Cart")
-            item = item["TestUser"]
-            print(f"{item[0].get_name()},{item[0].get_quantity()}")
-            print(f"{item[1].get_name()},{item[1].get_quantity()}")
+        elif request.form["cart_button"][0] == "-":
+            print("---TEST---")
+            print(item)
+            for i in item:
+                if i.get_name() == request.form["cart_button"][1::]:
+                    print("test")
+                    index = item.index(i)
+                    item.pop(index)
+                    main.db.delete_storage("Cart")
+                    main.db.get_storage("Cart", True, True)
+                    main.db.add_item("Cart", "TestUser", item)
+            print("---TEST---")
 
 
     main.db.get_storage("Cart", True, True)

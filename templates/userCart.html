@@ -2,7 +2,7 @@
 {% block title %} Home {% endblock %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/general.css') }}" >
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 <div class="container col-md-9">
     <div class="card">
         <div class="card-header shadow" style="background-color: rgb(33,37,41);">
-            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is [PLACE]</h5>
+            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is asd</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -35,10 +35,12 @@
                                     <td>{{ i.get_name() }}</td>
                                     <td>S${{ i.get_cost() * i.get_quantity() }}</td>
                                     <td>{{ i.get_quantity() }}</td>
-                                    <td><button type="submit" name="cart_button" value="+{{ i.get_name() }}"
-                                                class="btn btn-danger">+</button></td>
-                                    <td><button type="submit" name="cart_button" value="test"
-                                                class="btn btn-danger">test</button></td>
+                                    <td>
+                                        <button type="submit" name="cart_button" value="+{{ i.get_name() }}"
+                                                class="btn btn-danger cart_buttons">+</button>
+                                        <button type="submit" name="cart_button" value="-{{ i.get_name() }}"
+                                                class="btn btn-danger cart_buttons">-</button>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
