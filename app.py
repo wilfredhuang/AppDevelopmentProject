@@ -138,34 +138,65 @@ def loginMenu():
 @app.route("/testAddItem", methods=["GET", "POST"])
 def testAddItem():
 
-    # if request.method == "POST":
-    #     if request.form["submit_button"] == "Add":
-    #         print("Add item button pressed")
-    #     elif request.form["submit_button"] == "Delete":
-    #         print("Delete item button pressed")
-
     if request.method == "POST":
-        # Create the product object
-        product = Product.Product(1, "Airpods", 239.00)
-        # Add it into the database
-        main.db.get_storage("Cart", True , True)
-        main.db.add_item("Cart", "TestUser", product)
-        print("-- TEST --")
-        test = main.db.return_object("Cart")
-        test = test["TestUser"]
-        print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
-        print("-- TEST --")
+        if request.form["submit_button"] == "Add":
+            # Create the product object
+            product = Product.Product(1, "Airpods", 239.00)
+            product2 = Product.Product(2, "Airpods Pro", 329.00)
+            productList = []
+            productList.append(product)
+            productList.append(product2)
+            # Add it into the database
+            main.db.get_storage("Cart", True, True)
+            main.db.add_item("Cart", "TestUser", productList)
+            print("-- TEST --")
+            test = main.db.return_object("Cart")
+            test = test["TestUser"]
+            # print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
+            print(test[0].get_name())
+            print(test[1].get_name())
+            print("-- TEST --")
+        elif request.form["submit_button"] == "Delete":
+            print("Delete item button pressed")
+            main.db.get_storage("Cart", True, True)
+            main.db.delete_storage("Cart")
     return render_template("test.html")
 
 
 # Shopping cart page
 # JH
 # STILL TESTING
-@app.route("/cart")
+@app.route("/cart", methods=["GET", "POST"])
 def cart():
+    if request.method == "POST":
+        if request.form["cart_button"][0] == "+":
+            item = main.db.return_object("Cart")
+            item = item["TestUser"]
+            print("---TEST---")
+            print(item)
+            for i in item:
+                if i.get_name() == request.form["cart_button"][1::]:
+                    print(request.form["cart_button"][1::])
+                    print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
+                    i.add_quantity()
+                    print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
+                    main.db.delete_storage("Cart")
+                    main.db.get_storage("Cart", True, True)
+                    main.db.add_item("Cart", "TestUser", item)
+            print("---TEST---")
+        if request.form["cart_button"] == "test":
+            item = main.db.return_object("Cart")
+            item = item["TestUser"]
+            print(f"{item[0].get_name()},{item[0].get_quantity()}")
+            print(f"{item[1].get_name()},{item[1].get_quantity()}")
+
+
     main.db.get_storage("Cart", True, True)
     product_object = main.db.return_object("Cart")
-    product_object = product_object["TestUser"]
+    try:
+        product_object = product_object["TestUser"]
+    except:
+        product_object = {}
     return render_template("userCart.html", item=product_object)
 
 

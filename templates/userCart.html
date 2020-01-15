@@ -1,15 +1,20 @@
 {% extends "main_Base.html" %}
 {% block title %} Home {% endblock %}
 
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users.css') }}" >
+{% endblock %}
+
 {% block content %}
 <div style="padding-bottom: 3vw;">
 
 </div>
 
+<form method="POST" action="">
 <div class="container col-md-9">
     <div class="card">
         <div class="card-header shadow" style="background-color: rgb(33,37,41);">
-            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is S$4,200.69.</h5>
+            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is [PLACE]</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -20,17 +25,22 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Cost</th>
-                                    <th>ID</th>
+                                    <th>Quantity</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% if item %}
+                                {% for i in item %}
                                 <tr>
-                                    <td>{{ item.get_name() }}</td>
-                                    <td>{{ item.get_cost() }}</td>
-                                    <td>{{ item.get_id() }}</td>
+                                    <td>{{ i.get_name() }}</td>
+                                    <td>S${{ i.get_cost() * i.get_quantity() }}</td>
+                                    <td>{{ i.get_quantity() }}</td>
+                                    <td><button type="submit" name="cart_button" value="+{{ i.get_name() }}"
+                                                class="btn btn-danger">+</button></td>
+                                    <td><button type="submit" name="cart_button" value="test"
+                                                class="btn btn-danger">test</button></td>
                                 </tr>
-                                {% endif %}
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -68,5 +78,5 @@
         </div>
     </div>
 </div>
-</div>
+</div></form>
 {% endblock %}
