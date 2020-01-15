@@ -181,6 +181,15 @@ class StorageManager():
         self.__db = shelve.open('storage.db', 'c')
         temp = self.__db[name]
         self.__db.close()
-
         return temp
-    
+
+    def update_cart(self, storage_name, key_to_use, item):
+        self.__db = shelve.open('storage.db', 'c')
+        if self.is_key_found(storage_name) == True:
+            temp = self.__db[storage_name]
+            print("Key is not in used")
+            temp[key_to_use] = item
+            self.__db[storage_name] = temp
+        else:
+            print("Unable to set item due to storage name not found")
+        self.__db.close()

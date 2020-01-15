@@ -1,0 +1,45 @@
+{% extends "main_Base.html" %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div style="padding-bottom: 3vw;">
+
+</div>
+
+<div class="container col-md-6">
+    <div class="card">
+        <div class="card-header" style="background-color: rgb(33,37,41);">
+            <h5 class="mb-0" style="color: rgb(245,245,247);">Enter Card Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row col-md-6 mx-auto">
+                <div class="col">
+                    <p style="margin-bottom: 0px;">Card Number</p>
+                </div>
+            </div>
+            <div class="row col-md-6 mx-auto">
+                <div class="col"><input type="text" style="width: 100%;" /></div>
+            </div><br />
+            <div class="row col-md-6 mx-auto">
+                <div class="col">
+                    <p style="margin-bottom: 0px;">Expiration Date</p>
+                </div>
+            </div>
+            <div class="row col-md-6 mx-auto">
+                <div class="col"><input type="text" style="width: 45%;float: left;" placeholder="MM" /><input type="text" style="width: 45%;float: right;" placeholder="YYYY" /></div>
+            </div><br />
+            <div class="row col-md-6 mx-auto">
+                <div class="col">
+                    <p style="margin-bottom: 0px;">Security Code</p>
+                </div>
+            </div>
+            <div class="row col-md-6 mx-auto">
+                <div class="col"><input type="text" style="width: 45%;float: left;" placeholder="CVV" /></div>
+            </div><br />
+            <div class="row col-md-6 mx-auto">
+                <div class="col"><a class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="creditcard_success.html">Pay</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

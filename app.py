@@ -191,7 +191,7 @@ def testAddItem():
             productList.append(product2)
             # Add it into the database
             main.db.get_storage("Cart", True, True)
-            main.db.add_item("Cart", "TestUser", productList)
+            main.db.update_cart("Cart", "TestUser", productList)
             print("-- TEST --")
             test = main.db.return_object("Cart")
             test = test["TestUser"]
@@ -211,9 +211,9 @@ def testAddItem():
 # STILL TESTING
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
+    item = main.db.return_object("Cart")
+    item = item["TestUser"]
     if request.method == "POST":
-        item = main.db.return_object("Cart")
-        item = item["TestUser"]
         if request.form["cart_button"][0] == "+":
             print("---TEST---")
             print(item)
@@ -239,6 +239,11 @@ def cart():
                     main.db.get_storage("Cart", True, True)
                     main.db.add_item("Cart", "TestUser", item)
             print("---TEST---")
+    # Get total cost
+    total_cost = 0
+    for i in item:
+        total_cost += float(i.get_cost()) * float(i.get_quantity())
+
 
 
     main.db.get_storage("Cart", True, True)
@@ -247,8 +252,27 @@ def cart():
         product_object = product_object["TestUser"]
     except:
         product_object = {}
-    return render_template("userCart.html", item=product_object)
+    return render_template("userCart.html", item=product_object, total_cost=total_cost)
 
+# Checkout options
+# JH
+@app.route("/checkoutoptions")
+def checkout_options():
+    return render_template("checkout_options.html")
+
+
+# Guest Checkout
+# JH
+@app.route("/guestcheckout", methods=["GET", "POST"])
+def guest_checkout():
+    return render_template("g_checkout.html")
+
+
+# Payment page to enter card detail if not yet so
+# JH
+@app.route("/payment")
+def payment():
+    return render_template("payment_checkout.html")
 
 
 if __name__ == '__main__':

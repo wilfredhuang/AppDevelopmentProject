@@ -1,0 +1,24 @@
+{% extends "main_Base.html" %}
+{% block title %} Checkout {% endblock %}
+
+{% block content %}
+<div style="padding-bottom: 3vw;">
+
+</div>
+
+<div class="container col-md-8 mx-auto">
+    <div class="card">
+        <div class="card-header" style="background-color: rgb(33,37,41);">
+            <h5 class="mb-0" style="color: rgb(245,245,247);">Checkout Options</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col"><a class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 45%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: left;" href="loginForm.html">Existing Customer Login</a>
+                    <a
+                        class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 45%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="/guestcheckout">Guest Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
