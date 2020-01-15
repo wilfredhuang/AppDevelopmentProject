@@ -16,9 +16,24 @@ class CreateUserForm(Form):
 # HF
 def username_duplication_check(form, field):
     temp = main.db.return_keys("Users")
+    temp2 = None
+    temp2 = main.db.get_storage("TEMP")
+    print("USERNAMEEEE")
+    print(temp2)
+
+    # if username found in storage
     if temp != None and (field.data).lower() in temp:
 
-        raise ValidationError('Username have been used')
+        #if username is not the same as the currently one
+        if temp2 != None:
+            temp_keys = temp2.keys()
+            logged_in_username = None
+            if "username" in temp_keys:
+                logged_in_username = temp2['username']
+
+            if logged_in_username != None:
+                if temp2 != None and (field.data).lower() != logged_in_username:
+                    raise ValidationError('Username have been used')
 
     elif (field.data).lower() == "admin":
 
@@ -68,12 +83,26 @@ class SignUpForm(Form):
     city = StringField('City', [validators.DataRequired()])
     unit_number = StringField('Unit Number', [validators.DataRequired()])
 
+
 # HF
-class UserDetails(Form):
+class UserDetailsForm(Form):
     first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     last_name = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     username = StringField('Username',
                            [validators.Length(min=6, max=15), username_duplication_check, validators.DataRequired()])
+
+
+# HF
+class ChangePasswordForm(Form):
     password = PasswordField('Password', [validators.Length(min=6, max=15), validators.DataRequired(),
                                           EqualTo('confirm_pass', message='Passwords must match')])
     confirm_pass = PasswordField('Confirm Password', [validators.DataRequired()])
+
+
+# HF
+class AddressForm(Form):
+    postal_code = StringField('Postal Code', [validators.DataRequired()])
+    address = StringField('Street Address', [validators.DataRequired()])
+    country = StringField('Country', [validators.DataRequired()])
+    city = StringField('City', [validators.DataRequired()])
+    unit_number = StringField('Unit Number', [validators.DataRequired()])

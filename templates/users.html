@@ -28,9 +28,16 @@
                     </li>
                     <li class="nav-item">
                         {% if menu == 2 %}
+                            <a class="active" href="">Change Password</a>
+                        {% else %}
+                            <a href="{{ url_for('users', choice=2, username=user.get_username()) }}">Change Password</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if menu == 3 %}
                             <a class="active" href="">Address</a>
                         {% else %}
-                            <a href="{{ url_for('users', choice=2, username=user.get_username()) }}">Address</a>
+                            <a href="{{ url_for('users', choice=3, username=user.get_username()) }}">Address</a>
                         {% endif %}
                     </li>
                 </ul>
@@ -42,18 +49,121 @@
             {%  if menu == 1 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
                     <h4>Profile</h4>
-                    
+
+                    <form novalidate method="POST" action="">
+                        <div class="border border-secondary">
+                            <div class="p-info"> <!-- Form Elements -->
+
+                                <div class="row"> <!-- Name -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.first_name, class="form-control txt", value=user.get_first_name()) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.last_name, class="form-control txt", value=user.get_last_name()) }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Name -->
+
+                                 <div class="form-group"> <!-- Username -->
+                                {{ render_field(form.username, class="form-control txt", value=user.get_username()) }}
+                                </div> <!-- End of Username -->
+
+                                <div class="container su-btn">
+                                    <input type="Submit" name="submit" value="Update Profile" class="btn btn-secondary"/>
+                                </div>
+
+                            </div> <!-- End of Form Elements -->
+                        </div> <!-- End of Border -->
+
+                    </form>
+
+
 
                 </div>
             {%  elif menu == 2 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
-                    <h4>Address</h4>
+                    <h4>Change Password</h4>
+
+                    <form novalidate method="POST" action="">
+                        <div class="border border-secondary">
+                            <div class="p-info"> <!-- Form Elements -->
+
+                                <div class="row"> <!-- Password -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.password, class="form-control txt") }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.confirm_pass, class="form-control txt") }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Password -->
+
+                                <div class="container su-btn">
+                                    <input type="Submit" name="submit" value="Change Password" class="btn btn-secondary"/>
+                                </div>
+
+                            </div> <!-- End of Form Elements -->
+                        </div> <!-- End of Border -->
+
+                    </form>
 
                 </div>
             {% elif menu == 3 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
-                    <h4>THIS IS MENU THREE</h4>
+                    <h4>Address</h4>
+                    <form novalidate method="POST" action="">
+                        <div class="border border-secondary">
+                            <div class="p-info"> <!-- Form Elements -->
 
+                                <div class="row"> <!-- Country -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.country, class="form-control txt", value=user.get_country()) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.city, class="form-control txt", value=user.get_city()) }}
+                                        </div>
+                                    </div>
+                                </div> <!-- End of Country -->
+
+                                <div class="form-group"> <!-- Street Address -->
+                                {{ render_field(form.address, class="form-control txt", value=user.get_address()) }}
+                                </div> <!-- End of Street Address -->
+
+                                <div class="row"> <!-- Detailed -->
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.unit_number, class="form-control txt", value=user.get_unit_number()) }}
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                        {{ render_field(form.postal_code, class="form-control txt", value=user.get_postal_code()) }}
+                                        </div>
+                                    </div>
+
+                                </div> <!-- End of Detailed -->
+
+                                <div class="container su-btn">
+                                    <input type="Submit" name="submit" value="Update Address" class="btn btn-secondary"/>
+                                </div>
+
+                            </div> <!-- End of Form Elements -->
+                        </div> <!-- End of Border -->
+
+                    </form>
                 </div>
             {%  endif %}
         </div>

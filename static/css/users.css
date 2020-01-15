@@ -47,3 +47,11 @@ li a:hover{
 h4{
     margin-top: 20px;
 }
+
+.p-info {
+    margin: 20px;
+}
+
+form {
+    margin-bottom: 30px;
+}
