@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Forms import CreateUserForm, LoginForm, SignUpForm
+from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
 import User, main, Product
 
 
@@ -23,16 +23,59 @@ def testing(choice):
 
 # Called when user successful logged in
 # HF
-@app.route('/users/<username>/<int:choice>')
+@app.route('/users/<username>/<int:choice>', methods=['POST', 'GET'])
 def users(choice, username):
     print("TESTTTTT")
     temp = main.db.return_keys("Users")
+    user_form = UserDetailsForm(request.form)
+    password_form = ChangePasswordForm(request.form)
+    address_form = AddressForm(request.form)
+
+    if request.method == 'POST':
+        btn_pressed = request.form['submit']
+        user_db = main.db.get_storage("Users")
+        user = user_db[username]
+
+        if btn_pressed == "Update Profile" and user_form.validate():
+            user.set_username(user_form.username.data.lower())
+            user.set_first_name(user_form.first_name.data)
+            user.set_last_name(user_form.last_name.data)
+
+            to_be_changed = main.db.get_storage("TEMP")
+            to_be_changed["username"] = user.get_username()
+
+            main.db.set_storage("TEMP", to_be_changed)
+
+        elif btn_pressed == "Update Address" and address_form.validate():
+            user.set_country(address_form.country.data)
+            user.set_postal_code(address_form.postal_code.data)
+            user.set_address(address_form.address.data)
+            user.set_city(address_form.city.data)
+            user.set_unit_number(address_form.unit_number.data)
+
+        elif btn_pressed == "Change Password" and password_form.validate():
+            user.set_password(password_form.password)
+
+        del user_db[username]
+        user_db[user.get_username()] = user
+        main.db.set_storage("Users", user_db)
+
+        return redirect(url_for('users', choice=1, username=user.get_username()))
 
     if temp != None and username in temp:
 
         temp2 = main.db.get_storage("Users")
         user_details = temp2[username]
-        return render_template('users.html', menu=choice, user=user_details)
+
+        if choice == 1:
+            temp_form = user_form
+        elif choice == 2:
+            temp_form = password_form
+        elif choice == 3:
+            temp_form = address_form
+
+
+        return render_template('users.html', menu=choice, user=user_details, form=temp_form)
 
     else:
         print("ERRORRRRRR")

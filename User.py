@@ -42,7 +42,7 @@ class User():
     def get_city(self):
         return self.__city
 
-    def get_unit_numbers(self):
+    def get_unit_number(self):
         return self.__unitNumber
 
     def set_username(self, username):
@@ -63,7 +63,7 @@ class User():
     def set_address(self, address):
         self.__address = address
 
-    def set__country(self, country):
+    def set_country(self, country):
         self.__country = country
 
     def set_city(self, city):
