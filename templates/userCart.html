@@ -1,5 +1,5 @@
 {% extends "main_Base.html" %}
-{% block title %} Home {% endblock %}
+{% block title %} Cart {% endblock %}
 
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/general.css') }}" >
@@ -14,7 +14,11 @@
 <div class="container col-md-9">
     <div class="card">
         <div class="card-header shadow" style="background-color: rgb(33,37,41);">
-            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is asd</h5>
+            {% if total_cost %}
+            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag total is S${{"%0.2f"| format(total_cost|float) }}</h5>
+            {% else %}
+            <h5 class="mb-0" style="color: rgb(245,245,247);text-align: center;">Your bag is empty</h5>
+            {% endif %}
         </div>
         <div class="card-body">
             <div class="row">
@@ -33,7 +37,7 @@
                                 {% for i in item %}
                                 <tr>
                                     <td>{{ i.get_name() }}</td>
-                                    <td>S${{ i.get_cost() * i.get_quantity() }}</td>
+                                    <td>S${{"%0.2f"|format(i.get_cost() * i.get_quantity()|float)}}</td>
                                     <td>{{ i.get_quantity() }}</td>
                                     <td>
                                         <button type="submit" name="cart_button" value="+{{ i.get_name() }}"
@@ -48,12 +52,17 @@
                     </div>
                 </div>
             </div><br />
-            <hr />
+            <hr/>
             <div class="container col-md-8" style="float: right;">
                 <div class="row">
                     <div class="col">
                         <p class="col-md-4" style="text-align: left;float: left;"><strong>Subtotal</strong></p>
-                        <p class="col-md-4" style="text-align: right;float: right;">S$4,200.69</p>
+                        {% if total_cost %}
+                        <p class="col-md-4" style="text-align: right;float: right;">
+                            S${{"%0.2f"|format(total_cost|float)}}</p>
+                        {% else %}
+                        <p class="col-md-4" style="text-align: right;float: right;">-</p>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="row">
@@ -75,7 +84,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col"><a class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="loginOrGuest.html">Checkout</a></div>
+                <div class="col"><a class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="/checkoutoptions">Checkout</a></div>
             </div>
         </div>
     </div>
