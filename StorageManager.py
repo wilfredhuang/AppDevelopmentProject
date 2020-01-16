@@ -110,7 +110,7 @@ class StorageManager():
                 print("ALL USERS: ")
                 print(self.__db[storage_name].keys())
 
-            # add, if item does not exit
+            # add, if item does not have duplicate
             else:
                 temp = self.__db[storage_name]
                 print("Key is not in used")
