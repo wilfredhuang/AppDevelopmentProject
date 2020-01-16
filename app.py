@@ -287,5 +287,12 @@ def payment():
     return render_template("payment_checkout.html")
 
 
+# Show state of payment
+# JH
+@app.route("/paymentstate")
+def payment_state():
+    return render_template("paymentsuccess.html")
+
+
 if __name__ == '__main__':
     app.run()
