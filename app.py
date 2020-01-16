@@ -211,38 +211,41 @@ def testAddItem():
 # STILL TESTING
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-    item = main.db.return_object("Cart")
-    item = item["TestUser"]
-    if request.method == "POST":
-        if request.form["cart_button"][0] == "+":
-            print("---TEST---")
-            print(item)
-            for i in item:
-                if i.get_name() == request.form["cart_button"][1::]:
-                    print(request.form["cart_button"][1::])
-                    print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
-                    i.add_quantity()
-                    print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
-                    main.db.delete_storage("Cart")
-                    main.db.get_storage("Cart", True, True)
-                    main.db.add_item("Cart", "TestUser", item)
-            print("---TEST---")
-        elif request.form["cart_button"][0] == "-":
-            print("---TEST---")
-            print(item)
-            for i in item:
-                if i.get_name() == request.form["cart_button"][1::]:
-                    print("test")
-                    index = item.index(i)
-                    item.pop(index)
-                    main.db.delete_storage("Cart")
-                    main.db.get_storage("Cart", True, True)
-                    main.db.add_item("Cart", "TestUser", item)
-            print("---TEST---")
-    # Get total cost
     total_cost = 0
-    for i in item:
-        total_cost += float(i.get_cost()) * float(i.get_quantity())
+    if request.method == "POST":
+        try:
+            item = main.db.return_object("Cart")
+            item = item["TestUser"]
+            if request.form["cart_button"][0] == "+":
+                print("---TEST---")
+                print(item)
+                for i in item:
+                    if i.get_name() == request.form["cart_button"][1::]:
+                        print(request.form["cart_button"][1::])
+                        print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
+                        i.add_quantity()
+                        print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
+                        main.db.delete_storage("Cart")
+                        main.db.get_storage("Cart", True, True)
+                        main.db.add_item("Cart", "TestUser", item)
+                print("---TEST---")
+            elif request.form["cart_button"][0] == "-":
+                print("---TEST---")
+                print(item)
+                for i in item:
+                    if i.get_name() == request.form["cart_button"][1::]:
+                        print("test")
+                        index = item.index(i)
+                        item.pop(index)
+                        main.db.delete_storage("Cart")
+                        main.db.get_storage("Cart", True, True)
+                        main.db.add_item("Cart", "TestUser", item)
+                print("---TEST---")
+            # Get total cost
+            for i in item:
+                total_cost += float(i.get_cost()) * float(i.get_quantity())
+        except:
+            pass
 
 
 
@@ -266,6 +269,15 @@ def checkout_options():
 @app.route("/guestcheckout", methods=["GET", "POST"])
 def guest_checkout():
     return render_template("g_checkout.html")
+
+# Logged In Checkout - TESTING ONLY, NOT FINAL!!!!!
+# JH
+@app.route("/usercheckout", methods=["GET", "POST"])
+def user_checkout():
+    main.db.get_storage("Users", True, True)
+    user = main.db.return_object("Users")
+    user = user["tristan"]
+    return render_template("u_checkout.html", user=user)
 
 
 # Payment page to enter card detail if not yet so
