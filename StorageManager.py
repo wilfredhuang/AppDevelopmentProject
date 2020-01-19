@@ -1,6 +1,5 @@
 # Please read the instruction before using
 # This will control all persistent storage (eg. Add, Delete, Modify)
-# Note: Do not modify this before asking me (HF)
 # HF
 
 import shelve

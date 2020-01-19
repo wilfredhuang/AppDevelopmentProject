@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0b18200-42ca-4f34-bcf7-1d4a8fc4a169" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/StorageManagement.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/UserManagement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/User.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/users.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/users.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage.db.bak" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage.db.dat" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage.db.dir" beforeDir="false" afterPath="$PROJECT_DIR$/storage.db.dir" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StorageManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/StorageManager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +17,8 @@
       <list>
         <option value="Flask Main" />
         <option value="CSS File" />
-        <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
