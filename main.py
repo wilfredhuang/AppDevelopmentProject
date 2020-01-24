@@ -5,17 +5,34 @@
     Note: Do not modify this before asking me (HF)
 """
 from StorageManager import StorageManager
+from UserManagement import UserManagement
+from SessionManagement import SessionManagement
+from StorageManagement import StorageManagement
 from Admin import Admin
 db = None
+user_management = None
+session_management = None
+storage_management = None
 
 # HF
 def init():
+
     global db
+    global user_management
+    global session_management
+    global storage_management
+
+    storage_management = StorageManagement()
     db = StorageManager()
+    user_management = UserManagement(storage_management)
+    session_management = SessionManagement(storage_management)
+    #print("Main testing")
+    #storage_management.storage_exist('Users')
 
 # DO NOT TOUCH, UNLESS ASKED
 def reset():
-    StorageManager.reset()
+    pass
+    #StorageManager.reset()
 
 
 def test_mode():
@@ -33,13 +50,18 @@ def test_mode():
     print("DB:")
     print(storage.get_storage("testing"))
     """
-    init()
+    #init()
 
    # print("KEYTSSSSSSSS")
     #db.delete_storage("Users")
     #db.return_keys()
     #print(db.return_keys("Users"))
-    temp = db.return_keys()
-    #print("TEST")
-    print(list(temp))
+    #temp = db.get_keys()
+    #print(list(temp))
+    #init()
+
+    #print("This is main func")
+    #storage_management.testprint()
+
+
 test_mode()

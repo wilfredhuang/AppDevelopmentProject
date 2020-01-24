@@ -23,7 +23,7 @@ class StorageManager():
             print("Storage not found")
 
         # This works like a session storage, things can be stored at 'TEMP' but will be deleted when restart
-        self.delete_storage('TEMP')
+        # self.delete_storage('TEMP')
 
     # This function can only be use inside this class
     def is_key_found(self, name):

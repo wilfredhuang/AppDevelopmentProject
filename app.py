@@ -26,25 +26,27 @@ def testing(choice):
 @app.route('/users/<username>/<int:choice>', methods=['POST', 'GET'])
 def users(choice, username):
     print("TESTTTTT")
-    temp = main.db.return_keys("Users")
+    # temp = main.db.return_keys("Users")
+    username_list = main.user_management.get_username_list()
+
     user_form = UserDetailsForm(request.form)
     password_form = ChangePasswordForm(request.form)
     address_form = AddressForm(request.form)
 
     if request.method == 'POST':
         btn_pressed = request.form['submit']
-        user_db = main.db.get_storage("Users")
-        user = user_db[username]
+        #user_db = main.user_management("Users")
+        #user = user_db[username]
+        user = main.user_management.get_user(username)
 
         if btn_pressed == "Update Profile" and user_form.validate():
-            user.set_username(user_form.username.data.lower())
             user.set_first_name(user_form.first_name.data)
             user.set_last_name(user_form.last_name.data)
 
-            to_be_changed = main.db.get_storage("TEMP")
-            to_be_changed["username"] = user.get_username()
+            #to_be_changed = main.db.get_storage("TEMP")
+            #to_be_changed["username"] = user.get_username()
 
-            main.db.set_storage("TEMP", to_be_changed)
+            #main.db.set_storage("TEMP", to_be_changed)
 
         elif btn_pressed == "Update Address" and address_form.validate():
             user.set_country(address_form.country.data)
@@ -56,17 +58,15 @@ def users(choice, username):
         elif btn_pressed == "Change Password" and password_form.validate():
             user.set_password(password_form.password)
 
-        del user_db[username]
-        user_db[user.get_username()] = user
-        main.db.set_storage("Users", user_db)
+        main.user_management.modify_user(user)
 
         return redirect(url_for('users', choice=1, username=user.get_username()))
 
-    if temp != None and username in temp:
+    if username_list != None and username in username_list:
 
-        temp2 = main.db.get_storage("Users")
-        user_details = temp2[username]
-
+        #temp2 = main.db.get_storage("Users")
+        #user_details = temp2[username]
+        user_details = main.user_management.get_user(username)
         if choice == 1:
             temp_form = user_form
         elif choice == 2:
@@ -102,13 +102,18 @@ def sign_up():
                          signup_form.password.data, signup_form.postal_code.data, signup_form.address.data,
                          signup_form.country.data, signup_form.city.data, signup_form.unit_number.data)
 
-        # to create and check if the storage exist
-        main.db.get_storage('Users', True, True)
-        main.db.add_item('Users', user.get_username(), user)
+        # to create and check if the storage exist - METHOD 1
+        # main.db.get_storage('Users', True, True)
+        # main.db.add_item('Users', user.get_username(), user)
+
+        # Method 2
+        main.user_management.add_user(user)
 
         # create temporary storage
-        main.db.get_storage("TEMP", True, True)
-        main.db.add_item('TEMP', "username", user.get_username())
+        # main.db.get_storage("TEMP", True, True)
+        # main.db.add_item('TEMP', "username", user.get_username())
+
+        main.session_management.add_item("username", user.get_username())
 
         return redirect(url_for('users', choice=1, username=user.get_username()))
 
@@ -124,16 +129,17 @@ def loginMenu():
     login_form = LoginForm(request.form)
 
     # login if user already logged in before
-    temp_exist = main.db.check_exist('TEMP')
+    # temp_exist = main.db.check_exist('TEMP')
+    temp_exist = main.storage_management.storage_exist("TEMP")
+
     if temp_exist == True:
 
-        session = main.db.get_storage('TEMP')
-        s_keys = session.keys()
+        session = main.storage_management.get_storage("TEMP")
+        session_keys = main.session_management.get_keys()
 
-        if "username" in s_keys:
+        if session_keys != None and "username" in session_keys:
             username = session['username']
             return redirect(url_for('users', choice=1, username=username))
-
 
     # When a button is clicked
     if request.method == 'POST':
@@ -144,21 +150,24 @@ def loginMenu():
         if login_form.validate() and btn_pressed == "Login":
             login_name = login_form.username.data.lower()
 
-
-            admin_acc = main.db.get_storage("ADMIN")
-            temp = main.db.return_keys("Users")
+            #admin_acc = main.db.get_storage("ADMIN")
+            admin_acc = main.storage_management.get_storage("ADMIN")
+            #temp = main.db.return_keys("Users")
+            user_acc = main.user_management.get_username_list()
 
             if admin_acc.get_username() == login_name:
                 print("Admin Login")
                 return redirect(url_for('admin'))
 
-            elif temp != None and login_name in temp:
-                temp2 = main.db.get_storage("Users")
-                user = temp2[login_name]
+            elif user_acc != None and login_name in user_acc:
+                # temp2 = main.db.get_storage("Users")
+                user = main.user_management.get_user(login_name)
 
                 # create temporary storage
-                main.db.get_storage("TEMP", True, True)
-                main.db.add_item('TEMP', "username", user.get_username())
+                # main.db.get_storage("TEMP", True, True)
+                 #main.db.add_item('TEMP', "username", user.get_username())
+
+                main.session_management.add_item("username", user.get_username())
 
                 return redirect(url_for('users', choice=1, username=user.get_username()))
 
