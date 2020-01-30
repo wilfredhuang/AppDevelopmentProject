@@ -8,7 +8,7 @@ and spilt the task into other classes
 import shelve
 
 # HF
-class StorageManagement:
+class StorageHandler:
 
     def __init__(self):
         # error checking only

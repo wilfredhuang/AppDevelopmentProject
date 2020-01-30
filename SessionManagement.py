@@ -1,11 +1,11 @@
-from StorageManagement import StorageManagement
+from StorageHandler import StorageHandler
 
 # HF
 class SessionManagement:
 
-    def __init__(self, storage_management):
+    def __init__(self, StorageHandler):
         self.__key_name = "TEMP"
-        self.__handler = storage_management
+        self.__handler = StorageHandler
         self.__db = None
         print("\n[START OF SESSION INIT]")
         if self.__handler.storage_exist(self.__key_name):

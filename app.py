@@ -56,7 +56,7 @@ def users(choice, username):
             user.set_unit_number(address_form.unit_number.data)
 
         elif btn_pressed == "Change Password" and password_form.validate():
-            user.set_password(password_form.password)
+            user.set_password(password_form.password.data)
 
         main.user_management.modify_user(user)
 
@@ -130,11 +130,11 @@ def loginMenu():
 
     # login if user already logged in before
     # temp_exist = main.db.check_exist('TEMP')
-    temp_exist = main.storage_management.storage_exist("TEMP")
+    temp_exist = main.storage_handler.storage_exist("TEMP")
 
     if temp_exist == True:
 
-        session = main.storage_management.get_storage("TEMP")
+        session = main.storage_handler.get_storage("TEMP")
         session_keys = main.session_management.get_keys()
 
         if session_keys != None and "username" in session_keys:
@@ -151,7 +151,7 @@ def loginMenu():
             login_name = login_form.username.data.lower()
 
             #admin_acc = main.db.get_storage("ADMIN")
-            admin_acc = main.storage_management.get_storage("ADMIN")
+            admin_acc = main.storage_handler.get_storage("ADMIN")
             #temp = main.db.return_keys("Users")
             user_acc = main.user_management.get_username_list()
 

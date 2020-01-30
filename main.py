@@ -7,7 +7,7 @@
 from StorageManager import StorageManager
 from UserManagement import UserManagement
 from SessionManagement import SessionManagement
-from StorageManagement import StorageManagement
+from StorageHandler import StorageHandler
 from Admin import Admin
 db = None
 user_management = None
@@ -20,12 +20,12 @@ def init():
     global db
     global user_management
     global session_management
-    global storage_management
+    global storage_handler
 
-    storage_management = StorageManagement()
+    storage_handler = StorageHandler()
     db = StorageManager()
-    user_management = UserManagement(storage_management)
-    session_management = SessionManagement(storage_management)
+    user_management = UserManagement(storage_handler)
+    session_management = SessionManagement(storage_handler)
     #print("Main testing")
     #storage_management.storage_exist('Users')
 
