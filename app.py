@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
-import User, main, Product
+import User, main, Product, paypalrestsdk, requests
 
 
 app = Flask(__name__)
@@ -305,6 +305,74 @@ def payment():
 @app.route("/paymentstate")
 def payment_state():
     return render_template("paymentsuccess.html")
+
+
+paypalrestsdk.configure({
+  "mode": "sandbox", # sandbox or live
+  "client_id": "AdH9TKto-i55A59_fTE_EBenlB2BzMI7-Jn7nj6q31HwAdnFXObvrNuGs8m3CjIZBCqXnkK2EbwdFx3E",
+  "client_secret": "EHwkI3DR_UEWZpjwksQ_TmeLYAswAAhl3CVDhSt9czUYOK59xMTH917nDlw8MXItNc0KL3Xv7tB3TndP"})
+
+
+# paypal testing
+# JH
+@app.route("/paypaltest")
+def paypal_test():
+    return render_template("paypal_test.html")
+
+
+# paypal testing
+# JH
+@app.route("/paypalpayment", methods=["POST"])
+def paypalpayment():
+    item_list = []
+    total_cost = 0
+    # Get cart
+    item = main.db.return_object("Cart")
+    item = item["TestUser"]
+    for i in item:
+        item_list.append({"name": i.get_name(),
+                          "sku": "1",
+                          "price": i.get_cost(),
+                          "currency": "SGD",
+                          "quantity": "1"})
+        total_cost += float(i.get_cost()) * float(i.get_quantity())
+
+    payment = paypalrestsdk.Payment({
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"},
+        "redirect_urls": {
+            "return_url": "http://localhost:3000/payment/execute",
+            "cancel_url": "http://localhost:3000/"},
+        "transactions": [{
+            "item_list": {
+                "items": item_list},
+            "amount": {
+                "total": total_cost,
+                "currency": "SGD"},
+            "description": "This is the payment transaction description."}]})
+
+    if payment.create():
+        print("Payment Success!")
+    else:
+        print("error here")
+        print(payment.error)
+
+    return jsonify({'paymentID': payment.id})
+
+
+@app.route("/execute", methods=["POST"])
+def execute():
+    success = False
+    payment = paypalrestsdk.Payment.find(request.form["paymentID"])
+
+    if payment.execute({"payer_id": request.form["payerID"]}):
+        print("Execute Sucess!")
+        success = True
+    else:
+        print(payment.error)
+
+    return jsonify({"success": success})
 
 
 if __name__ == '__main__':
