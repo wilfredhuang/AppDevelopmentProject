@@ -43,6 +43,8 @@ def users(choice, username):
             user.set_first_name(user_form.first_name.data)
             user.set_last_name(user_form.last_name.data)
 
+            main.user_management.modify_user(user)
+            return redirect(url_for('users', choice=1, username=user.get_username()))
             #to_be_changed = main.db.get_storage("TEMP")
             #to_be_changed["username"] = user.get_username()
 
@@ -55,12 +57,14 @@ def users(choice, username):
             user.set_city(address_form.city.data)
             user.set_unit_number(address_form.unit_number.data)
 
+            main.user_management.modify_user(user)
+            return redirect(url_for('users', choice=1, username=user.get_username()))
+
         elif btn_pressed == "Change Password" and password_form.validate():
             user.set_password(password_form.password.data)
 
-        main.user_management.modify_user(user)
-
-        return redirect(url_for('users', choice=1, username=user.get_username()))
+            main.user_management.modify_user(user)
+            return redirect(url_for('users', choice=1, username=user.get_username()))
 
     if username_list != None and username in username_list:
 
