@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-6 mx-auto"><button class="btn btn-primary border-dark" type="button" style="float: left;width: 45%;background-color: rgba(0,0,0,0.8);color: #f5f5f7;">Apple Pay</button><button class="btn btn-primary" type="button" style="float: right;width: 45%;">PayPal</button></div>
+                <div style="display: block; margin: 0 auto;" id="paypal-button"></div>
             </div>
             <div class="whitespace"></div>
             <hr />
@@ -58,4 +58,37 @@
         </div>
     </div>
 </div>
+<!--PayPal API-->
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+    var CREATE_PAYMENT_URL  = 'http://127.0.0.1:5000/paypalpayment';
+    var EXECUTE_PAYMENT_URL = 'http://127.0.0.1:5000/execute';
+
+    paypal.Button.render({
+
+        env: 'sandbox', // Or 'sandbox'
+
+        commit: true, // Show a 'Pay Now' button
+
+        payment: function() {
+            return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
+                return data.paymentID;
+            });
+        },
+
+        onAuthorize: function(data) {
+            return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                paymentID: data.paymentID,
+                payerID:   data.payerID
+            }).then(function(res) {
+                console.log(res.success)
+                location.replace("/paymentstate")
+                // The payment is complete!
+                // You can now show a confirmation message to the customer
+            });
+        }
+
+    }, '#paypal-button');
+</script>
 {% endblock %}
