@@ -20,3 +20,8 @@ class ManagementSystem:
 
     def delete_item(self):
         pass
+
+    def modify_item(self):
+        pass
+
+

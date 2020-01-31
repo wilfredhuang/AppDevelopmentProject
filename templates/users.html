@@ -49,6 +49,15 @@
             {%  if menu == 1 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
                     <h4>Profile</h4>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul class="flashes login-flash">
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
 
                     <form novalidate method="POST" action="">
                         <div class="border border-secondary">
@@ -83,6 +92,15 @@
             {%  elif menu == 2 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
                     <h4>Change Password</h4>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul class="flashes login-flash">
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
 
                     <form novalidate method="POST" action="">
                         <div class="border border-secondary">
@@ -115,6 +133,15 @@
             {% elif menu == 3 %}
                 <div class=" content col-xd col-md-7 offset-md-1">
                     <h4>Address</h4>
+                    {% with messages = get_flashed_messages() %}
+                      {% if messages %}
+                        <ul class="flashes login-flash">
+                        {% for message in messages %}
+                          <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                      {% endif %}
+                    {% endwith %}
                     <form novalidate method="POST" action="">
                         <div class="border border-secondary">
                             <div class="p-info"> <!-- Form Elements -->

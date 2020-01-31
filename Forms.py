@@ -1,6 +1,7 @@
 from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators, PasswordField
 from wtforms.validators import EqualTo, Email, ValidationError
 import main
+import PasswordHashing
 
 password_holder = None
 class CreateUserForm(Form):
@@ -48,19 +49,17 @@ def username_login_check(form, field):
 
     if temp != None and (field.data).lower() in keys:
 
-
         password_holder = temp[(field.data).lower()].get_password()
-
     elif admin_acc.get_username() == (field.data).lower():
 
         password_holder = admin_acc.get_password()
-
     else:
         raise ValidationError('Username not found')
 
 def password_login_check(form, field):
-    if not field.data == password_holder:
-        print("correct pass is {}".format(password_holder))
+    if not PasswordHashing.verify_password(password_holder, field.data):
+
+        #print("correct pass is {}".format(password_holder))
         raise ValidationError('Password incorrect')
 
 

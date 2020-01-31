@@ -8,6 +8,7 @@ from StorageManager import StorageManager
 from UserManagement import UserManagement
 from SessionManagement import SessionManagement
 from StorageHandler import StorageHandler
+import PasswordHashing
 from Admin import Admin
 db = None
 user_management = None
@@ -62,6 +63,5 @@ def test_mode():
 
     #print("This is main func")
     #storage_management.testprint()
-
 
 test_mode()

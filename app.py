@@ -1,9 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
-import User, main, Product, paypalrestsdk, requests
-
+from binascii import hexlify
+import User, main, Product, os
+#, paypalrestsdk, requests
+import PasswordHashing
 
 app = Flask(__name__)
+SECRET_KEY = os.urandom(24)
+# SECRET_KEY = hexlify(os.urandom(24))
+app.secret_key = SECRET_KEY
+#app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 main.init()
 
 # Main page
@@ -25,7 +31,6 @@ def testing(choice):
 # HF
 @app.route('/users/<username>/<int:choice>', methods=['POST', 'GET'])
 def users(choice, username):
-    print("TESTTTTT")
     # temp = main.db.return_keys("Users")
     username_list = main.user_management.get_username_list()
 
@@ -44,6 +49,7 @@ def users(choice, username):
             user.set_last_name(user_form.last_name.data)
 
             main.user_management.modify_user(user)
+            flash('You have successfully updated profile')
             return redirect(url_for('users', choice=1, username=user.get_username()))
             #to_be_changed = main.db.get_storage("TEMP")
             #to_be_changed["username"] = user.get_username()
@@ -58,12 +64,15 @@ def users(choice, username):
             user.set_unit_number(address_form.unit_number.data)
 
             main.user_management.modify_user(user)
+            flash('You have successfully updated address')
             return redirect(url_for('users', choice=1, username=user.get_username()))
 
         elif btn_pressed == "Change Password" and password_form.validate():
-            user.set_password(password_form.password.data)
+            hashed_password = PasswordHashing.hash_password(password_form.password.data)
+            user.set_password(hashed_password)
 
             main.user_management.modify_user(user)
+            flash('You have successfully changed password')
             return redirect(url_for('users', choice=1, username=user.get_username()))
 
     if username_list != None and username in username_list:
@@ -77,7 +86,6 @@ def users(choice, username):
             temp_form = password_form
         elif choice == 3:
             temp_form = address_form
-
 
         return render_template('users.html', menu=choice, user=user_details, form=temp_form)
 
@@ -101,9 +109,10 @@ def admin():
 def sign_up():
     signup_form = SignUpForm(request.form)
     if request.method == 'POST' and signup_form.validate():
+        hashed_password = PasswordHashing.hash_password(signup_form.password.data)
 
         user = User.User(signup_form.first_name.data, signup_form.last_name.data, signup_form.username.data.lower(),
-                         signup_form.password.data, signup_form.postal_code.data, signup_form.address.data,
+                         hashed_password, signup_form.postal_code.data, signup_form.address.data,
                          signup_form.country.data, signup_form.city.data, signup_form.unit_number.data)
 
         # to create and check if the storage exist - METHOD 1
@@ -116,8 +125,8 @@ def sign_up():
         # create temporary storage
         # main.db.get_storage("TEMP", True, True)
         # main.db.add_item('TEMP', "username", user.get_username())
-
-        main.session_management.add_item("username", user.get_username())
+        session['username'] = user.get_username()
+        #main.session_management.add_item("username", user.get_username())
 
         return redirect(url_for('users', choice=1, username=user.get_username()))
 
@@ -133,17 +142,19 @@ def loginMenu():
     login_form = LoginForm(request.form)
 
     # login if user already logged in before
-    # temp_exist = main.db.check_exist('TEMP')
-    temp_exist = main.storage_handler.storage_exist("TEMP")
+   # temp_exist = main.storage_handler.storage_exist("TEMP")
 
-    if temp_exist == True:
+    #if temp_exist == True:
 
-        session = main.storage_handler.get_storage("TEMP")
-        session_keys = main.session_management.get_keys()
+       # session = main.storage_handler.get_storage("TEMP")
+        #session_keys = main.session_management.get_keys()
 
-        if session_keys != None and "username" in session_keys:
-            username = session['username']
-            return redirect(url_for('users', choice=1, username=username))
+        #if session_keys != None and "username" in session_keys:
+            #username = session['username']
+            #return redirect(url_for('users', choice=1, username=username))
+    if 'username' in session:
+        username = session['username']
+        return redirect(url_for('users', choice=1, username=username))
 
     # When a button is clicked
     if request.method == 'POST':
@@ -164,15 +175,10 @@ def loginMenu():
                 return redirect(url_for('admin'))
 
             elif user_acc != None and login_name in user_acc:
-                # temp2 = main.db.get_storage("Users")
+
                 user = main.user_management.get_user(login_name)
-
-                # create temporary storage
-                # main.db.get_storage("TEMP", True, True)
-                 #main.db.add_item('TEMP', "username", user.get_username())
-
-                main.session_management.add_item("username", user.get_username())
-
+                # main.session_management.add_item("username", user.get_username())
+                session['username'] = user.get_username()
                 return redirect(url_for('users', choice=1, username=user.get_username()))
 
             else:
@@ -292,7 +298,7 @@ def user_checkout():
     user = user["tristan"]
     return render_template("u_checkout.html", user=user)
 
-
+"""
 # Payment page to enter card detail if not yet so
 # JH
 @app.route("/payment")
@@ -374,6 +380,6 @@ def execute():
 
     return jsonify({"success": success})
 
-
+"""
 if __name__ == '__main__':
     app.run()
