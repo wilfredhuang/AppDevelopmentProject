@@ -7,9 +7,7 @@ import PasswordHashing
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
-# SECRET_KEY = hexlify(os.urandom(24))
 app.secret_key = SECRET_KEY
-#app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 main.init()
 
 # Main page
