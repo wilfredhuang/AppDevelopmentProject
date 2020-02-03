@@ -128,3 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea/workspace.xml
+static/css/.DS_Store
+static/.DS_Store
+static/bootstrap/.DS_Store
+*.xml
+.DS_Store
+*.xml
+.idea/workspace.xml
