@@ -1,3 +1,5 @@
+#Matt
+
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
 from binascii import hexlify
@@ -15,7 +17,6 @@ main.init()
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 # Called For testing
 # HF
