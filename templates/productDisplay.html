@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Products
+{% endblock %}
+
+{% block content %}
+    <h1 class="display-4">Products</h1>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+            <tr>
+            </thead>
+            <tbody>
+            {% for item in ItemList %} <!-- This is to loop through all your objects in your database -->
+                <tr>
+                    <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                    <td>{{ item.get_name() }}</td>
+                    <td>{{ item.get_cost() }}</td>
+                    <td>{{ item.get_quantity() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+{% endblock %}
