@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="../static/css/Article-List.css">
+    <link rel="stylesheet" href="../static/css/Footer-Clean.css">
+    <link rel="stylesheet" href="../static/css/MUSA_carousel-product-cart-slider.css">
+    <link rel="stylesheet" href="../static/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.css">
+</head>
+<body>
+
+{% block navbar %} <!-- navbar -->
+    {% include 'includes/_navbar.html' %}
+{% endblock %}
+
+{% block content %} <!-- content input -->
+{% endblock %}
+
+{% block footer %} <!-- footer -->
+    {% include 'includes/_footer.html' %}
+{% endblock %}
+
+{% block scripts %} <!-- scripts -->
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/js/bs-init.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.1.1/aos.js"></script>
+{% endblock %}
+</body>
+</html>
