@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
 from binascii import hexlify
-import User, main, Product, os
-#, paypalrestsdk, requests
+import User, main, Product, os, paypalrestsdk, requests
 import PasswordHashing
 import os
 import shelve
@@ -330,7 +329,7 @@ def user_checkout():
     user = user["tristan"]
     return render_template("u_checkout.html", user=user)
 
-"""
+
 # Payment page to enter card detail if not yet so
 # JH
 @app.route("/payment")
@@ -412,7 +411,6 @@ def execute():
 
     return jsonify({"success": success})
 
-"""
 
 # Feedback form
 # Matt

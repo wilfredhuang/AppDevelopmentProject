@@ -1,0 +1,72 @@
+{% extends 'base2.html' %}
+
+{% block title %} Delivery Management System{% endblock %}
+
+{% block content %}
+    <script>
+        var sortValue;
+
+        function visitPage(v) {
+            v = document.getElementById("sortOption").value;
+            if (v === "Latest") {
+                window.location = '#';
+            }
+
+            if (v === "Oldest") {
+                window.location = '/trackordersOldest';
+            }
+        }
+    </script>
+    <div class="container">
+        <h1> Ongoing Orders </h1>
+        <span id="sortOrders"> Sort By </span>
+        <label>
+            <select id="sortOption" onchange="visitPage(sortValue);">
+                <option value="Latest">Latest</option>
+                <option value="Oldest">Oldest</option>
+            </select>
+        </label>
+        <span> &nbsp </span>
+        <a href="#"> Add Shipment </a>
+        <span> &nbsp </span>
+        <a href="#"> Delete Shipment </a>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <span> To be shipped on  </span>
+            </div>
+            <div class="col-sm-3">
+                <span> Order ID </span>
+            </div>
+            <div class="col-sm-3">
+                <span> Order Status </span>
+            </div>
+            <div class="col-sm-3">
+                <span> Update shipping information </span>
+            </div>
+        </div>
+        <br>
+        <hr>
+    </div>
+    {% for i in test %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <span>{{ test[i] }}</span>
+                </div>
+                <div class="col-sm-3">
+                    <span> <a href="orderlog"> Order #{{ i }} </a> </span>
+                </div>
+                <div class="col-sm-3">
+                    <span> In-Progress </a> </span>
+                </div>
+                <div class="col-sm-3">
+                    <span> <a href="orderlog"> Update Order </a> </span>
+                </div>
+            </div>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}
