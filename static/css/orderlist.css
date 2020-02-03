@@ -1,0 +1,54 @@
+#standardDeliveryIcon {
+  margin-left:850px;
+
+}
+
+#ETA {
+  margin-left:675px;
+
+}
+
+#orderlogButton {
+  margin-left:1000px;
+  padding:3px;
+  border:1px solid black;
+  color:black;
+
+}
+
+#orderlistButton {
+  margin-left:1000px;
+  padding:3px;
+  border:1px solid black;
+  color:black;
+
+}
+
+#shippingaddresstable {
+  width:500px;
+  height:200px;
+  border-collapse:collapse;
+  float:left;
+  display:inline;
+}
+
+
+#totalsum {
+  /* float:right; CAUSING PROBLEMS!!! */
+  display:inline;
+  margin-left:375px;
+}
+
+#totalsumamt {
+  float:right;
+}
+
+#fourthSection td {
+  padding-top:50px;
+  padding-right:200px;
+}
+
+a:hover {
+   text-decoration: none;
+}
+

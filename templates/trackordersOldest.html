@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Track My Orders{% endblock %}
+
+{% block content %}
+    <script>
+        var sortValue;
+
+        function visitPage(v) { // pass sortValue in here
+            v = document.getElementById("sortOption").value;
+            if (v === "Latest") {
+                window.location = '/trackorders';
+            }
+
+            if (v === "Oldest") {
+                window.location = '#';
+            }
+        }
+    </script>
+    <div class="container">
+        <h1> My Orders </h1>
+        <span id="sortOrders"> Sort By </span>
+        <label>
+            <select id="sortOption" onchange="visitPage(sortValue);">
+                <option value="Latest">Latest</option>
+                <option value="Oldest" selected="selected">Oldest</option>
+            </select>
+        </label>
+    </div>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <span> Date </span>
+            </div>
+            <div class="col-sm-9">
+                <span> Order ID </span>
+            </div>
+        </div>
+        <br>
+        <hr>
+    </div>
+    {% for i in test %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <span>{{ test[i] }}</span>
+                </div>
+                <div class="col-sm-9">
+                    <span> <a href="orderlog"> Order #{{ i }} </a> </span>
+                </div>
+            </div>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}
