@@ -4,11 +4,46 @@ from binascii import hexlify
 import User, main, Product, os
 #, paypalrestsdk, requests
 import PasswordHashing
+import os
+import shelve
+import uuid
+import Item
+import storageManagerFunction_Hieu
+from Form import *
+import pandas as pd
+
+UPLOAD_FOLDER = 'static/files'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 app.secret_key = SECRET_KEY
 main.init()
+storageManagerFunction_Hieu.init()
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+#H
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+#H
+def retrieveFiles():
+    entries = os.listdir(app.config['UPLOAD_FOLDER'])
+    fileList = []
+    for entry in entries:
+        fileList.append(entry)
+    return fileList
+
+#H
+def get_inventory():
+    inventory = storageManagerFunction_Hieu.db.get_storage("Inventory")
+    return inventory
+
+#H
+def get_sale():
+    sale = storageManagerFunction_Hieu.db.get_storage("Inventory")
+    return sale
 
 # Main page
 # Current is Login Page
@@ -404,6 +439,144 @@ def feedback():
 @app.route("/aboutUs")
 def aboutUs():
     return render_template("aboutUs.html")
+
+
+
+#Hieu
+@app.route('/adminItemDashboard', methods=['Get', 'Post'])
+def adminItemDashboard():
+    search_function = SearchForm(request.form)
+    key = ""
+    if request.method == 'POST':
+        key = search_function.search.data
+    print(f'key is {key}')
+
+    return render_template('adminItemDashboard.html', ItemList=get_inventory().values(), input=search_function,
+                           key_search=key, alarm_stock=10)
+
+#Hieu
+@app.route('/createItem', methods=['Get', 'Post'])
+def addItem():
+    createItemForm = CreateItemForm(request.form)
+    if request.method == 'POST':
+
+        filename = str(uuid.uuid4()) + createItemForm.item_id.data + '.jpg'
+
+        if createItemForm.item_type.data == "W":
+            item = Item.Wired(createItemForm.item_id.data, createItemForm.item_name.data, createItemForm.item_cost.data,
+                              filename)
+        elif createItemForm.item_type.data == "WL":
+            item = Item.Wireless(createItemForm.item_id.data, createItemForm.item_name.data,
+                                 createItemForm.item_cost.data, filename)
+
+        item.set_stock(createItemForm.item_quantity.data)
+        storageManagerFunction_Hieu.db.get_storage("Inventory", True, True)
+        storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+
+        print(request.files)
+        print(request.files['file'])
+        print(filename)
+
+        file = request.files['file']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        return redirect(url_for('adminItemDashboard'))
+    return render_template('adminCreateItem.html', form=createItemForm)
+
+#Hieu
+@app.route('/addItemExcel', methods=['GET', 'POST'])
+def addItemExcel():
+    inventory = get_inventory()
+    item = ''
+
+    if request.method == 'POST':
+        file = request.files['file']
+        data = pd.read_excel(file)  # read the file
+
+        for i in range(len(data.index.values)):
+            id = data['ID'][i]
+            name = data['Name'][i]
+            cost = data['Cost'][i]
+            stock = data['Stock'][i]
+            image = 'none'
+            type = data['Type'][i]  # to determine the type of product for sorting purpose
+
+            wired = ['w', 'wired', 'W', 'Wired']
+            wireless = ['wl', 'wireless', 'Wl', 'Wireless', 'WL']
+
+            if type in wired:
+                item = Item.Wired(id, name, cost, image)
+            elif type in wireless:
+                item = Item.Wireless(id, name, cost, image)
+
+            if item.get_id() in inventory:
+                print('existing item. updating stock.')
+                existing_item = inventory[item.get_id()]
+                new_stock = existing_item.get_stock() + stock
+                existing_item.set_stock(new_stock)
+                storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+            else:
+                item.set_stock(stock)
+                storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+
+        return redirect(url_for('adminItemDashboard'))
+    return render_template('admin_CreateItem_Excel.html')
+
+#Hieu
+@app.route('/removeItem/<id>', methods=['POST'])
+def removeItem(id):
+    db = shelve.open('storage.db', 'w')
+    itemInventory = db['Inventory']
+    print(id)
+    print(itemInventory)
+    removedItem = itemInventory[id]
+    try:
+        os.remove(f'files/{removedItem.get_file()}')
+    except:
+        print('error. file not found')
+
+    itemInventory.pop(id)
+    print('Item removed.')
+    print(itemInventory)
+
+    db['Inventory'] = itemInventory
+    db.close()
+
+    return redirect(url_for('adminItemDashboard'))
+
+#Hieu
+@app.route('/updateItem/<id>', methods=['GET', 'POST'])
+def updateItem(id):
+    updateItemForm = CreateItemForm(request.form)
+    if request.method == 'POST' and updateItemForm.validate():
+        db = shelve.open('storage.db', 'w')
+        itemInventory = db['Inventory']
+
+        item = itemInventory.get(id)
+
+        item.set_id(updateItemForm.item_id.data)
+        item.set_name(updateItemForm.item_name.data)
+        item.set_cost(updateItemForm.item_cost.data)
+        item.set_stock(updateItemForm.item_quantity.data)
+
+        db['Inventory'] = itemInventory
+        db.close()
+
+        return redirect(url_for('adminItemDashboard'))
+
+    else:
+        db = shelve.open('storage.db', 'w')
+        itemInventory = db['Inventory']
+        db.close()
+
+        item = itemInventory.get(id)
+        updateItemForm.item_id.data = item.get_id()
+        updateItemForm.item_name.data = item.get_name()
+        updateItemForm.item_quantity.data = item.get_stock()
+        updateItemForm.item_cost.data = item.get_cost()
+        updateItemForm.item_type.data = item.get_type()
+
+        return render_template('adminUpdateItem.html', form=updateItemForm)
 
 
 if __name__ == '__main__':
