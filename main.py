@@ -53,15 +53,7 @@ def test_mode():
     """
     #init()
 
-   # print("KEYTSSSSSSSS")
-    #db.delete_storage("Users")
-    #db.return_keys()
-    #print(db.return_keys("Users"))
-    #temp = db.get_keys()
-    #print(list(temp))
-    #init()
-
     #print("This is main func")
     #storage_management.testprint()
 
-test_mode()
+#test_mode()
