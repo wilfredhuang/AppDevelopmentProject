@@ -1,5 +1,3 @@
-#Matt
-
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
 from binascii import hexlify
@@ -380,5 +378,33 @@ def execute():
     return jsonify({"success": success})
 
 """
+
+# Feedback form
+# Matt
+@app.route("/feedback", methods=["GET", "POST"])
+def feedback():
+    if request.method == "POST":
+        print(request.form['message'])
+        main.db.get_storage('feedback', True, True)
+        main.db.update_cart('feedback', 'testfeedback', request.form['message'])
+        return render_template("aboutUs.html")
+
+    if request.method=='GET':
+        try:
+            feedback=main.db.return_object('feedback')
+            feedback=feedback['testfeedback']
+            print("This is the user feedback")
+            print(feedback)
+        except:
+            print("There is no feedback")
+    return render_template("feedback.html")
+
+# Link to aboutUs
+# Matt
+@app.route("/aboutUs")
+def aboutUs():
+    return render_template("aboutUs.html")
+
+
 if __name__ == '__main__':
     app.run()
