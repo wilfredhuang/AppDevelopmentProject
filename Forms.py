@@ -48,20 +48,22 @@ def username_login_check(form, field):
     admin_acc = main.db.get_storage("ADMIN")
 
     if temp != None and (field.data).lower() in keys:
-
         password_holder = temp[(field.data).lower()].get_password()
-    elif admin_acc.get_username() == (field.data).lower():
 
+    elif admin_acc.get_username() == (field.data).lower():
         password_holder = admin_acc.get_password()
+
     else:
         raise ValidationError('Username not found')
 
 def password_login_check(form, field):
-    if not PasswordHashing.verify_password(password_holder, field.data):
+    if password_holder != None:
+        if not PasswordHashing.verify_password(password_holder, field.data):
 
-        #print("correct pass is {}".format(password_holder))
+            #print("correct pass is {}".format(password_holder))
+            raise ValidationError('Password incorrect')
+    else:
         raise ValidationError('Password incorrect')
-
 
 # HF
 class LoginForm(Form):
