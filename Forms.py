@@ -2,6 +2,7 @@ from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, v
 from wtforms.validators import EqualTo, ValidationError
 
 import PasswordHashing
+import requests
 import main
 
 password_holder = None
@@ -115,7 +116,20 @@ class AddressForm(Form):
     unit_number = StringField('Unit Number', [validators.DataRequired()])
 
 
-# H
+class CheckoutForm(Form):
+    country_list = []
+    url = "https://restcountries.eu/rest/v2/all?fields=name;alpha2Code"
+    countries = requests.get(url)
+    for i in countries.json():
+        country_list.append((i['alpha2Code'], i['name']))
+    email_address = StringField("Email Address", [validators.DataRequired()])
+    full_name = StringField("Full Name", [validators.DataRequired()])
+    address = StringField("Shipping Address", [validators.DataRequired()])
+    postal_code = StringField('Postal Code', [validators.DataRequired()])
+    city = StringField('City', [validators.DataRequired()])
+    countries = SelectField("Country", choices=country_list)
+    
+    
 class CreateItemForm(Form):
     item_id = StringField('Item ID: ', [validators.Length(min=1,
                                                           max=150), validators.DataRequired()])
@@ -130,6 +144,5 @@ class CreateItemForm(Form):
     remarks = TextAreaField('Remark', [validators.Optional()])
 
 
-# H
 class SearchForm(Form):
     search = StringField('Search: ')
