@@ -2,10 +2,11 @@
 {% block title %} Guest Checkout {% endblock %}
 
 {% block content %}
+{% from "includes/_formHelper.html" import render_field %}
 <div style="padding-bottom: 3vw;">
 
 </div>
-
+<form method="POST" action="">
 <div class="container col-md-10">
     <div class="card">
         <div class="card-header" style="background-color: rgb(33,37,41);">
@@ -33,31 +34,42 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-6 mx-auto"><input type="text" class="border rounded border-dark shadow-sm" style="width: 100%;padding-left: 1%;" placeholder="Email Address" /></div>
-            </div><br />
+                <div class="col col-md-6 mx-auto">{{ render_field(form.email_address, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br/><br/>
             <div class="row">
                 <div class="col col-md-6 mx-auto">
-                    <p>Shipping Address</p>
+                    <p>Shipping Information</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-6 mx-auto"><input type="text" class="border rounded border-dark shadow-sm" style="width: 100%;padding-left: 1%;" placeholder="Full Name" /></div>
+                <div class="col col-md-6 mx-auto">{{ render_field(form.full_name, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
             </div><br />
             <div class="row">
-                <div class="col col-md-6 mx-auto"><input type="text" class="border rounded border-dark shadow-sm" style="width: 100%;padding-left: 1%;" placeholder="Address" /></div>
+                <div class="col col-md-6 mx-auto">{{ render_field(form.address, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
             </div><br />
             <div class="row">
-                <div class="col col-md-6 mx-auto"><input type="text" class="border rounded border-dark shadow-sm" style="width: 100%;padding-left: 1%;" placeholder="City" /></div>
+                <div class="col col-md-6 mx-auto">{{ render_field(form.countries, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.city, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.postal_code, class="form-control txt") }}</div>
             </div><br />
             <div class="row">
                 <div class="col col-md-6 mx-auto"><a class="btn btn-primary border rounded border-white" role="button" style="background-color: rgba(255,0,0,0);color: rgb(0,0,0);" href="/checkoutoptions"><strong><span style="text-decoration: underline;">&lt; Return</span></strong></a>
                     <a
-                        class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="/payment">Payment</a>
+<!--                        class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="/payment">Payment</a>-->
+                        <input type="submit" name="submit_button" class="btn btn-primary"/>
                 </div>
             </div>
+
+                <input type="submit" name="submit_button" class="btn btn-primary"/>
+
         </div>
     </div>
 </div>
+</form>
 <!--PayPal API-->
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
