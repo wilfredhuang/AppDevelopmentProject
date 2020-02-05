@@ -55,5 +55,14 @@ def test_mode():
 
     #print("This is main func")
     #storage_management.testprint()
+    """
+    new_pass = PasswordHashing.hash_password("appdev")
 
+    new_acc = Admin("admin", new_pass)
+    db.set_storage("ADMIN", new_acc)
+
+    temp = db.get_storage("ADMIN")
+    print("does pass match")
+    print(PasswordHashing.verify_password(temp.get_password(), "appdev"))
+    """
 #test_mode()
