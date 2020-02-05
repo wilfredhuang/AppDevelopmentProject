@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
-from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
+from Forms import *
 from binascii import hexlify
 import User, main, Product, os, paypalrestsdk, requests
 import PasswordHashing
