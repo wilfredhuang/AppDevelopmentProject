@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
-from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm
+from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, ChangePasswordForm, AddressForm, CheckoutForm
 from binascii import hexlify
-import User, main, Product, os, paypalrestsdk, requests
+import User, main, Product, os, paypalrestsdk, requests, Order
 import PasswordHashing
 import os
 import shelve
@@ -145,7 +145,6 @@ def sign_up():
         user = User.User(signup_form.first_name.data, signup_form.last_name.data, signup_form.username.data.lower(),
                          hashed_password, signup_form.postal_code.data, signup_form.address.data,
                          signup_form.country.data, signup_form.city.data, signup_form.unit_number.data)
-
         # to create and check if the storage exist - METHOD 1
         # main.db.get_storage('Users', True, True)
         # main.db.add_item('Users', user.get_username(), user)
@@ -230,7 +229,21 @@ def loginMenu():
 # STILL TESTING
 @app.route("/testAddItem", methods=["GET", "POST"])
 def testAddItem():
-
+    # HOW TO USE ORDERS 101
+    test = main.db.return_object("Order")  # This returns the entire Order database
+    test = test["allorders"]  # This returns the entire Order database
+    for i in test:  # If you want to filter specific usernames for your part just use if i.get_username == "username"
+        print(f"Item name: {i.get_item_list()[0].get_name()}, Total Price: {i.get_productPrice()}, "
+              f"Address: {i.get_address()}, Status: {i.get_status()}, Username: {i.get_username()}")
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer A21AAGQd_-Ms2SOo-n_eZq-f9pfeoYQEdPOdxCUnZhvO_cWpOMckpKaqGWeKNSDpWiDuYbLdMI8U2YZ7gbuYKYM36S2fa4kMA'
+    }
+    response = requests.get("https://api.sandbox.paypal.com/v1/identity/oauth2/userinfo?schema=paypalv1.1", headers=headers)
+    print(response.json())
+    username = ""
+    if 'username' in session:
+        username = session['username']
     if request.method == "POST":
         if request.form["submit_button"] == "Add":
             # Create the product object
@@ -241,10 +254,12 @@ def testAddItem():
             productList.append(product2)
             # Add it into the database
             main.db.get_storage("Cart", True, True)
-            main.db.update_cart("Cart", "TestUser", productList)
+            #main.db.update_cart("Cart", "TestUser", productList)
+            main.db.update_cart("Cart", username, productList)
             print("-- TEST --")
             test = main.db.return_object("Cart")
-            test = test["TestUser"]
+            #test = test["TestUser"]
+            test = test[username]
             # print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
             print(test[0].get_name())
             print(test[1].get_name())
@@ -262,10 +277,14 @@ def testAddItem():
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
     total_cost = 0
+    username = ""
+    if 'username' in session:
+        username = session['username']
     if request.method == "POST":
         try:
             item = main.db.return_object("Cart")
-            item = item["TestUser"]
+            item = item[username]
+            #item = item["TestUser"]
             if request.form["cart_button"][0] == "+":
                 print("---TEST---")
                 print(item)
@@ -277,7 +296,8 @@ def cart():
                         print(f"Item name: {i.get_name}, quantity: {i.get_quantity()}")
                         main.db.delete_storage("Cart")
                         main.db.get_storage("Cart", True, True)
-                        main.db.add_item("Cart", "TestUser", item)
+                        #main.db.add_item("Cart", "TestUser", item)
+                        main.db.add_item("Cart", username, item)
                 print("---TEST---")
             elif request.form["cart_button"][0] == "-":
                 print("---TEST---")
@@ -289,7 +309,8 @@ def cart():
                         item.pop(index)
                         main.db.delete_storage("Cart")
                         main.db.get_storage("Cart", True, True)
-                        main.db.add_item("Cart", "TestUser", item)
+                        #main.db.add_item("Cart", "TestUser", item)
+                        main.db.add_item("Cart", username, item)
                 print("---TEST---")
             # Get total cost
             for i in item:
@@ -302,7 +323,7 @@ def cart():
     main.db.get_storage("Cart", True, True)
     product_object = main.db.return_object("Cart")
     try:
-        product_object = product_object["TestUser"]
+        product_object = product_object[username]
     except:
         product_object = {}
     return render_template("userCart.html", item=product_object, total_cost=total_cost)
@@ -318,7 +339,15 @@ def checkout_options():
 # JH
 @app.route("/guestcheckout", methods=["GET", "POST"])
 def guest_checkout():
-    return render_template("g_checkout.html")
+    form = CheckoutForm(request.form)
+    if request.method == "POST" and form.validate():
+        data = []
+        data.append(form.address.data)
+        data.append(form.countries.data)
+        main.db.get_storage("temp_paypal", True, True)
+        main.db.update_cart("temp_paypal", "paypal", data)
+        return redirect(url_for('payment'))
+    return render_template("g_checkout.html", form=form)
 
 # Logged In Checkout - TESTING ONLY, NOT FINAL!!!!!
 # JH
@@ -361,11 +390,17 @@ def paypal_test():
 # JH
 @app.route("/paypalpayment", methods=["POST"])
 def paypalpayment():
+    username = ""
+    if 'username' in session:
+        username = session['username']
+    data = main.db.return_object("temp_paypal")
+    data = data["paypal"]  # 0: address, 1:country code
+    # ----------
     item_list = []
     total_cost = 0
     # Get cart
     item = main.db.return_object("Cart")
-    item = item["TestUser"]
+    item = item[username]
     for i in item:
         item_list.append({"name": i.get_name(),
                           "sku": "1",
@@ -373,14 +408,34 @@ def paypalpayment():
                           "currency": "SGD",
                           "quantity": "1"})
         total_cost += float(i.get_cost()) * float(i.get_quantity())
+    # Create Order details
+    order_list = []
+    try:
+        main.db.get_storage("Order", True, True)
+        orders = main.db.return_object("Order")
+        order_list = orders["allorders"]
+    except:
+        main.db.get_storage("Order", True, True)
+        main.db.update_cart("Order", "allorders", order_list)
+        orders = main.db.return_object("Order")
+        order_list = orders["allorders"]
 
+    new_order = Order.Order(item, total_cost, data[0], "0", username)
+    order_list.append(new_order)
+    main.db.update_cart("Order", "allorders", order_list)
+    print("-----HELLO BODOH-------")
+    print(order_list)
+    print(new_order)
+    print("---------BYE BODOH-------")
     payment = paypalrestsdk.Payment({
         "intent": "sale",
         "payer": {
-            "payment_method": "paypal"},
+            "payment_method": "paypal"
+        },
         "redirect_urls": {
             "return_url": "http://localhost:3000/payment/execute",
-            "cancel_url": "http://localhost:3000/"},
+            "cancel_url": "http://localhost:3000/"
+        },
         "transactions": [{
             "item_list": {
                 "items": item_list},
@@ -398,13 +453,14 @@ def paypalpayment():
     return jsonify({'paymentID': payment.id})
 
 
+# JH
 @app.route("/execute", methods=["POST"])
 def execute():
     success = False
     payment = paypalrestsdk.Payment.find(request.form["paymentID"])
-
     if payment.execute({"payer_id": request.form["payerID"]}):
         print("Execute Sucess!")
+        print(payment.amount)
         success = True
     else:
         print(payment.error)
