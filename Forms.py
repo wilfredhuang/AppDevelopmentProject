@@ -1,9 +1,12 @@
 from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators, PasswordField
-from wtforms.validators import EqualTo, Email, ValidationError
-import main
+from wtforms.validators import EqualTo, ValidationError
+
 import PasswordHashing
+import main
 
 password_holder = None
+
+
 class CreateUserForm(Form):
     firstName = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     lastName = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])
@@ -12,6 +15,7 @@ class CreateUserForm(Form):
     gender = SelectField('Gender', [validators.DataRequired()],
                          choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
     remarks = TextAreaField('Remarks', [validators.Optional()])
+
 
 # Validation
 # HF
@@ -25,7 +29,7 @@ def username_duplication_check(form, field):
     # if username found in storage
     if temp != None and (field.data).lower() in temp:
 
-        #if username is not the same as the currently one
+        # if username is not the same as the currently one
         if temp2 != None:
             temp_keys = temp2.keys()
             logged_in_username = None
@@ -39,6 +43,7 @@ def username_duplication_check(form, field):
     elif (field.data).lower() == "admin":
 
         raise ValidationError('Username have been used')
+
 
 def username_login_check(form, field):
     global password_holder
@@ -56,14 +61,15 @@ def username_login_check(form, field):
     else:
         raise ValidationError('Username not found')
 
+
 def password_login_check(form, field):
     if password_holder != None:
         if not PasswordHashing.verify_password(password_holder, field.data):
-
-            #print("correct pass is {}".format(password_holder))
+            # print("correct pass is {}".format(password_holder))
             raise ValidationError('Password incorrect')
     else:
         raise ValidationError('Password incorrect')
+
 
 # HF
 class LoginForm(Form):
@@ -75,8 +81,10 @@ class LoginForm(Form):
 class SignUpForm(Form):
     first_name = StringField('First Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     last_name = StringField('Last Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-    username = StringField('Username', [validators.Length(min=6, max=15), username_duplication_check, validators.DataRequired()])
-    password = PasswordField('Password', [validators.Length(min=6, max=15), validators.DataRequired(), EqualTo('confirm_pass', message='Passwords must match')])
+    username = StringField('Username',
+                           [validators.Length(min=6, max=15), username_duplication_check, validators.DataRequired()])
+    password = PasswordField('Password', [validators.Length(min=6, max=15), validators.DataRequired(),
+                                          EqualTo('confirm_pass', message='Passwords must match')])
     confirm_pass = PasswordField('Confirm Password', [validators.DataRequired()])
     postal_code = StringField('Postal Code', [validators.DataRequired()])
     address = StringField('Street Address', [validators.DataRequired()])
@@ -105,3 +113,23 @@ class AddressForm(Form):
     country = StringField('Country', [validators.DataRequired()])
     city = StringField('City', [validators.DataRequired()])
     unit_number = StringField('Unit Number', [validators.DataRequired()])
+
+
+# H
+class CreateItemForm(Form):
+    item_id = StringField('Item ID: ', [validators.Length(min=1,
+                                                          max=150), validators.DataRequired()])
+    item_name = StringField('Item Name: ', [validators.Length(min=1,
+                                                              max=150), validators.DataRequired()])
+    item_cost = StringField('Item Price: ', [validators.Length(min=1,
+                                                               max=150), validators.DataRequired()])
+    item_quantity = StringField('Item Quantity:', [validators.Length(min=1,
+                                                                     max=150), validators.DataRequired()])
+    item_type = RadioField('Item Type: ', choices=[('W', 'Wired'),
+                                                   ('WL', 'Wireless')], default='W', )
+    remarks = TextAreaField('Remark', [validators.Optional()])
+
+
+# H
+class SearchForm(Form):
+    search = StringField('Search: ')
