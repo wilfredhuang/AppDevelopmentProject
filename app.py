@@ -3,7 +3,6 @@ from Forms import CreateUserForm, LoginForm, SignUpForm, UserDetailsForm, Change
 from binascii import hexlify
 import User, main, Product, os, paypalrestsdk, requests
 import PasswordHashing
-import os
 import shelve
 import uuid
 import Item
