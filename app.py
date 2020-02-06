@@ -592,7 +592,7 @@ def addItemExcel():
                 storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
         db.close()
         return redirect(url_for('adminItemDashboard'))
-    return render_template('admin_CreateItem_Excel.html')
+    return redirect(url_for('addItem'))
 
 #Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
@@ -606,7 +606,7 @@ def removeItem(id):
         os.remove(f'files/{removedItem.get_file()}')
     except:
         print('error. file not found')
-        
+
 
     itemInventory.pop(id)
     print('Item removed.')

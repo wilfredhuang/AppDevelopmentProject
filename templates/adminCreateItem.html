@@ -6,7 +6,7 @@
 
     <h1 class="display-4">Create Item</h1>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="/createItem">
         <div class="form-group">
             {{ render_field(form.item_id, class="form-control") }}
         </div>
@@ -22,8 +22,15 @@
         <div class="form-group">
             {{ render_field(form.item_type, class="form-control") }}
         </div>
-        <input type="file" name="file">
+        <div class="form-group" style="margin-top:2em">
+            <input type="file" name="file">
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </div>
+    </form>
 
+    <h2>Create Item/Update Item - Excel Sheet</h2>
+    <form method="POST" enctype="multipart/form-data" action="/addItemExcel">
+        <input type="file" name="file">
         <input type="submit" value="Submit" class="btn btn-primary"/>
     </form>
 {% endblock %}
