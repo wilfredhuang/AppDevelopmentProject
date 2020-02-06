@@ -193,7 +193,7 @@ def loginMenu():
     # When a button is clicked
     if request.method == 'POST':
         btn_pressed = request.form['submit']
-        
+
         # Login clicked
         # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
@@ -234,6 +234,22 @@ def loginMenu():
 def SignOut():
     del session['username']
     return redirect(url_for('loginMenu'))
+
+# HF
+
+@app.route("/AdminUserDashboard")
+def AdminUserDashboard():
+
+    userList = main.storage_handler.get_storage("Users")
+
+    return render_template('AdminUserDashboard.html', userList=userList, count=len(userList))
+
+# HF
+@app.route('/deleteUser/<username>', methods=['POST'])
+def deleteUser(username):
+    main.user_management.delete_user(username)
+
+    return redirect(url_for('AdminUserDashboard'))
 
 
 # Figuring out carting system
