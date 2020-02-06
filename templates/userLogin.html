@@ -1,7 +1,7 @@
 <!--TODO-->
 <!-- HF -->
 <!-- NEED TO DO BOOTSTRAP-->
-{% extends "main_Base.html" %}
+{% extends "base.html" %}
 {% block title %}User Login{% endblock %}
 
 {% block header %}
@@ -10,7 +10,7 @@
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
-
+    <section>
         <div class="container vertical-center ">
             <div class="login-container">
                 <h1 class="test">Login</h1>
@@ -32,5 +32,5 @@
                 </form>
             </div>
         </div>
-
+    </section>
 {% endblock %}
