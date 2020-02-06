@@ -3,11 +3,9 @@
 {% block header %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ionicons.min.css') }}" >
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/Footer-Clean.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/Contact-Form-Clean.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-
 {% endblock %}
 {% block content %}
 <div class="contact-clean">
@@ -19,42 +17,5 @@
             <div class="form-group"><button class="btn btn-primary" href="aboutUs" type="submit">send </button></div>
         </form>
     </div>
-    <div class="footer-clean">
-        <footer>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-sm-4 col-md-3 item">
-                        <h3>Services</h3>
-                        <ul>
-                            <li><a href="#">Web design</a></li>
-                            <li><a href="#">Development</a></li>
-                            <li><a href="#">Hosting</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-4 col-md-3 item">
-                        <h3>About</h3>
-                        <ul>
-                            <li><a href="AboutUs.html">Company</a></li>
-                            <li><a href="#">Team</a></li>
-                            <li><a href="#">Legacy</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-4 col-md-3 item">
-                        <h3>Information</h3>
-                        <ul>
-                            <li><a href="FAQ.html">FAQ</a></li>
-                            <li><a href="AboutUs.html">About Us</a></li>
-                            <li><a href="Feedback.html">Feedback</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a>
-                        <p class="copyright">Company Name © 2017</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
 {% endblock %}

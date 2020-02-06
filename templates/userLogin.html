@@ -10,8 +10,8 @@
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
-
-        <div class="container vertical-center ">
+    <section>
+        <div class="container-1 vertical-center ">
             <div class="login-container">
                 <h1 class="test">Login</h1>
                 <form novalidate method="POST" action="">
@@ -23,7 +23,7 @@
                     <div class="form-group">
                     {{ render_field(form.password, class="form-control") }}
                     </div>
-                    <div class="container login-elements">
+                    <div class="container-1 login-elements">
                         <input type="Submit" name="submit" value="Login" class="btn btn-primary"/>
                         <hr>
                         <p class="sign-up"> Or Sign Up Below </p>
@@ -32,5 +32,5 @@
                 </form>
             </div>
         </div>
-
+    </section>
 {% endblock %}

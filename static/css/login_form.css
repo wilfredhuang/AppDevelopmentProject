@@ -55,7 +55,7 @@ hr {
 }
 
 @media (min-width: 992px) {
-    .container {
+    .container-1 {
         max-width: 600px;
     }
     .vertical-center {
@@ -64,7 +64,7 @@ hr {
 }
 
 @media (min-width: 1200px) {
-    .container{
+    .container-1{
         max-width: 700px;
     }
 
@@ -76,7 +76,7 @@ hr {
 
 @media(max-width: 991px){
 
-    .container {
+    .container-1 {
         max-width: 500px;
     }
     .vertical-center {

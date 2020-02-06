@@ -268,7 +268,7 @@ def testAddItem():
             print("Delete item button pressed")
             main.db.get_storage("Cart", True, True)
             main.db.delete_storage("Cart")
-    return render_template("test.html")
+    return redirect(url_for('productDisplay'))
 
 
 # Shopping cart page
@@ -633,6 +633,16 @@ def updateItem(id):
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
 
+
+@app.route('/productDisplay')
+def productDisplay():
+    ItemList = []
+    if get_inventory() is not None:
+        ItemList = get_inventory().values()
+    else:
+        pass
+
+    return render_template('productDisplay.html', ItemList=ItemList)
 
 if __name__ == '__main__':
     app.run()
