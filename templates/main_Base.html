@@ -21,7 +21,11 @@
 </head>
 <body>
     {% block navbar %}
+        {% if session['username'] %}
+        {% include 'includes/_navbarLoggedIn.html' %}
+        {% else %}
         {% include 'includes/_navbar2.html' %}
+        {% endif %}
     {% endblock %}
 
     {% block content %}

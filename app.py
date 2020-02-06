@@ -223,6 +223,13 @@ def loginMenu():
 
     return render_template('userLogin.html', form=login_form)
 
+# HF
+@app.route("/SignOut")
+def SignOut():
+    del session['username']
+    login_form = LoginForm(request.form)
+    return redirect(url_for('loginMenu'))
+
 
 # Figuring out carting system
 # JH
