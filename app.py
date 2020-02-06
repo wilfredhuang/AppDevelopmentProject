@@ -576,6 +576,15 @@ def updateItem(id):
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
 
+@app.route('/productDisplay')
+def productDisplay():
+    ItemList = []
+    if get_inventory() is not None:
+        ItemList = get_inventory().values()
+    else:
+        pass
+
+    return render_template('productDisplay.html', ItemList=ItemList)
 
 if __name__ == '__main__':
     app.run()
