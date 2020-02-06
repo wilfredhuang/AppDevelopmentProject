@@ -540,6 +540,7 @@ def addItem():
 #Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
+    db = shelve.open('storage.db', 'w')
     inventory = get_inventory()
     item = ''
 
@@ -567,12 +568,17 @@ def addItemExcel():
                 print('existing item. updating stock.')
                 existing_item = inventory[item.get_id()]
                 new_stock = existing_item.get_stock() + stock
+                print(new_stock)
                 existing_item.set_stock(new_stock)
-                storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+                print(existing_item.get_stock())
+
+                inventory[item.get_id()] = existing_item
+                db['Inventory'] = inventory
+
             else:
                 item.set_stock(stock)
                 storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
-
+        db.close()
         return redirect(url_for('adminItemDashboard'))
     return render_template('admin_CreateItem_Excel.html')
 
