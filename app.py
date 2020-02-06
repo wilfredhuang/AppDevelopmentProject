@@ -227,7 +227,6 @@ def loginMenu():
 @app.route("/SignOut")
 def SignOut():
     del session['username']
-    login_form = LoginForm(request.form)
     return redirect(url_for('loginMenu'))
 
 
