@@ -1,5 +1,11 @@
-html, body{
+html{
     background: #f0f0f0;
+    height: 100%;
+}
+
+body{
+    background: #f0f0f0;
+    min-height: 100%;
 }
 
 .side-nav{
@@ -8,10 +14,12 @@ html, body{
 
 .content{
     background: #FFFFFF;
+
 }
 
 .main {
-    margin-top: 50px;
+    margin:auto;
+    min-height:100%;
 }
 
 ul {
