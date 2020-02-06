@@ -183,13 +183,17 @@ def loginMenu():
             #username = session['username']
             #return redirect(url_for('users', choice=1, username=username))
     if 'username' in session:
+        admin_acc = main.storage_handler.get_storage("ADMIN")
         username = session['username']
-        return redirect(url_for('users', choice=1, username=username))
+        if admin_acc.get_username() == username:
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('users', choice=1, username=username))
 
     # When a button is clicked
     if request.method == 'POST':
         btn_pressed = request.form['submit']
-
+        
         # Login clicked
         # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
@@ -202,6 +206,7 @@ def loginMenu():
 
             if admin_acc.get_username() == login_name:
                 print("Admin Login")
+                session['username'] = admin_acc.get_username()
                 return redirect(url_for('admin'))
 
             elif user_acc != None and login_name in user_acc:
