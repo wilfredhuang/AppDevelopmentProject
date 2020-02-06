@@ -38,14 +38,14 @@
         <br>
         <hr>
     </div>
-    {% for i in test %}
+    {% for i in displayed_orders %} <!-- loop through each order in the order storage and display them -->
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
-                    <span>{{ test[i] }}</span>
+                    <span>{{ i }}</span>
                 </div>
                 <div class="col-sm-9">
-                    <span> <a href="orderlog"> Order #{{ i }} </a> </span>
+                    <span> <a href="orderlog.html/{{ str(i) }}"> Order #{{ displayed_orders[i] }} </a> </span>
                 </div>
             </div>
             <hr>

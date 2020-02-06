@@ -650,5 +650,46 @@ def productDisplay():
 
     return render_template('productDisplay.html', ItemList=ItemList)
 
+# Wilfred's delivery section
+
+@app.route('/trackorders/')
+def trackorders():
+    # user's order database should be retrieved here - W
+    displayed_orders = {} #to be used for display in track orders page
+    test = main.db.return_object("Order")
+    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    the_user_orders = {} # This will contain the individual user's orders.
+    the_user_order_count = 1 # Store each order with the count as key for sorting.
+    for eachorder in orders_list: # loop through database with all orders
+        if eachorder.get_username() == "username": # check and add whichever orders that belong to user to his own user orders dictionary
+            the_user_orders[the_user_order_count] = eachorder
+            the_user_order_count += 1
+        else:
+            pass # Skip if order don't belong to user
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)  # Sort based on order-id
+    for i in sort_user_orders:
+        displayed_orders[the_user_orders[i].get_orderID()] = the_user_orders[i].get_order_date() #store each item as orderid-order_date pair
+    return render_template('trackorders.html', displayed_orders=displayed_orders)
+
+
+@app.route('/trackordersOldest')
+def trackordersoldest():
+    # user's order database should be retrieved here - W
+    displayed_orders = {} #to be used for display in track orders page
+    test = main.db.return_object("Order")
+    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    the_user_orders = {} # This will contain the individual user's orders.
+    the_user_order_count = 1 # Store each order with the count as key for sorting.
+    for eachorder in orders_list: # loop through database with all orders
+        if eachorder.get_username() == "username": # check and add whichever orders that belong to user to his own user orders dictionary
+            the_user_orders[the_user_order_count] = eachorder
+            the_user_order_count += 1
+        else:
+            pass # Skip if order don't belong to user
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])  # Sort based on order-id
+    for i in sort_user_orders:
+        displayed_orders[the_user_orders[i].get_orderID()] = the_user_orders[i].get_order_date() #store each item as orderid-order_date pair
+    return render_template('trackorders.html', displayed_orders=displayed_orders)
+
 if __name__ == '__main__':
     app.run()
