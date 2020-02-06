@@ -6,9 +6,11 @@ class OrderManagement(ManagementSystem):
     def __init__(self, storage_handler):
         super().__init__("Orders", "Order Management", storage_handler)
 
-    def add_order(self):
+    def create_order(self):
         pass
 
-    def update_order(self):
+    def get_order(self):
         pass
+
+
 
