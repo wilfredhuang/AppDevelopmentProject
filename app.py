@@ -224,6 +224,7 @@ def loginMenu():
     return render_template('userLogin.html', form=login_form)
 
 # HF
+# set to logged out and redirect to login page
 @app.route("/SignOut")
 def SignOut():
     del session['username']
