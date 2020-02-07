@@ -37,7 +37,11 @@ def retrieveFiles():
 #H
 def get_inventory():
     inventory = storageManagerFunction_Hieu.db.get_storage("Inventory")
-    return inventory
+    if inventory is not None:
+        return inventory
+    else:
+        inventory = []
+        return inventory
 
 #H
 def get_sale():
@@ -48,7 +52,9 @@ def get_sale():
 # Current is Login Page
 @app.route('/')
 def home():
-    return render_template('home.html')
+    ItemList = get_inventory().values()
+    print(ItemList)
+    return render_template('home.html', ItemList=ItemList)
 
 # Called For testing
 # HF
@@ -650,10 +656,7 @@ def updateItem(id):
 @app.route('/productDisplay')
 def productDisplay():
     ItemList = []
-    if get_inventory() is not None:
-        ItemList = get_inventory().values()
-    else:
-        pass
+    ItemList = get_inventory().values()
 
     return render_template('productDisplay.html', ItemList=ItemList)
 
