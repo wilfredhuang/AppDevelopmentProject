@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators, PasswordField
+from wtforms import *
 from wtforms.validators import EqualTo, ValidationError
 
 import PasswordHashing
@@ -135,10 +135,8 @@ class CreateItemForm(Form):
                                                           max=150), validators.DataRequired()])
     item_name = StringField('Item Name: ', [validators.Length(min=1,
                                                               max=150), validators.DataRequired()])
-    item_cost = StringField('Item Price: ', [validators.Length(min=1,
-                                                               max=150), validators.DataRequired()])
-    item_quantity = StringField('Item Quantity:', [validators.Length(min=1,
-                                                                     max=150), validators.DataRequired()])
+    item_cost = FloatField('Item Price: ',[validators.DataRequired()])
+    item_quantity = IntegerField('Item Quantity:', [validators.NumberRange(min=0, max=1000), validators.DataRequired()])
     item_type = RadioField('Item Type: ', choices=[('W', 'Wired'),
                                                    ('WL', 'Wireless')], default='W', )
     remarks = TextAreaField('Remark', [validators.Optional()])
