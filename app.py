@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 
-from Forms import *
+
 from binascii import hexlify
 import User, main, Product, os, paypalrestsdk, requests, Order
 import PasswordHashing
@@ -8,7 +8,7 @@ import shelve
 import uuid
 import Item
 import storageManagerFunction_Hieu
-from Form import *
+from Forms import *
 import pandas as pd
 
 UPLOAD_FOLDER = 'static/files'
