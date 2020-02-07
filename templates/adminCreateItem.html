@@ -1,5 +1,5 @@
 {% extends "adminBase.html" %}
-{% block title %}Library Loan System - Create User{% endblock %}
+{% block title %}Status Audio - Create User{% endblock %}
 
 {% block content %}
     {% from "includes/_formHelper.html" import render_field %}
@@ -30,7 +30,7 @@
 
     <h2>Create Item/Update Item - Excel Sheet</h2>
     <form method="POST" enctype="multipart/form-data" action="/addItemExcel">
-        <input type="file" name="file">
+        <input type="file" name="file" required>
         <input type="submit" value="Submit" class="btn btn-primary"/>
     </form>
 {% endblock %}

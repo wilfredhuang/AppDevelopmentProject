@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 
-from Forms import *
+
 from binascii import hexlify
 import User, main, Product, os, paypalrestsdk, requests, Order
 import PasswordHashing
@@ -8,7 +8,7 @@ import shelve
 import uuid
 import Item
 import storageManagerFunction_Hieu
-from Form import *
+from Forms import *
 import pandas as pd
 
 UPLOAD_FOLDER = 'static/files'
@@ -563,12 +563,14 @@ def addItem():
 
         filename = str(uuid.uuid4()) + createItemForm.item_id.data + '.jpg'
 
+        cost = float(f'{createItemForm.item_cost.data :.2f}')
+
         if createItemForm.item_type.data == "W":
-            item = Item.Wired(createItemForm.item_id.data, createItemForm.item_name.data, createItemForm.item_cost.data,
+            item = Item.Wired(createItemForm.item_id.data, createItemForm.item_name.data, cost,
                               filename)
         elif createItemForm.item_type.data == "WL":
             item = Item.Wireless(createItemForm.item_id.data, createItemForm.item_name.data,
-                                 createItemForm.item_cost.data, filename)
+                                 cost, filename)
 
         item.set_stock(createItemForm.item_quantity.data)
         storageManagerFunction_Hieu.db.get_storage("Inventory", True, True)

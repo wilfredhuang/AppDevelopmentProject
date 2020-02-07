@@ -15,11 +15,14 @@
                 <th>Cost</th>
                 <th>Quantity</th>
                 <th></th>
+                <th></th>
             <tr>
             </thead>
             <tbody>
             {% for item in ItemList %} <!-- This is to loop through all your objects in your database -->
                 <tr>
+                    <td><img height='50px' width='50px' alt="product-image"
+                             src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
                     <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
                     <td>{{ item.get_name() }}</td>
                     <td>{{ item.get_cost() }}</td>
