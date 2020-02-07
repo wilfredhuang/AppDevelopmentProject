@@ -264,11 +264,14 @@ def deleteUser(username):
 @app.route("/testAddItem", methods=["GET", "POST"])
 def testAddItem():
     # HOW TO USE ORDERS 101
-    test = main.db.return_object("Order")  # This returns the entire Order database
-    test = test["allorders"]  # This returns the entire Order database
-    for i in test:  # If you want to filter specific usernames for your part just use if i.get_username == "username"
-        print(f"Item name: {i.get_item_list()[0].get_name()}, Total Price: {i.get_productPrice()}, "
-              f"Address: {i.get_address()}, Status: {i.get_status()}, Username: {i.get_username()}")
+    try:
+        test = main.db.return_object("Order")  # This returns the entire Order database
+        test = test["allorders"]  # This returns the entire Order database
+        for i in test:  # If you want to filter specific usernames for your part just use if i.get_username == "username"
+            print(f"Item name: {i.get_item_list()[0].get_name()}, Total Price: {i.get_productPrice()}, "
+                  f"Address: {i.get_address()}, Status: {i.get_status()}, Username: {i.get_username()}")
+    except:
+        print("Order database is empty")
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer A21AAGQd_-Ms2SOo-n_eZq-f9pfeoYQEdPOdxCUnZhvO_cWpOMckpKaqGWeKNSDpWiDuYbLdMI8U2YZ7gbuYKYM36S2fa4kMA'
@@ -302,7 +305,8 @@ def testAddItem():
             print("Delete item button pressed")
             main.db.get_storage("Cart", True, True)
             main.db.delete_storage("Cart")
-    return redirect(url_for('productDisplay'))
+    #return redirect(url_for('productDisplay'))
+    return render_template("test.html")
 
 
 # Shopping cart page
@@ -387,9 +391,12 @@ def guest_checkout():
 # JH
 @app.route("/usercheckout", methods=["GET", "POST"])
 def user_checkout():
+    username = ""
+    if 'username' in session:
+        username = session['username']
     main.db.get_storage("Users", True, True)
     user = main.db.return_object("Users")
-    user = user["tristan"]
+    user = user[username]
     return render_template("u_checkout.html", user=user)
 
 
@@ -490,11 +497,17 @@ def paypalpayment():
 # JH
 @app.route("/execute", methods=["POST"])
 def execute():
+    username = ""
+    if 'username' in session:
+        username = session['username']
+    productList = []
+    print(f"{username} THIS IS EXECUTE CODE")
     success = False
     payment = paypalrestsdk.Payment.find(request.form["paymentID"])
     if payment.execute({"payer_id": request.form["payerID"]}):
         print("Execute Sucess!")
         print(payment.amount)
+        main.db.update_cart("Cart", username, productList)
         success = True
     else:
         print(payment.error)
