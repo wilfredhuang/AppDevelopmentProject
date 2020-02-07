@@ -189,8 +189,12 @@ def loginMenu():
             #username = session['username']
             #return redirect(url_for('users', choice=1, username=username))
     if 'username' in session:
+        admin_acc = main.storage_handler.get_storage("ADMIN")
         username = session['username']
-        return redirect(url_for('users', choice=1, username=username))
+        if admin_acc.get_username() == username:
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('users', choice=1, username=username))
 
     # When a button is clicked
     if request.method == 'POST':
@@ -208,6 +212,7 @@ def loginMenu():
 
             if admin_acc.get_username() == login_name:
                 print("Admin Login")
+                session['username'] = admin_acc.get_username()
                 return redirect(url_for('admin'))
 
             elif user_acc != None and login_name in user_acc:
@@ -235,6 +240,22 @@ def loginMenu():
 def SignOut():
     del session['username']
     return redirect(url_for('loginMenu'))
+
+# HF
+
+@app.route("/AdminUserDashboard")
+def AdminUserDashboard():
+
+    userList = main.storage_handler.get_storage("Users")
+
+    return render_template('AdminUserDashboard.html', userList=userList, count=len(userList))
+
+# HF
+@app.route('/deleteUser/<username>', methods=['POST'])
+def deleteUser(username):
+    main.user_management.delete_user(username)
+
+    return redirect(url_for('AdminUserDashboard'))
 
 
 # Figuring out carting system

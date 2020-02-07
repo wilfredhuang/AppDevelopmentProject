@@ -14,6 +14,7 @@ db = None
 user_management = None
 session_management = None
 storage_management = None
+storage_handler = None
 
 # HF
 def init():

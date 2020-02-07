@@ -17,7 +17,6 @@ class User():
 
         self.__privilege = False
 
-
     def get_username(self):
         return self.__username
 

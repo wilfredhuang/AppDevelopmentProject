@@ -4,7 +4,7 @@ html{
 }
 
 body{
-    background: #f0f0f0;
+    //background: #f0f0f0;
     min-height: 100%;
 }
 
@@ -18,7 +18,7 @@ body{
 }
 
 .main {
-    margin:auto;
+    margin:50px 0 auto 0;
     min-height:100%;
 }
 
