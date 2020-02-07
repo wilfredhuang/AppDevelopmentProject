@@ -14,6 +14,7 @@
                 <th>Name</th>
                 <th>Cost</th>
                 <th>Quantity</th>
+                <th></th>
             <tr>
             </thead>
             <tbody>
@@ -23,6 +24,7 @@
                     <td>{{ item.get_name() }}</td>
                     <td>{{ item.get_cost() }}</td>
                     <td>{{ item.get_quantity() }}</td>
+                    <td><a href="/cart/{{ item.get_id() }}" class="btn btn-warning">Buy</a></td>
                 </tr>
             {% endfor %}
             </tbody>
