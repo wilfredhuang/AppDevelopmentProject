@@ -40,7 +40,7 @@ def get_inventory():
     if inventory is not None:
         return inventory
     else:
-        inventory = []
+        inventory = {}
         return inventory
 
 #H
