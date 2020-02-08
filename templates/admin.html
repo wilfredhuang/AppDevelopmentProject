@@ -1,7 +1,63 @@
 {% extends "adminBase.html" %}
-{% block title %} Admin - Home {% endblock %}
-
+{% block title %}Admin - Home{% endblock %}
 {% block content %}
-<h1 class="display-4">Home</h1>
-<p>Hello ADMIN!</p>
+    <body>
+    <div class="container" style="margin-top: 1em">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                   aria-controls="nav-home" aria-selected="true">Sale</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                   aria-controls="nav-profile" aria-selected="false">User</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                   aria-controls="nav-contact" aria-selected="false">Inventory</a>
+                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-delivery" role="tab"
+                   aria-controls="nav-contact" aria-selected="false">Delivery</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Cost</th>
+                        <th>Stock</th>
+                        <th></th>
+                        <th></th>
+                    <tr>
+                    </thead>
+                    <tbody>
+                    {% for item in ItemList %} <!-- This is to loop through all your objects in your database -->
+                        <tr>
+                            <td><img height='50px' width='50px' alt="product-image"
+                                     src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
+                            <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                            <td>{{ item.get_name() }}</td>
+                            <td>{{ item.get_cost() }}</td>
+                            {% if item.get_stock() > alarm_stock %}
+                                <td style="color:green">{{ item.get_stock() }}</td>
+                            {% else %}
+                                <td style="color:red">{{ item.get_stock() }}</td>
+                            {% endif %}
+                            <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
+                            <td>
+                                <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="nav-delivery" role="tabpanel" aria-labelledby="nav-delivery-tab">...</div>
+        </div>
+    </div>
+    </body>
 {% endblock %}
