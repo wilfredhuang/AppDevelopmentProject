@@ -11,6 +11,7 @@ This is to manage all different class to make it organised
 from StorageManager import StorageManager
 from UserManagement import UserManagement
 from StorageHandler import StorageHandler
+from OrderManagement import OrderManagement
 # from SessionManagement import SessionManagement
 
 db = None
@@ -36,6 +37,7 @@ def init():
     storage_handler = StorageHandler()
     db = StorageManager()
     user_management = UserManagement(storage_handler)
+    order_management = OrderManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED

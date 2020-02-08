@@ -6,7 +6,6 @@ All users related stuffs is being handled here
 from ManagementSystem import ManagementSystem
 
 
-
 class UserManagement(ManagementSystem):
 
     def __init__(self, storage_handler):

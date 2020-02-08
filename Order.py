@@ -1,10 +1,9 @@
 class Order:
-    countID = 0
-    def __init__(self, item_list, productPrice, address, status, username, date):
-        Order.countID += 1
+
+    def __init__(self, item_list, productPrice, address, status, username, date, unique_id):
+        self.__orderID = unique_id
         self.__item_list = item_list
         self.__productPrice = productPrice
-        #self.__orderID = orderID
         self.__address = address
         self.__status = status
         self.__username = username
