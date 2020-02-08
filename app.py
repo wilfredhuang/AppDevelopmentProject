@@ -278,42 +278,48 @@ def deleteUser(username):
 # STILL TESTING
 @app.route("/testAddItem", methods=["GET", "POST"])
 def testAddItem():
-    # HOW TO USE ORDERS 101
-    try:
-        test = main.db.return_object("Order")  # This returns the entire Order database
-        test = test["allorders"]  # This returns the entire Order database
-        for i in test:  # If you want to filter specific usernames for your part just use if i.get_username == "username"
-            print(f"Item name: {i.get_item_list()[0].get_name()}, Total Price: {i.get_productPrice()}, "
-                  f"Address: {i.get_address()}, Status: {i.get_status()}, Username: {i.get_username()}")
-    except:
-        print("Order database is empty")
-    username = ""
-    if 'username' in session:
-        username = session['username']
-    if request.method == "POST":
-        if request.form["submit_button"] == "Add":
-            # Create the product object
-            product = Product.Product(1, "Airpods", 239.00)
-            product2 = Product.Product(2, "Airpods Pro", 329.00)
-            productList = []
-            productList.append(product)
-            productList.append(product2)
-            # Add it into the database
-            main.db.get_storage("Cart", True, True)
-            #main.db.update_cart("Cart", "TestUser", productList)
-            main.db.update_cart("Cart", username, productList)
-            print("-- TEST --")
-            test = main.db.return_object("Cart")
-            #test = test["TestUser"]
-            test = test[username]
-            # print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
-            print(test[0].get_name())
-            print(test[1].get_name())
-            print("-- TEST --")
-        elif request.form["submit_button"] == "Delete":
-            print("Delete item button pressed")
-            main.db.get_storage("Cart", True, True)
-            main.db.delete_storage("Cart")
+    # username = ""
+    # if 'username' in session:
+    #     username = session['username']
+    # main.cart_management.clear_cart_debug(username)
+    # test = main.cart_management.retrieve_cart(username)
+    # print(test)
+    # # HOW TO USE ORDERS 101
+    # try:
+    #     test = main.db.return_object("Order")  # This returns the entire Order database
+    #     test = test["allorders"]  # This returns the entire Order database
+    #     for i in test:  # If you want to filter specific usernames for your part just use if i.get_username == "username"
+    #         print(f"Item name: {i.get_item_list()[0].get_name()}, Total Price: {i.get_productPrice()}, "
+    #               f"Address: {i.get_address()}, Status: {i.get_status()}, Username: {i.get_username()}")
+    # except:
+    #     print("Order database is empty")
+    # username = ""
+    # if 'username' in session:
+    #     username = session['username']
+    # if request.method == "POST":
+    #     if request.form["submit_button"] == "Add":
+    #         # Create the product object
+    #         product = Product.Product(1, "Airpods", 239.00)
+    #         product2 = Product.Product(2, "Airpods Pro", 329.00)
+    #         productList = []
+    #         productList.append(product)
+    #         productList.append(product2)
+    #         # Add it into the database
+    #         main.db.get_storage("Cart", True, True)
+    #         #main.db.update_cart("Cart", "TestUser", productList)
+    #         main.db.update_cart("Cart", username, productList)
+    #         print("-- TEST --")
+    #         test = main.db.return_object("Cart")
+    #         #test = test["TestUser"]
+    #         test = test[username]
+    #         # print(f"Product Name: {test.get_name()}, Cost: {test.get_cost()}, ID: {test.get_id()}")
+    #         print(test[0].get_name())
+    #         print(test[1].get_name())
+    #         print("-- TEST --")
+    #     elif request.form["submit_button"] == "Delete":
+    #         print("Delete item button pressed")
+    #         main.db.get_storage("Cart", True, True)
+    #         main.db.delete_storage("Cart")
     #return redirect(url_for('productDisplay'))
     return render_template("test.html")
 
@@ -325,52 +331,67 @@ def cart():
     username = ""
     if 'username' in session:
         username = session['username']
+
+    u_cart = main.cart_management.retrieve_cart(username)
     if request.method == "POST":
-        try:
-            # Get User cart
-            u_cart = main.db.return_object("Cart")
-            u_cart = u_cart[username]
-            # Add quantity
-            if request.form["cart_button"][0] == "+":
-                for i in u_cart:
-                    if i.get_name() == request.form["cart_button"][1::]:
-                        i.add_quantity()
-                        main.db.delete_storage("Cart")
-                        main.db.get_storage("Cart", True, True)
-                        main.db.add_item("Cart", username, u_cart)
-            # Remove quantity
-            elif request.form["cart_button"][0] == "-":
-                for i in u_cart:
-                    if i.get_name() == request.form["cart_button"][1::]:
-                        # If quantity is 1, item will be removed
-                        if i.get_quantity() >= 2:
-                            i.remove_quantity()
-                        else:
-                            index = u_cart.index(i)
-                            u_cart.pop(index)
-                        main.db.delete_storage("Cart")
-                        main.db.get_storage("Cart", True, True)
-                        main.db.add_item("Cart", username, u_cart)
-        except:
-            pass
+        # Add quantity
+        if request.form["cart_button"][0] == "+":
+            main.cart_management.cart_quantity(username, request.form["cart_button"][1::], "add")
+        # Remove quantity
+        elif request.form["cart_button"][0] == "-":
+            main.cart_management.cart_quantity(username, request.form["cart_button"][1::], "remove")
 
     # Get total cost
     total_cost = 0
-    try:
-        u_cart = main.db.return_object("Cart")
-        u_cart = u_cart[username]
-        for i in u_cart:
-            total_cost += float(i.get_cost()) * float(i.get_quantity())
-    except KeyError:
-        pass
+    for i in u_cart:
+        total_cost += float(i.get_cost()) * float(i.get_quantity())
 
-    # Get Cart to show on cart page
-    product_object = main.db.return_object("Cart")
-    try:
-        product_object = product_object[username]
-    except:
-        product_object = {}
-    return render_template("userCart.html", item=product_object, total_cost=total_cost)
+    # if request.method == "POST":
+    #     try:
+    #         # Get User cart
+    #         u_cart = main.db.return_object("Cart")
+    #         u_cart = u_cart[username]
+    #         # Add quantity
+    #         if request.form["cart_button"][0] == "+":
+    #             for i in u_cart:
+    #                 if i.get_name() == request.form["cart_button"][1::]:
+    #                     i.add_quantity()
+    #                     main.db.delete_storage("Cart")
+    #                     main.db.get_storage("Cart", True, True)
+    #                     main.db.add_item("Cart", username, u_cart)
+    #         # Remove quantity
+    #         elif request.form["cart_button"][0] == "-":
+    #             for i in u_cart:
+    #                 if i.get_name() == request.form["cart_button"][1::]:
+    #                     # If quantity is 1, item will be removed
+    #                     if i.get_quantity() >= 2:
+    #                         i.remove_quantity()
+    #                     else:
+    #                         index = u_cart.index(i)
+    #                         u_cart.pop(index)
+    #                     main.db.delete_storage("Cart")
+    #                     main.db.get_storage("Cart", True, True)
+    #                     main.db.add_item("Cart", username, u_cart)
+    #     except:
+    #         pass
+
+    # Get total cost
+    # total_cost = 0
+    # try:
+    #     u_cart = main.db.return_object("Cart")
+    #     u_cart = u_cart[username]
+    #     for i in u_cart:
+    #         total_cost += float(i.get_cost()) * float(i.get_quantity())
+    # except KeyError:
+    #     pass
+    #
+    # # Get Cart to show on cart page
+    # product_object = main.db.return_object("Cart")
+    # try:
+    #     product_object = product_object[username]
+    # except:
+    #     product_object = {}
+    return render_template("userCart.html", item=u_cart, total_cost=total_cost)
 
 # Checkout options
 # JH
@@ -446,9 +467,8 @@ def paypalpayment():
     item_list = []
     total_cost = 0
     # Get cart
-    item = main.db.return_object("Cart")
-    item = item[username]
-    for i in item:
+    u_cart = main.cart_management.retrieve_cart(username)
+    for i in u_cart:
         item_list.append({"name": i.get_name(),
                           "sku": "1",
                           "price": i.get_cost(),
@@ -467,12 +487,13 @@ def paypalpayment():
         orders = main.db.return_object("Order")
         order_list = orders["allorders"]
     today = date.today()
-    new_order = Order.Order(item, total_cost, data[0], "0", username, today)
-    order_list.append(new_order)
-    main.db.update_cart("Order", "allorders", order_list)
+    #new_order = Order.Order(u_cart, total_cost, data[0], "0", username, today)
+    main.order_management.create_new_order(u_cart, total_cost, data[0], 0, username, today)
+    #order_list.append(new_order)
+    #main.db.update_cart("Order", "allorders", order_list)
     print("-----HELLO BODOH-------")
     print(order_list)
-    print(new_order)
+    #print(new_order)
     print("---------BYE BODOH-------")
     payment = paypalrestsdk.Payment({
         "intent": "sale",
@@ -506,14 +527,15 @@ def execute():
     username = ""
     if 'username' in session:
         username = session['username']
-    productList = []
+    #productList = []
     print(f"{username} THIS IS EXECUTE CODE")
     success = False
     payment = paypalrestsdk.Payment.find(request.form["paymentID"])
     if payment.execute({"payer_id": request.form["payerID"]}):
         print("Execute Sucess!")
         print(payment.amount)
-        main.db.update_cart("Cart", username, productList)
+        #main.db.update_cart("Cart", username, productList)
+        main.cart_management.clear_cart_debug(username)
         success = True
     else:
         print(payment.error)
@@ -705,17 +727,8 @@ def productDisplay():
         username = session["username"]
     if request.method == 'POST':
         product_info = request.form["item_button"].split(",")  # List 0 = ID, 1 = Name, 2 = Price
-
-        # for i in range(len(product_list)):
-        #     if product_info[1] == product_list[i].get_name():
-        #         product_list[i].add_quantity()
-        #         main.db.update_cart("Cart", username, product_list)
-        #         item_exist = True
-        #         break
-        # if not item_exist:
-        #     product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
-        #     product_list.append(product)
-        #     main.db.update_cart("Cart", username, product_list)
+        product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
+        main.cart_management.add_to_cart(username, product)
 
 
     # # Get User cart -JH

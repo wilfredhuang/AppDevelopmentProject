@@ -13,7 +13,15 @@ class CartManagement(ManagementSystem):
 
     def add_to_cart(self, username, item):
         item_list = self.retrieve_cart(username)
-        item_list.append(item)
+        # Check if already existing in cart
+        item_exist = False
+        for i in item_list:
+            if i.get_name() == item.get_name():
+                i.add_quantity()
+                item_exist = True
+                break
+        if not item_exist:
+            item_list.append(item)
         key_list = list(self._db.keys())
         self._db[username] = item_list
         self._handler.set_storage(self._key_name, self._db)
@@ -26,6 +34,28 @@ class CartManagement(ManagementSystem):
         else:
             return []
 
+    def cart_quantity(self, username, item_name, action):
+        key_list = list(self._db.keys())
+        item_list = self.retrieve_cart(username)
+        for i in item_list:
+            if i.get_name() == item_name:
+                if action == "add":
+                    i.add_quantity()
+                elif action == "remove":
+                    if i.get_quantity() >= 2:
+                        i.remove_quantity()
+                    else:
+                        x = item_list.index(i)
+                        item_list.pop(x)
+                break
+        self._db[username] = item_list
+        self._handler.set_storage(self._key_name, self._db)
+
+    def clear_cart_debug(self, username):
+        key_list = list(self._db.keys())
+        if username in key_list:
+            self._db[username] = []
+            self._handler.set_storage(self._key_name, self._db)
     # def delete_user(self, username):
     #     key_list = list(self._db.keys())
     #

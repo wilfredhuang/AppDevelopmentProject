@@ -22,6 +22,7 @@ user_management = None
 storage_management = None
 storage_handler = None
 cart_management = None
+order_management = None
 
 """
 Init is needed to setup the project when started
@@ -36,6 +37,7 @@ def init():
     global user_management
     global storage_handler
     global cart_management
+    global order_management
 
     storage_handler = StorageHandler()
     db = StorageManager()
