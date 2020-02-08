@@ -1,6 +1,6 @@
 class Order:
     countID = 0
-    def __init__(self, item_list, productPrice, address, status, username):
+    def __init__(self, item_list, productPrice, address, status, username, date):
         Order.countID += 1
         self.__item_list = item_list
         self.__productPrice = productPrice
@@ -8,6 +8,7 @@ class Order:
         self.__address = address
         self.__status = status
         self.__username = username
+        self.__date = date
 
     def get_item_list(self):
         return self.__item_list
@@ -27,6 +28,9 @@ class Order:
     def get_username(self):
         return self.__username
 
+    def get_date(self):
+        return self.__date
+
     def set_item_list(self, item_list):
         self.__item_list = item_list
 
@@ -44,3 +48,6 @@ class Order:
 
     def set_username(self, username):
         self.__username = username
+
+    def set_date(self, date):
+        self.__date = date

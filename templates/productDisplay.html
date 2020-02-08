@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<form method="POST" action="">
     <h1 class="display-4">Products</h1>
     <div>
         <table class="table table-striped">
@@ -27,11 +28,17 @@
                     <td>{{ item.get_name() }}</td>
                     <td>{{ item.get_cost() }}</td>
                     <td>{{ item.get_quantity() }}</td>
-                    <td><a href="/cart/{{ item.get_id() }}" class="btn btn-warning">Buy</a></td>
+                    <td>
+                        <button type="submit" name="item_button"
+                                value="{{ item.get_id() }},{{ item.get_name() }},{{ item.get_cost() }}"
+                                class="btn btn-danger">Add to cart
+                        </button>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
 
         </table>
     </div>
+</form>
 {% endblock %}
