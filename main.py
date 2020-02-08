@@ -1,35 +1,42 @@
 """
-    This file will deal with overall of the project
-    Most classes will be linked to this file
-    This is to manage all different class to make it organised
-    Note: Do not modify this before asking me (HF)
+HF
+
+This file will deal with overall of the project
+Most classes will be linked to this file
+This is to manage all different class to make it organised
+
+
+
 """
 from StorageManager import StorageManager
 from UserManagement import UserManagement
-from SessionManagement import SessionManagement
 from StorageHandler import StorageHandler
-import PasswordHashing
-from Admin import Admin
+# from SessionManagement import SessionManagement
+
 db = None
+
+# session_management = None
 user_management = None
-session_management = None
 storage_management = None
 storage_handler = None
 
+"""
+Init is needed to setup the project when started
+All storage need to be created / retrieved before use
+"""
 # HF
 def init():
 
     global db
+
+    # global session_management
     global user_management
-    global session_management
     global storage_handler
 
     storage_handler = StorageHandler()
     db = StorageManager()
     user_management = UserManagement(storage_handler)
-    session_management = SessionManagement(storage_handler)
-    #print("Main testing")
-    #storage_management.storage_exist('Users')
+    # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED
 def reset():

@@ -10,6 +10,9 @@ class Product:
     def add_quantity(self):
         self.__quantity += 1
 
+    def remove_quantity(self):
+        self.__quantity -= 1
+
     def get_id(self):
         return self.__id
 
