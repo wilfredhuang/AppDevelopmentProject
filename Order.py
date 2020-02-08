@@ -8,6 +8,17 @@ class Order:
         self.__status = status
         self.__username = username
         self.__date = date
+        #
+        self.__order_eta = "5"
+        self.__order_log = {}
+        self.__order_log_comment = 1
+        self.__deliveryType = "Standard"
+        self.__paymentMethod = "Paypal"
+        self.__userUnitNumber = "#09-1784"
+        self.__userPostalCode = "350155"
+        self.__subtotal = float(0)
+        self.__shippingFee = int(5.99)
+        self.__total = self.__subtotal + self.__shippingFee
 
     def get_item_list(self):
         return self.__item_list
@@ -50,3 +61,42 @@ class Order:
 
     def set_date(self, date):
         self.__date = date
+
+    #
+    def get_order_eta(self):
+        return self.__order_eta
+
+    def get_order_log(self):
+        return self.__order_log
+
+    def get_order_log_time(self, commentnumber):
+        return self.__order_log[commentnumber][0]
+
+    def get_order_log_comment(self, commentnumber):
+        return self.__order_log[commentnumber][1]
+
+    def get_deliveryType(self):
+        return self.__deliveryType
+
+    def get_paymentMethod(self):
+        return self.__paymentMethod
+
+    def get_userUnitNumber(self):
+        return self.__userUnitNumber
+
+    def get_userPostalCode(self):
+        return self.__userPostalCode
+
+    def get_subtotal(self):
+        return self.__subtotal
+
+    def get_shippingFee(self):
+        return self.__shippingFee
+
+    def get_total(self):
+        return self.__total
+
+    def add_comment(self, time, comment):
+        self.__order_log[self.__order_log_comment] = [time, comment]
+        self.__order_log_comment += 1
+
