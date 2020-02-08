@@ -1,6 +1,10 @@
-from StorageHandler import StorageHandler
+"""
+HF
+All users related stuffs is being handled here
+"""
+
 from ManagementSystem import ManagementSystem
-# HF
+
 
 
 class UserManagement(ManagementSystem):
@@ -10,18 +14,6 @@ class UserManagement(ManagementSystem):
         #self.__handler = storage_handler
         #self.__db = None
         super().__init__("Users", "User Management", storage_handler)
-        """
-        print("\n[START OF USERMANAGEMENT INIT]")
-        if self.__handler.storage_exist(self.__key_name):
-            print("Storage: {} Found, no error".format(self.__key_name))
-
-        else:
-            print("Storage: {} not found, creating one".format(self.__key_name))
-            self.__handler.create_new_storage(self.__key_name)
-
-        self.__db = self.__handler.get_storage(self.__key_name)
-        print("[END OF USERMANAGEMENT INIT]\n")
-        """
 
     def add_user(self, user):
         key_list = list(self._db.keys())
@@ -76,6 +68,7 @@ class UserManagement(ManagementSystem):
         if key_list == []:
 
             return None
+
         else:
             return key_list
 

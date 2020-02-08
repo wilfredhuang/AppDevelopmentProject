@@ -1,6 +1,12 @@
-from StorageHandler import StorageHandler
+"""
+HF
 
-# HF
+This was created to simulate a session / temporary storage
+It was not used later on as we will use built-in session instead
+
+"""
+
+
 class SessionManagement:
 
     def __init__(self, StorageHandler):
@@ -19,6 +25,7 @@ class SessionManagement:
             self.__handler.create_new_storage(self.__key_name)
 
         self.__db = self.__handler.get_storage(self.__key_name)
+        print("The keys are: {}".format(list(self.__db.keys())))
         print("[END OF SESSION INIT]\n")
 
     def add_item(self, key, item):

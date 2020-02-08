@@ -10,7 +10,7 @@ EXPLANATION
 * 1. items to be stored at
 * 2. the key used to store those items
 
- 
+
 """
 class StorageManager():
 

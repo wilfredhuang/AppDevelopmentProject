@@ -1,13 +1,19 @@
 """
+HF
 The improved version from StorageManager.py
 This is to simplify the function of the class
 and spilt the task into other classes
-
+Do not change anything before asking(HF)
 """
 
 import shelve
 
-# HF
+"""
+StorageHandler deals with shelve (Persistent storage)
+Every Management class will use this class to store
+"""
+
+
 class StorageHandler:
 
     def __init__(self):
@@ -18,15 +24,12 @@ class StorageHandler:
             if self.__db.keys() != None:
                 print(list(self.__db.keys()))
             self.__db.close()
+
         except Exception:
             print("Storage not found")
         print("[END OF STORAGE_MANAGEMENT INIT]\n")
-        # This works like a session storage, things can be stored at 'TEMP' but will be deleted when restart
-       # self.delete_storage('TEMP')
 
-    def testprint(self):
-        print("YETSETSETSETSETSET")
-
+    # Default is create dictionary for storage
     def create_new_storage(self, storage_key, dict=True):
         self.__db = shelve.open('storage.db', 'c')
 
@@ -56,6 +59,7 @@ class StorageHandler:
 
         self.__db.close()
 
+    # This is use for updating of storage / major changes
     def set_storage(self, storage_key, item):
 
         self.__db = shelve.open('storage.db', 'c')
@@ -67,6 +71,7 @@ class StorageHandler:
             print("Unable to set item due to storage name not found: {}".format(storage_key))
         self.__db.close()
 
+    # Receive the whole db
     def get_storage(self, storage_key):
         self.__db = shelve.open('storage.db', 'c')
 
@@ -81,6 +86,7 @@ class StorageHandler:
         self.__db.close()
         return temp
 
+    # Get the keys of all the storage
     def get_keys(self):
         self.__db = shelve.open('storage.db', 'c')
 
@@ -88,17 +94,19 @@ class StorageHandler:
         self.__db.close()
         return temp
 
+    # True or False if storage exist
     def storage_exist(self, storage_key):
         self.__db = shelve.open('storage.db', 'c')
 
         if (self.__is_key_found(storage_key) == True):
-            #self.__db.close()
+            self.__db.close()
             return True
+
         else:
-            #self.__db.close()
+            self.__db.close()
             return False
 
-
+    # Show the keys
     def print_keys(self):
         self.__db = shelve.open('storage.db', 'r')
         key_list = self.__db.keys()

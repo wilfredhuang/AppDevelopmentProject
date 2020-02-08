@@ -225,7 +225,6 @@ def loginMenu():
             elif user_acc != None and login_name in user_acc:
 
                 user = main.user_management.get_user(login_name)
-                # main.session_management.add_item("username", user.get_username())
                 session['username'] = user.get_username()
                 return redirect(url_for('users', choice=1, username=user.get_username()))
 
