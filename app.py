@@ -52,7 +52,10 @@ def get_sale():
 # Current is Login Page
 @app.route('/')
 def home():
-    ItemList = get_inventory().values()
+    itemDict = get_inventory().values()
+    ItemList = []
+    for i in itemDict:
+        ItemList.append(i)
     print(ItemList)
     return render_template('home.html', ItemList=ItemList)
 
