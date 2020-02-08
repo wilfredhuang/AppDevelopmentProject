@@ -161,7 +161,7 @@ def users(choice, username):
 @app.route('/admin')
 def admin():
 
-    return render_template('admin.html')
+    return render_template('admin.html',ItemList=get_inventory().values(), alarm_stock=10)
 
 
 # Called when sign up button is clicked from the login page
