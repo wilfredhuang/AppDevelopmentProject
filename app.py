@@ -49,8 +49,7 @@ def get_sale():
     sale = storageManagerFunction_Hieu.db.get_storage("Inventory")
     return sale
 
-# Main page
-# Current is Login Page
+# Main page / Homepage
 @app.route('/')
 def home():
     ItemList = get_inventory().values()
@@ -69,55 +68,72 @@ def testing(choice):
 # HF
 @app.route('/users/<username>/<int:choice>', methods=['POST', 'GET'])
 def users(choice, username):
-    # temp = main.db.return_keys("Users")
     username_list = main.user_management.get_username_list()
 
+    # Forms for changing user's details
     user_form = UserDetailsForm(request.form)
     password_form = ChangePasswordForm(request.form)
     address_form = AddressForm(request.form)
 
+    # When any of the details are updated
     if request.method == 'POST':
         btn_pressed = request.form['submit']
-        #user_db = main.user_management("Users")
-        #user = user_db[username]
+
+        # Get user obj
         user = main.user_management.get_user(username)
 
+        # Check which form is being updated
         if btn_pressed == "Update Profile" and user_form.validate():
+
+            # Update user obj details
             user.set_first_name(user_form.first_name.data)
             user.set_last_name(user_form.last_name.data)
 
             main.user_management.modify_user(user)
-            flash('You have successfully updated profile')
-            return redirect(url_for('users', choice=1, username=user.get_username()))
-            #to_be_changed = main.db.get_storage("TEMP")
-            #to_be_changed["username"] = user.get_username()
 
-            #main.db.set_storage("TEMP", to_be_changed)
+            # Feedback to know it has updated
+            flash('You have successfully updated profile')
+
+            return redirect(url_for('users', choice=1, username=user.get_username()))
 
         elif btn_pressed == "Update Address" and address_form.validate():
+
+            # Update user obj details
             user.set_country(address_form.country.data)
             user.set_postal_code(address_form.postal_code.data)
             user.set_address(address_form.address.data)
             user.set_city(address_form.city.data)
             user.set_unit_number(address_form.unit_number.data)
 
+            # Update persistent storage
             main.user_management.modify_user(user)
+
+            # Feedback to know it has updated
             flash('You have successfully updated address')
             return redirect(url_for('users', choice=1, username=user.get_username()))
 
         elif btn_pressed == "Change Password" and password_form.validate():
+
+            # store hashed password instead of plain text
             hashed_password = PasswordHashing.hash_password(password_form.password.data)
+
+            # Update user obj details
             user.set_password(hashed_password)
 
+            # Update persistent storage
             main.user_management.modify_user(user)
+
+            # Feedback to know it has updated
             flash('You have successfully changed password')
             return redirect(url_for('users', choice=1, username=user.get_username()))
 
+    # Prepare things needed for the page
     if username_list != None and username in username_list:
 
-        #temp2 = main.db.get_storage("Users")
-        #user_details = temp2[username]
         user_details = main.user_management.get_user(username)
+
+        # To see which panel user is at
+
         if choice == 1:
             temp_form = user_form
         elif choice == 2:
@@ -131,9 +147,7 @@ def users(choice, username):
         print("ERRORRRRRR")
 
 
-
-
-# Called when admin login
+# Called after admin login
 # HF
 @app.route('/admin')
 def admin():
@@ -145,50 +159,42 @@ def admin():
 # HF
 @app.route('/signup', methods=['POST', 'GET'])
 def sign_up():
+    # Prepare form
     signup_form = SignUpForm(request.form)
+
+    # Validate all input
     if request.method == 'POST' and signup_form.validate():
+        # hash the password instead of leaving in plain text
         hashed_password = PasswordHashing.hash_password(signup_form.password.data)
 
+        # create user obj
         user = User.User(signup_form.first_name.data, signup_form.last_name.data, signup_form.username.data.lower(),
                          hashed_password, signup_form.postal_code.data, signup_form.address.data,
                          signup_form.country.data, signup_form.city.data, signup_form.unit_number.data)
-        # to create and check if the storage exist - METHOD 1
-        # main.db.get_storage('Users', True, True)
-        # main.db.add_item('Users', user.get_username(), user)
 
-        # Method 2
+        # Store in persistent storage
         main.user_management.add_user(user)
 
-        # create temporary storage
-        # main.db.get_storage("TEMP", True, True)
-        # main.db.add_item('TEMP', "username", user.get_username())
+        # add session storage, user will be logged in until logout is pressed or session ended
         session['username'] = user.get_username()
-        #main.session_management.add_item("username", user.get_username())
 
+        # login
         return redirect(url_for('users', choice=1, username=user.get_username()))
 
     return render_template('signUp.html', form=signup_form)
 
 
 # Called when user press submit at main page
-# Two methods, GET is called when website request the page
+# GET is called when website request the page
 # There is POST request only when user click the submit button
 # HF
 @app.route('/loginMenu', methods=['POST', 'GET'])
 def loginMenu():
+    # Prepare form
     login_form = LoginForm(request.form)
 
-    # login if user already logged in before
-   # temp_exist = main.storage_handler.storage_exist("TEMP")
+    # login if user already logged in before in the session
 
-    #if temp_exist == True:
-
-       # session = main.storage_handler.get_storage("TEMP")
-        #session_keys = main.session_management.get_keys()
-
-        #if session_keys != None and "username" in session_keys:
-            #username = session['username']
-            #return redirect(url_for('users', choice=1, username=username))
     if 'username' in session:
         admin_acc = main.storage_handler.get_storage("ADMIN")
         username = session['username']
@@ -204,11 +210,11 @@ def loginMenu():
         # Login clicked
         # Validate only on a POST request
         if login_form.validate() and btn_pressed == "Login":
+
             login_name = login_form.username.data.lower()
 
-            #admin_acc = main.db.get_storage("ADMIN")
+            # get account list
             admin_acc = main.storage_handler.get_storage("ADMIN")
-            #temp = main.db.return_keys("Users")
             user_acc = main.user_management.get_username_list()
 
             if admin_acc.get_username() == login_name:
@@ -232,8 +238,8 @@ def loginMenu():
             return redirect(url_for('sign_up'))
 
     # Get request will be skipped to this
-
     return render_template('userLogin.html', form=login_form)
+
 
 # HF
 # set to logged out and redirect to login page
@@ -242,16 +248,19 @@ def SignOut():
     del session['username']
     return redirect(url_for('loginMenu'))
 
-# HF
 
+# HF
+# admin's user handling page
 @app.route("/AdminUserDashboard")
 def AdminUserDashboard():
 
-    userList = main.storage_handler.get_storage("Users")
+    user_list = main.storage_handler.get_storage("Users")
 
-    return render_template('AdminUserDashboard.html', userList=userList, count=len(userList))
+    return render_template('AdminUserDashboard.html', userList=user_list, count=len(user_list))
+
 
 # HF
+# when user want to delete user from user handling page
 @app.route('/deleteUser/<username>', methods=['POST'])
 def deleteUser(username):
     main.user_management.delete_user(username)
