@@ -12,6 +12,7 @@ from StorageManager import StorageManager
 from UserManagement import UserManagement
 from StorageHandler import StorageHandler
 from CartManagement import CartManagement
+from OrderManagement import OrderManagement
 # from SessionManagement import SessionManagement
 
 db = None
@@ -40,6 +41,7 @@ def init():
     db = StorageManager()
     user_management = UserManagement(storage_handler)
     cart_management = CartManagement(storage_handler)
+    order_management = OrderManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED

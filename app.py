@@ -22,12 +22,14 @@ main.init()
 storageManagerFunction_Hieu.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-#H
+
+# H
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-#H
+
+# H
 def retrieveFiles():
     entries = os.listdir(app.config['UPLOAD_FOLDER'])
     fileList = []
@@ -35,7 +37,8 @@ def retrieveFiles():
         fileList.append(entry)
     return fileList
 
-#H
+
+# H
 def get_inventory():
     inventory = storageManagerFunction_Hieu.db.get_storage("Inventory")
     if inventory is not None:
@@ -44,10 +47,12 @@ def get_inventory():
         inventory = {}
         return inventory
 
-#H
+
+# H
 def get_sale():
     sale = storageManagerFunction_Hieu.db.get_storage("Inventory")
     return sale
+
 
 # Main page / Homepage
 @app.route('/')
@@ -55,6 +60,7 @@ def home():
     ItemList = get_inventory().values()
     print(ItemList)
     return render_template('home.html', ItemList=ItemList)
+
 
 # Called For testing
 # HF
