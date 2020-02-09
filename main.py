@@ -14,6 +14,7 @@ from StorageHandler import StorageHandler
 from CartManagement import CartManagement
 from OrderManagement import OrderManagement
 from c_SalesManagement import SalesManagement
+from ProductManagement import ProductManagement
 # from SessionManagement import SessionManagement
 
 db = None
