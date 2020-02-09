@@ -1,4 +1,4 @@
-class User():
+class User:
     countID = 0
 
     def __init__(self, first_name, last_name, username, password, postal_code, address, country, city, unit_number):

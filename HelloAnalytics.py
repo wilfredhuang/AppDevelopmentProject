@@ -69,10 +69,10 @@ def print_response(response):
           print(metricHeader.get('name') + ': ' + value)
 
 
-def main():
+def ga_main():
   analytics = initialize_analyticsreporting()
   response = get_report(analytics)
   print_response(response)
 
 if __name__ == '__main__':
-  main()
+  ga_main()

@@ -201,7 +201,7 @@ class SalesManagement(ManagementSystem):
             self._db[year_key][month_key][day_key].add_items(item_list)
 
             # monthly sales report
-            self._db[year_key][month_key][0].add_sales(item_list)
+            self._db[year_key][month_key][0].add_items(item_list)
 
             # yearly sales report
             self._db[year_key][0].add_items(item_list)
@@ -219,7 +219,7 @@ class SalesManagement(ManagementSystem):
 
             # monthly sales report
             self._db[year_key][month_key][0] = CSalesReport()
-            self._db[year_key][month_key][0].add_sales(item_list)
+            self._db[year_key][month_key][0].add_items(item_list)
 
             # yearly sales report
             self._db[year_key][0] = CSalesReport()

@@ -48,10 +48,24 @@ def home():
 
 # Called For testing
 # HF
-@app.route('/testing/<choice>')
-def testing(choice):
-    #return 'Test successful, code is {}'.format(code)
-    return render_template('users.html')
+@app.route('/ga_main', methods=['POST', 'GET'])
+def ga_main():
+
+    return render_template('googleAnalyticsAPI-Main.html')
+
+# Called For testing
+# HF
+@app.route('/ga_2', methods=['POST', 'GET'])
+def ga_2():
+    ac = main.get_access_token()
+    return render_template('googleAnalyticsAPI2.html', ACCESS_TOKEN_FROM_SERVICE_ACCOUNT=ac)
+
+# Called For testing
+# HF
+@app.route('/ga_ssa', methods=['POST', 'GET'])
+def ga_ssa():
+
+    return render_template('googleAnalyticsAPI3-SSA.html')
 
 
 # Called when user successful logged in
