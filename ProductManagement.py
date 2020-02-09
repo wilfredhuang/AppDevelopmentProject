@@ -28,6 +28,7 @@ class ProductManagement(ManagementSystem):
         else:
             self._db[item.get_id()] = item
             self._handler.set_storage(self._key_name, self._db)
+
             print("adding new item: {}, {} units".format(item.get_id(), item.get_quantity()))
 
     def purchase_item(self, item_list):

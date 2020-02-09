@@ -1,3 +1,15 @@
+"""
+HF
+
+OrderManagement in charged to creating orders after payment
+Since OrderManagement is directly related to SalesManagement,
+SalesManagement will be calling functions of SalesManagement.
+
+Information from payments will be passed here and from here,
+Orders will be stored and new sales information will be creteaf
+
+"""
+
 from ManagementSystem import ManagementSystem
 from Order import Order
 import uuid
@@ -5,8 +17,9 @@ import uuid
 
 class OrderManagement(ManagementSystem):
 
-    def __init__(self, storage_handler):
+    def __init__(self, storage_handler, sales_management):
         super().__init__("Orders", "Order Management", storage_handler)
+        self.__sales_management = sales_management
 
     def create_new_order(self, item_list, total_cost, address, status, username, date):
         key_list = list(self._db.keys())
@@ -22,6 +35,8 @@ class OrderManagement(ManagementSystem):
 
         self._db[unique_id] = new_order
         self._handler.set_storage(self._key_name, self._db)
+
+        self.__sales_management.add_sales(item_list, date)
         print("adding new order: {}".format(new_order.get_orderID()))
 
     def retrieve_all_order_id(self):
