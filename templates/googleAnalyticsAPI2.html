@@ -1,27 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Embed API Demo</title>
-</head>
-<body>
+{% extends "adminBase_GoogleAPI.html" %}
+{% block title %}Admin - Google API 2{% endblock %}
 
+{% block content %}
 <h1> Site Traffic</h1>
 <h4>Sessions vs. Users - last 30 days</h4>
 <div id="chart-1-container"></div>
 <hr>
 <h1>Most Popular Site</h1>
-<h4> Pageviews in the last 30 days</h4>
+<h4>Pageviews in the last 30 days</h4>
 <div id="chart-2-container"></div>
+{% endblock %}
 
-<script>
-(function(w,d,s,g,js,fs){
-  g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-  js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-  js.src='https://apis.google.com/js/platform.js';
-  fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-}(window,document,'script'));
-</script>
-
+{% block scripts_google %}
 <script>
 
 gapi.analytics.ready(function() {
@@ -88,5 +78,4 @@ gapi.analytics.ready(function() {
 
 });
 </script>
-</body>
-</html>
+{% endblock %}

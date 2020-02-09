@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Embed API Demo</title>
-</head>
-<body>
+{% extends "adminBase_GoogleAPI.html" %}
+{% block title %}Admin - Google API 3 SSA{% endblock %}
 
-<!-- Step 1: Create the containing elements. -->
+{% block content %}
 
 <div id="embed-api-auth-container"></div>
 <div id="view-selector-container"></div>
 <div id="main-chart-container"></div>
 <div id="breakdown-chart-container"></div>
+{% endblock %}
 
-<script>
-(function(w,d,s,g,js,fs){
-  g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-  js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-  js.src='https://apis.google.com/js/platform.js';
-  fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-}(window,document,'script'));
-</script>
+{% block scripts_google %}
 <script>
 
 gapi.analytics.ready(function() {
@@ -151,7 +141,6 @@ gapi.analytics.ready(function() {
     });
   });
 
-});
+})
 </script>
-</body>
-</html>
+{% endblock %}

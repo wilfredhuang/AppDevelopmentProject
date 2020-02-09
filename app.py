@@ -66,24 +66,24 @@ def home():
 
 # Called For testing
 # HF
-@app.route('/testing', methods=['POST', 'GET'])
-def testing():
+@app.route('/ga_main', methods=['POST', 'GET'])
+def ga_main():
 
-    return render_template('googleAnalyticsAPI.html')
+    return render_template('googleAnalyticsAPI-Main.html')
 
 # Called For testing
 # HF
-@app.route('/testing2', methods=['POST', 'GET'])
-def testing2():
+@app.route('/ga_2', methods=['POST', 'GET'])
+def ga_2():
     ac = main.get_access_token()
     return render_template('googleAnalyticsAPI2.html', ACCESS_TOKEN_FROM_SERVICE_ACCOUNT=ac)
 
 # Called For testing
 # HF
-@app.route('/testing3', methods=['POST', 'GET'])
-def testing3():
+@app.route('/ga_ssa', methods=['POST', 'GET'])
+def ga_ssa():
 
-    return render_template('googleAnalyticsAPI3.html')
+    return render_template('googleAnalyticsAPI3-SSA.html')
 
 
 # Called when user successful logged in
