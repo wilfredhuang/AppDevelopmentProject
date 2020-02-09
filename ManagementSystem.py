@@ -9,7 +9,7 @@ called to update the shelf(Persistent storage)
 """
 
 
-class ManagementSystem:
+class ManagementSystem:  # get storage
 
     def __init__(self, key_name, name, storage_handler):
         self._key_name = key_name
