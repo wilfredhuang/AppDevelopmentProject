@@ -15,6 +15,8 @@ from CartManagement import CartManagement
 from OrderManagement import OrderManagement
 from c_SalesManagement import SalesManagement
 from ProductManagement import ProductManagement
+from ProductManagement import ProductManagement
+from c_SalesManagement import SalesManagement
 # from SessionManagement import SessionManagement
 
 db = None
@@ -25,6 +27,7 @@ storage_management = None
 storage_handler = None
 cart_management = None
 order_management = None
+product_management = None
 sales_management = None
 
 """
@@ -43,12 +46,15 @@ def init():
     global storage_handler
     global cart_management
     global order_management
+    global product_management
     global sales_management
 
     storage_handler = StorageHandler()
     db = StorageManager()
+    
     user_management = UserManagement(storage_handler)
     cart_management = CartManagement(storage_handler)
+    product_management = ProductManagement(storage_handler)
     sales_management = SalesManagement(storage_handler)
     order_management = OrderManagement(storage_handler, sales_management)
 

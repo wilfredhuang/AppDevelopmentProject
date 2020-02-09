@@ -23,6 +23,8 @@ class ProductManagement(ManagementSystem):
             self._handler.set_storage(self._key_name, self._db)
             print("adding new item: {}, {} units".format(item.get_id(),item.get_quantity()))
 
+            print("adding new item: {}, {} units".format(item.get_id(), item.get_quantity()))
+
     def purchase_item(self, item_list):
         key_list = list(self._db.keys())
 
