@@ -4,7 +4,7 @@ All Management will inherit from this class
 Management will have basics stuffs of adding, deleting, modifying and retrieving stuffs
 
 db is a storage only for this class and when changes are made, storage handle will be
-called to update the shelf(Persistent storage)
+called to update the shelve(Persistent storage)
 
 """
 
@@ -33,3 +33,6 @@ class ManagementSystem:
         print("PRINTING KEYS FOR {}".format(self._key_name))
         print(key_list)
 
+    def update_shelve(self):
+
+        self._handler.set_storage(self._key_name, self._db)

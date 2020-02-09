@@ -13,6 +13,7 @@ from UserManagement import UserManagement
 from StorageHandler import StorageHandler
 from CartManagement import CartManagement
 from OrderManagement import OrderManagement
+from c_SalesManagement import SalesManagement
 # from SessionManagement import SessionManagement
 
 db = None
@@ -23,11 +24,14 @@ storage_management = None
 storage_handler = None
 cart_management = None
 order_management = None
+sales_management = None
 
 """
 Init is needed to setup the project when started
 All storage need to be created / retrieved before use
 """
+
+
 # HF
 def init():
 
@@ -38,12 +42,15 @@ def init():
     global storage_handler
     global cart_management
     global order_management
+    global sales_management
 
     storage_handler = StorageHandler()
     db = StorageManager()
     user_management = UserManagement(storage_handler)
     cart_management = CartManagement(storage_handler)
-    order_management = OrderManagement(storage_handler)
+    sales_management = SalesManagement(storage_handler)
+    order_management = OrderManagement(storage_handler, sales_management)
+
     # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED
