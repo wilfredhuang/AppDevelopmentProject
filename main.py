@@ -13,7 +13,7 @@ from UserManagement import UserManagement
 from StorageHandler import StorageHandler
 from CartManagement import CartManagement
 from OrderManagement import OrderManagement
-from ProductManagement import *
+from ProductManagement import ProductManagement
 # from SessionManagement import SessionManagement
 
 db = None
@@ -49,7 +49,7 @@ def init():
     product_management = ProductManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
-# DO NOT TOUCH, UNLESS ASKED - urguay
+# DO NOT TOUCH, UNLESS ASKED
 def reset():
     pass
     #StorageManager.reset()
