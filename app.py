@@ -8,7 +8,6 @@ import paypalrestsdk
 import requests
 import uuid
 import Item
-import storageManagerFunction_Hieu
 from Forms import *
 import pandas as pd
 from datetime import date
@@ -20,15 +19,12 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 app.secret_key = SECRET_KEY
 main.init()
-storageManagerFunction_Hieu.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 # H
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 # H
 def retrieveFiles():
@@ -39,26 +35,12 @@ def retrieveFiles():
     return fileList
 
 
-# H
-def get_inventory():
-    inventory = storageManagerFunction_Hieu.db.get_storage("Inventory")
-    if inventory is not None:
-        return inventory
-    else:
-        inventory = {}
-        return inventory
-
-
-# H
-def get_sale():
-    sale = storageManagerFunction_Hieu.db.get_storage("Inventory")
-    return sale
-
+inventory = main.get_inventory()
 
 # Main page / Homepage
 @app.route('/')
 def home():
-    itemDict = get_inventory().values()
+    itemDict = inventory.values()
     ItemList = []
     for i in itemDict:
         ItemList.append(i)
@@ -162,7 +144,7 @@ def users(choice, username):
 @app.route('/admin')
 def admin():
 
-    return render_template('admin.html',ItemList=get_inventory().values(), alarm_stock=10)
+    return render_template('admin.html',ItemList=inventory.values(), alarm_stock=10)
 
 
 # Called when sign up button is clicked from the login page
@@ -584,7 +566,7 @@ def adminItemDashboard():
         key = search_function.search.data
     print(f'key is {key}')
 
-    return render_template('adminItemDashboard.html', ItemList=get_inventory().values(), input=search_function,
+    return render_template('adminItemDashboard.html', ItemList=inventory.values(), input=search_function,
                            key_search=key, alarm_stock=10)
 
 #Hieu
@@ -605,8 +587,7 @@ def addItem():
                                  cost, filename)
 
         item.set_stock(createItemForm.item_quantity.data)
-        storageManagerFunction_Hieu.db.get_storage("Inventory", True, True)
-        storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+        main.product_management.update_item(item)
 
         print(request.files)
         print(request.files['file'])
@@ -621,9 +602,6 @@ def addItem():
 #Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
-    db = shelve.open('storage.db', 'w')
-    inventory = get_inventory()
-    item = ''
 
     if request.method == 'POST':
         file = request.files['file']
@@ -653,36 +631,24 @@ def addItemExcel():
                 existing_item.set_stock(new_stock)
                 print(existing_item.get_stock())
 
-                inventory[item.get_id()] = existing_item
-                db['Inventory'] = inventory
+                main.product_management.update_item(item)
 
             else:
                 item.set_stock(stock)
-                storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
-        db.close()
+                main.product_management.update_item(item)
         return redirect(url_for('adminItemDashboard'))
     return redirect(url_for('addItem'))
 
 #Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
 def removeItem(id):
-    db = shelve.open('storage.db', 'w')
-    itemInventory = db['Inventory']
-    print(id)
-    print(itemInventory)
-    removedItem = itemInventory[id]
+    removedItem = inventory[id]
     try:
         os.remove(f'files/{removedItem.get_file()}')
     except:
         print('error. file not found')
 
-
-    itemInventory.pop(id)
-    print('Item removed.')
-    print(itemInventory)
-
-    db['Inventory'] = itemInventory
-    db.close()
+    main.product_management.delete_item(removedItem.get_id())
 
     return redirect(url_for('adminItemDashboard'))
 
@@ -691,27 +657,21 @@ def removeItem(id):
 def updateItem(id):
     updateItemForm = CreateItemForm(request.form)
     if request.method == 'POST' and updateItemForm.validate():
-        db = shelve.open('storage.db', 'w')
-        itemInventory = db['Inventory']
 
-        item = itemInventory.get(id)
+        item = inventory.get(id)
 
         item.set_id(updateItemForm.item_id.data)
         item.set_name(updateItemForm.item_name.data)
         item.set_cost(updateItemForm.item_cost.data)
         item.set_stock(updateItemForm.item_quantity.data)
 
-        db['Inventory'] = itemInventory
-        db.close()
+        main.product_management.modify_product(item)
 
         return redirect(url_for('adminItemDashboard'))
 
     else:
-        db = shelve.open('storage.db', 'w')
-        itemInventory = db['Inventory']
-        db.close()
 
-        item = itemInventory.get(id)
+        item = inventory.get(id)
         updateItemForm.item_id.data = item.get_id()
         updateItemForm.item_name.data = item.get_name()
         updateItemForm.item_quantity.data = item.get_stock()
@@ -723,8 +683,6 @@ def updateItem(id):
 
 @app.route('/productDisplay', methods=["POST", "GET"])
 def productDisplay():
-    ItemList = []
-    ItemList = get_inventory().values()
 
     username = ""
     if "username" in session:
@@ -762,7 +720,7 @@ def productDisplay():
     #         product_list.append(product)
     #         main.db.update_cart("Cart", username, product_list)
 
-    return render_template('productDisplay.html', ItemList=ItemList)
+    return render_template('productDisplay.html', ItemList=inventory.values())
 
 # Wilfred's delivery section
 

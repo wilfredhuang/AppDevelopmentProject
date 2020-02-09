@@ -17,6 +17,7 @@ from c_SalesManagement import SalesManagement
 from ProductManagement import ProductManagement
 from ProductManagement import ProductManagement
 from c_SalesManagement import SalesManagement
+from ProductManagement import *
 # from SessionManagement import SessionManagement
 
 db = None
@@ -29,7 +30,7 @@ cart_management = None
 order_management = None
 product_management = None
 sales_management = None
-
+product_management = None
 """
 Init is needed to setup the project when started
 All storage need to be created / retrieved before use
@@ -48,6 +49,7 @@ def init():
     global order_management
     global product_management
     global sales_management
+    global product_management
 
     storage_handler = StorageHandler()
     db = StorageManager()
@@ -57,7 +59,7 @@ def init():
     product_management = ProductManagement(storage_handler)
     sales_management = SalesManagement(storage_handler)
     order_management = OrderManagement(storage_handler, sales_management)
-
+    product_management = ProductManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED
@@ -96,3 +98,13 @@ def test_mode():
     print(PasswordHashing.verify_password(temp.get_password(), "appdev"))
     """
 #test_mode()
+
+
+# H
+def get_inventory():
+    inventory = storage_handler.get_storage('Product')
+    if inventory is not None:
+        return inventory
+    else:
+        inventory = {}
+        return inventory
