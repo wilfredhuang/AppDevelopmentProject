@@ -28,6 +28,9 @@ class Item():
     def set_cost(self, cost):
         self.__cost = cost
 
+    def set_quantity(self, quantity):
+        self.__quantity = quantity
+
     def get_file(self):
         return self.__image_file
 
