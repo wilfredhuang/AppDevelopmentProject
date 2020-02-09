@@ -35,12 +35,10 @@ def retrieveFiles():
     return fileList
 
 
-inventory = main.get_inventory()
-
 # Main page / Homepage
 @app.route('/')
 def home():
-    itemDict = inventory.values()
+    itemDict = main.get_inventory().values()
     ItemList = []
     for i in itemDict:
         ItemList.append(i)
@@ -144,7 +142,7 @@ def users(choice, username):
 @app.route('/admin')
 def admin():
 
-    return render_template('admin.html',ItemList=inventory.values(), alarm_stock=10)
+    return render_template('admin.html',ItemList=main.get_inventory().values(), alarm_stock=10)
 
 
 # Called when sign up button is clicked from the login page
@@ -566,12 +564,13 @@ def adminItemDashboard():
         key = search_function.search.data
     print(f'key is {key}')
 
-    return render_template('adminItemDashboard.html', ItemList=inventory.values(), input=search_function,
+    return render_template('adminItemDashboard.html', ItemList=main.get_inventory().values(), input=search_function,
                            key_search=key, alarm_stock=10)
 
 #Hieu
 @app.route('/createItem', methods=['Get', 'Post'])
 def addItem():
+    item = main.get_inventory()
     createItemForm = CreateItemForm(request.form)
     if request.method == 'POST':
 
@@ -602,7 +601,7 @@ def addItem():
 #Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
-
+    inventory = main.get_inventory()
     if request.method == 'POST':
         file = request.files['file']
         data = pd.read_excel(file)  # read the file
@@ -631,7 +630,7 @@ def addItemExcel():
                 existing_item.set_stock(new_stock)
                 print(existing_item.get_stock())
 
-                main.product_management.update_item(item)
+                main.product_management.modify_product(existing_item)
 
             else:
                 item.set_stock(stock)
@@ -642,6 +641,7 @@ def addItemExcel():
 #Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
 def removeItem(id):
+    inventory = main.get_inventory()
     removedItem = inventory[id]
     try:
         os.remove(f'files/{removedItem.get_file()}')
@@ -655,6 +655,7 @@ def removeItem(id):
 #Hieu
 @app.route('/updateItem/<id>', methods=['GET', 'POST'])
 def updateItem(id):
+    inventory = main.get_inventory()
     updateItemForm = CreateItemForm(request.form)
     if request.method == 'POST' and updateItemForm.validate():
 
@@ -720,7 +721,7 @@ def productDisplay():
     #         product_list.append(product)
     #         main.db.update_cart("Cart", username, product_list)
 
-    return render_template('productDisplay.html', ItemList=inventory.values())
+    return render_template('productDisplay.html', ItemList=main.get_inventory().values())
 
 # Wilfred's delivery section
 

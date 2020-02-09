@@ -34,6 +34,9 @@ class Item():
     def get_quantity(self):
         return self.__quantity
 
+    def set_quantity(self, quantity):
+        self.__quantity = quantity
+
     def get_stock(self):
         return self.__stock
 

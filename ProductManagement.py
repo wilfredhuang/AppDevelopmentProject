@@ -67,5 +67,4 @@ class ProductManagement(ManagementSystem):
             self._handler.set_storage(self._key_name, self._db)
 
         else:
-
             print("No product found, unable to modify")

@@ -30,7 +30,6 @@ cart_management = None
 order_management = None
 product_management = None
 sales_management = None
-product_management = None
 """
 Init is needed to setup the project when started
 All storage need to be created / retrieved before use
@@ -59,7 +58,6 @@ def init():
     product_management = ProductManagement(storage_handler)
     sales_management = SalesManagement(storage_handler)
     order_management = OrderManagement(storage_handler, sales_management)
-    product_management = ProductManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
 # DO NOT TOUCH, UNLESS ASKED
