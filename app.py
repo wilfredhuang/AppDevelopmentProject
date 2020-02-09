@@ -7,6 +7,7 @@ import PasswordHashing
 import shelve
 import uuid
 import Item
+import storageManagerFunction_Hieu
 from Forms import *
 import pandas as pd
 from datetime import date
@@ -18,16 +19,17 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 app.secret_key = SECRET_KEY
 main.init()
+storageManagerFunction_Hieu.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-# Hieu
+# H
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# Hieu
+# H
 def retrieveFiles():
     entries = os.listdir(app.config['UPLOAD_FOLDER'])
     fileList = []
@@ -36,9 +38,9 @@ def retrieveFiles():
     return fileList
 
 
-# Hieu
+# H
 def get_inventory():
-    inventory = main.storage_handler.get_storage('Product')
+    inventory = storageManagerFunction_Hieu.db.get_storage("Inventory")
     if inventory is not None:
         return inventory
     else:
@@ -46,9 +48,9 @@ def get_inventory():
         return inventory
 
 
-# Hieu
+# H
 def get_sale():
-    sale = main.storage_handler.get_storage("Sale")
+    sale = storageManagerFunction_Hieu.db.get_storage("Inventory")
     return sale
 
 
@@ -602,8 +604,8 @@ def addItem():
                                  cost, filename)
 
         item.set_stock(createItemForm.item_quantity.data)
-        main.product_management.update_item(item)
-
+        storageManagerFunction_Hieu.db.get_storage("Inventory", True, True)
+        storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
 
         print(request.files)
         print(request.files['file'])
@@ -618,6 +620,7 @@ def addItem():
 #Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
+    db = shelve.open('storage.db', 'w')
     inventory = get_inventory()
     item = ''
 
@@ -650,26 +653,35 @@ def addItemExcel():
                 print(existing_item.get_stock())
 
                 inventory[item.get_id()] = existing_item
-                main.product_management.update_item(existing_item)
+                db['Inventory'] = inventory
 
             else:
                 item.set_stock(stock)
-                main.product_management.update_item(item)
+                storageManagerFunction_Hieu.db.add_item("Inventory", item.get_id(), item)
+        db.close()
         return redirect(url_for('adminItemDashboard'))
     return redirect(url_for('addItem'))
 
 #Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
 def removeItem(id):
-    inventory = get_inventory()
-    removedItem = inventory[id]
+    db = shelve.open('storage.db', 'w')
+    itemInventory = db['Inventory']
+    print(id)
+    print(itemInventory)
+    removedItem = itemInventory[id]
     try:
         os.remove(f'files/{removedItem.get_file()}')
     except:
         print('error. file not found')
 
-    main.product_management.delete_item(removedItem.get_id())
 
+    itemInventory.pop(id)
+    print('Item removed.')
+    print(itemInventory)
+
+    db['Inventory'] = itemInventory
+    db.close()
 
     return redirect(url_for('adminItemDashboard'))
 
@@ -677,21 +689,28 @@ def removeItem(id):
 @app.route('/updateItem/<id>', methods=['GET', 'POST'])
 def updateItem(id):
     updateItemForm = CreateItemForm(request.form)
-    itemInventory = get_inventory()
-    item = itemInventory.get(id)
     if request.method == 'POST' and updateItemForm.validate():
+        db = shelve.open('storage.db', 'w')
+        itemInventory = db['Inventory']
+
+        item = itemInventory.get(id)
 
         item.set_id(updateItemForm.item_id.data)
         item.set_name(updateItemForm.item_name.data)
         item.set_cost(updateItemForm.item_cost.data)
         item.set_stock(updateItemForm.item_quantity.data)
 
-        main.product_management.modify_product(item)
+        db['Inventory'] = itemInventory
+        db.close()
 
         return redirect(url_for('adminItemDashboard'))
 
     else:
+        db = shelve.open('storage.db', 'w')
+        itemInventory = db['Inventory']
+        db.close()
 
+        item = itemInventory.get(id)
         updateItemForm.item_id.data = item.get_id()
         updateItemForm.item_name.data = item.get_name()
         updateItemForm.item_quantity.data = item.get_stock()
@@ -700,7 +719,7 @@ def updateItem(id):
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
 
-#Hieu und Jun Hui
+
 @app.route('/productDisplay', methods=["POST", "GET"])
 def productDisplay():
     ItemList = []
@@ -808,7 +827,7 @@ def orderlog(orderid):
         else:
             pass
     c = current_order["Current_Order"] # c = order-object!
-    if c.get_status() == "paymfentpending":
+    if c.get_status() == "paymentpending":
         orderstage = "PaymentPending"
     elif c.get_status() == "processing":
         orderstage = "Processing"
