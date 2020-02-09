@@ -15,6 +15,7 @@ from CartManagement import CartManagement
 from OrderManagement import OrderManagement
 from ProductManagement import ProductManagement
 from c_SalesManagement import SalesManagement
+from oauth2client.service_account import ServiceAccountCredentials
 # from SessionManagement import SessionManagement
 
 db = None
@@ -58,11 +59,22 @@ def init():
 
     # session_management = SessionManagement(storage_handler)
 
+
 # DO NOT TOUCH, UNLESS ASKED
 def reset():
     pass
     #StorageManager.reset()
 
+# The scope for the OAuth2 request.
+SCOPE = 'https://www.googleapis.com/auth/analytics.readonly'
+
+# The location of the key file with the key data.
+KEY_FILEPATH = 'mimetic-heaven-267214-a894f52e042d.json'
+
+# Defines a method to get an access token from the ServiceAccount object.
+def get_access_token():
+  return ServiceAccountCredentials.from_json_keyfile_name(
+      KEY_FILEPATH, SCOPE).get_access_token().access_token
 
 def test_mode():
     """
