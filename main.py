@@ -17,7 +17,6 @@ from ProductManagement import ProductManagement
 from c_SalesManagement import SalesManagement
 from oauth2client.service_account import ServiceAccountCredentials
 # from SessionManagement import SessionManagement
-
 db = None
 
 # session_management = None
@@ -90,7 +89,7 @@ def test_mode():
     print("DB:")
     print(storage.get_storage("testing"))
     """
-    #init()
+    # init()
 
     #print("This is main func")
     #storage_management.testprint()
@@ -104,8 +103,13 @@ def test_mode():
     print("does pass match")
     print(PasswordHashing.verify_password(temp.get_password(), "appdev"))
     """
-#test_mode()
+    # temp1 = Product.Product(999, 'Test item 1', 100)
+    # temp2 = Product.Product(999, 'Test item 2', 200)
+    # item=[temp1, temp2]
+    # sales_management.add_sales(item, "2019-01-01")
 
+# test_mode()
+#init()
 
 # H
 def get_inventory():
