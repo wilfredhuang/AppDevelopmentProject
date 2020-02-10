@@ -572,13 +572,14 @@ def aboutUs():
 #Hieu
 @app.route('/adminItemDashboard', methods=['Get', 'Post'])
 def adminItemDashboard():
+    inventory = main.get_inventory().values()
     search_function = SearchForm(request.form)
     key = ""
     if request.method == 'POST':
         key = search_function.search.data
     print(f'key is {key}')
 
-    return render_template('adminItemDashboard.html', ItemList=main.get_inventory().values(), input=search_function,
+    return render_template('adminItemDashboard.html', ItemList=inventory, input=search_function,
                            key_search=key, alarm_stock=10)
 
 #Hieu
@@ -698,6 +699,7 @@ def updateItem(id):
 
 @app.route('/productDisplay', methods=["POST", "GET"])
 def productDisplay():
+    inventory = main.get_inventory().values()
 
     username = ""
     if "username" in session:
@@ -735,7 +737,7 @@ def productDisplay():
     #         product_list.append(product)
     #         main.db.update_cart("Cart", username, product_list)
 
-    return render_template('productDisplay.html', ItemList=main.get_inventory().values())
+    return render_template('productDisplay.html', ItemList=inventory)
 
 # Wilfred's delivery section
 
