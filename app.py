@@ -809,8 +809,10 @@ def orderlog(orderid):
         username = session['username']
     current_order = {}
     test = main.order_management.retrieve_all_order_id()
+    print("The order id is a{}a".format(orderid))
     for i in test:
-        if i == orderid:
+        print("i is a{}a".format(i))
+        if str(i) == str(orderid):
             current_order["Current_Order"] = main.order_management.retrieve_order_by_id(i)
         else:
             print("Order-id not found")
