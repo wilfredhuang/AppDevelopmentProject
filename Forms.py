@@ -140,18 +140,23 @@ class SalesForm(Form):
     day = SelectField("day", choices=day_list)
 
 
+# JH
 class CheckoutForm(Form):
     country_list = []
     url = "https://restcountries.eu/rest/v2/all?fields=name;alpha2Code"
     countries = requests.get(url)
     for i in countries.json():
-        country_list.append((i['alpha2Code'], i['name']))
+        if i['name'] == "Singapore":
+            country_list.insert(0, (i['alpha2Code'], i['name']))
+        else:
+            country_list.append((i['alpha2Code'], i['name']))
     email_address = StringField("Email Address", [validators.DataRequired()])
     full_name = StringField("Full Name", [validators.DataRequired()])
     address = StringField("Shipping Address", [validators.DataRequired()])
     postal_code = StringField('Postal Code', [validators.DataRequired()])
     city = StringField('City', [validators.DataRequired()])
     countries = SelectField("Country", choices=country_list)
+    unit_number = StringField('Unit Number', [validators.DataRequired()])
     
     
 class CreateItemForm(Form):
@@ -163,7 +168,8 @@ class CreateItemForm(Form):
     item_quantity = IntegerField('Item Quantity:', [validators.NumberRange(min=0, max=1000), validators.DataRequired()])
     item_type = RadioField('Item Type: ', choices=[('W', 'Wired'),
                                                    ('WL', 'Wireless')], default='W', )
-    remarks = TextAreaField('Remark', [validators.Optional()])
+    item_description = TextAreaField('Description', [validators.Optional()])
+
 
 
 class SearchForm(Form):
