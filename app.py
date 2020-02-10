@@ -21,12 +21,12 @@ app.secret_key = SECRET_KEY
 main.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# H
+# Hieu
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# H
+# Hieu
 def retrieveFiles():
     entries = os.listdir(app.config['UPLOAD_FOLDER'])
     fileList = []
