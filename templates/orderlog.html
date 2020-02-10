@@ -31,15 +31,15 @@ Note:
                 </div>
                 <div class="col-xs-4">
                     <!-- to be stored -->
-                    <img src="../static/img/StandardDelivery.png" id="standardDeliveryIcon"
+                    <img src="../static/img/{{ current_order.get_deliveryType() }}Delivery.png" id="standardDeliveryIcon"
                          alt="StandardDelivery.png"> {{ current_order.get_deliveryType() }} Delivery
                 </div>
             </div>
         </div>
-        <p> Placed on {{ current_order.get_order_date() }} </p>
+        <p> Placed on {{ current_order.get_date() }} </p>
         <p> Paid by {{current_order.get_paymentMethod()}} </p>
 {#        <span id="authCode"> Authorisation Code {{ current_order.get_authCode() }} </span>#}
-        <span id="ETA"> ETA: {{ current_order.get_eta() }} Days </span>
+        <span id="ETA"> ETA: {{ current_order.get_order_eta() }} Days </span>
     </div>
     <div id="secondSection" class="container">
         <hr>
@@ -120,11 +120,11 @@ Note:
             </tr>
             <tr>
                 <td> Subtotal</td>
-                <td> {{ "$" + current_order.get_subtotal() }}</td>
+                <td> ${{ current_order.get_subtotal() }}</td>
             </tr>
             <tr>
                 <td> Shipping Fee</td>
-                <td> {{ "$" + current_order.get_shippingFee() }}</td>
+                <td> ${{ current_order.get_shippingFee() }}</td>
             </tr>
             <tr>
                 <td>
@@ -136,7 +136,7 @@ Note:
             </tr>
             <tr>
                 <td> Total</td>
-                <td><span id="totalsumamt"> {{ "$" + current_order.get_total() }}</span></td>
+                <td><span id="totalsumamt"> ${{ current_order.get_total() }}</span></td>
             </tr>
         </table>
     </div>

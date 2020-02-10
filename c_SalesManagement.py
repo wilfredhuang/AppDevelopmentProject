@@ -32,10 +32,10 @@ class SalesManagement(ManagementSystem):
 
                 return None
             else:
-                return True
+                return self._db[year][month][day]
 
         else:
-            return self._db[year][month][day]
+            return None
 
     """
     def getDailySales(self):

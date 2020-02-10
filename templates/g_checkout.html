@@ -33,6 +33,26 @@
                     <p>Shipping Information</p>
                 </div>
             </div>
+            {% if user %}
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.full_name, value=user.get_first_name()+" "+user.get_last_name(), class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.address, value=user.get_address(), class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.countries, value="asd123", class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.city, value=user.get_city(), class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.postal_code, value=user.get_postal_code(), class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.unit_number, value=user.get_unit_number(), class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            {% else %}
             <div class="row">
                 <div class="col col-md-6 mx-auto">{{ render_field(form.full_name, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
             </div><br />
@@ -46,8 +66,12 @@
                 <div class="col col-md-6 mx-auto">{{ render_field(form.city, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
             </div><br />
             <div class="row">
-                <div class="col col-md-6 mx-auto">{{ render_field(form.postal_code, class="form-control txt") }}</div>
+                <div class="col col-md-6 mx-auto">{{ render_field(form.postal_code, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
             </div><br />
+            <div class="row">
+                <div class="col col-md-6 mx-auto">{{ render_field(form.unit_number, class="border rounded border-dark shadow-sm", style="width: 100%;padding-left: 1%;") }}</div>
+            </div><br />
+            {% endif %}
             <div class="row">
                 <div class="col col-md-6 mx-auto"><a class="btn btn-primary border rounded border-white" role="button" style="background-color: rgba(255,0,0,0);color: rgb(0,0,0);" href="/checkoutoptions"><strong><span style="text-decoration: underline;">&lt; Return</span></strong></a>
                     <input value="Payment" type="submit" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" name="submit_button" class="btn btn-primary bg-primary border rounded border-white button-selected"/>
