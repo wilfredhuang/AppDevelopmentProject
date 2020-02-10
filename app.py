@@ -758,23 +758,23 @@ def trackorders():
     if 'username' in session:
         username = session['username']
     displayed_orders = {} #to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    test = main.order_management.retrieve_all_order_id()
     the_user_orders = {} # This will contain the individual user's orders.
     the_user_order_count = 1 # Store each order with the count as key for sorting.
-    for eachorder in orders_list: # loop through database with all orders
-        if eachorder.get_username() == username: # check and add whichever orders that belong to user to his own user orders dictionary
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
+    print("Retrieving orders")
+    print(test)
     return render_template('trackorders.html', displayed_orders=displayed_orders)
-
-
 
 @app.route('/trackordersOldest')
 def trackordersoldest():
@@ -783,21 +783,23 @@ def trackordersoldest():
     if 'username' in session:
         username = session['username']
     displayed_orders = {} #to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    test = main.order_management.retrieve_all_order_id()
     the_user_orders = {} # This will contain the individual user's orders.
     the_user_order_count = 1 # Store each order with the count as key for sorting.
-    for eachorder in orders_list: # loop through database with all orders
-        if eachorder.get_username() == username: # check and add whichever orders that belong to user to his own user orders dictionary
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
-    return render_template('trackorders.html', displayed_orders=displayed_orders)
+    print("Retrieving orders")
+    print(test)
+    return render_template('trackordersOldest.html', displayed_orders=displayed_orders)
 
 
 @app.route('/orderlog/<orderid>')
