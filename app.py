@@ -720,7 +720,7 @@ def updateItem(id):
         updateItemForm.item_quantity.data = item.get_stock()
         updateItemForm.item_cost.data = item.get_cost()
         updateItemForm.item_type.data = item.get_type()
-        updateItemForm.item_description = item.get_description()
+
 
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
