@@ -3,7 +3,7 @@ class Item():
         self.__id = str(id)
         self.__name = name
         self.__cost = cost
-        self.__description = ''
+        self.__description = ' '
         self.__image_file = image_name
         self.__quantity = 1
         self.__stock = 0
