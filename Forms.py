@@ -168,7 +168,8 @@ class CreateItemForm(Form):
     item_quantity = IntegerField('Item Quantity:', [validators.NumberRange(min=0, max=1000), validators.DataRequired()])
     item_type = RadioField('Item Type: ', choices=[('W', 'Wired'),
                                                    ('WL', 'Wireless')], default='W', )
-    remarks = TextAreaField('Remark', [validators.Optional()])
+    item_description = TextAreaField('Description', [validators.Optional()])
+
 
 
 class SearchForm(Form):

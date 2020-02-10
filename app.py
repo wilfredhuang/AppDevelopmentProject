@@ -1,16 +1,15 @@
+import os
+import uuid
+from datetime import date
+
+import pandas as pd
+import paypalrestsdk
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 
-import User
-import main
-import Product
-import os
-import paypalrestsdk
-import requests
-import uuid
 import Item
+import Product
+import User
 from Forms import *
-import pandas as pd
-from datetime import date
 
 UPLOAD_FOLDER = 'static/files'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -21,10 +20,12 @@ app.secret_key = SECRET_KEY
 main.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+
 # Hieu
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # Hieu
 def retrieveFiles():
@@ -50,8 +51,8 @@ def home():
 # HF
 @app.route('/ga_main', methods=['POST', 'GET'])
 def ga_main():
-
     return render_template('googleAnalyticsAPI-Main.html')
+
 
 # Google Analytics
 # HF
@@ -60,11 +61,11 @@ def ga_2():
     ac = main.get_access_token()
     return render_template('googleAnalyticsAPI2.html', ACCESS_TOKEN_FROM_SERVICE_ACCOUNT=ac)
 
+
 # Google Analytics
 # HF
 @app.route('/ga_ssa', methods=['POST', 'GET'])
 def ga_ssa():
-
     return render_template('googleAnalyticsAPI3-SSA.html')
 
 
@@ -155,8 +156,8 @@ def users(choice, username):
 # HF
 @app.route('/admin')
 def admin():
+    return render_template('admin.html', ItemList=main.get_inventory().values(), alarm_stock=10)
 
-    return render_template('admin.html',ItemList=main.get_inventory().values(), alarm_stock=10)
 
 # Sales
 @app.route('/sales', methods=['POST', 'GET'])
@@ -164,10 +165,11 @@ def sales():
     sales_date_form = SalesForm(request.form)
     temp_sales = None
     if request.method == "POST":
-
-        temp_sales = main.sales_management.get_report(sales_date_form.year.data, sales_date_form.month.data, sales_date_form.day.data)
+        temp_sales = main.sales_management.get_report(sales_date_form.year.data, sales_date_form.month.data,
+                                                      sales_date_form.day.data)
 
     return render_template('sales.html', form=sales_date_form, sales=temp_sales)
+
 
 # Called when sign up button is clicked from the login page
 # HF
@@ -266,7 +268,6 @@ def SignOut():
 # admin's user handling page
 @app.route("/AdminUserDashboard")
 def AdminUserDashboard():
-
     user_list = main.storage_handler.get_storage("Users")
 
     return render_template('AdminUserDashboard.html', userList=user_list, count=len(user_list))
@@ -318,6 +319,7 @@ def cart():
 
     return render_template("userCart.html", item=u_cart, total_cost=total_cost, cart_empty=cart_empty)
 
+
 # Checkout options
 # JH
 @app.route("/checkoutoptions")
@@ -347,6 +349,7 @@ def guest_checkout():
     else:
         return render_template("g_checkout.html", form=form)
 
+
 # Logged In Checkout - TESTING ONLY, NOT FINAL!!!!!
 # JH
 @app.route("/usercheckout", methods=["GET", "POST"])
@@ -375,9 +378,9 @@ def payment_state():
 
 
 paypalrestsdk.configure({
-  "mode": "sandbox", # sandbox or live
-  "client_id": "AdH9TKto-i55A59_fTE_EBenlB2BzMI7-Jn7nj6q31HwAdnFXObvrNuGs8m3CjIZBCqXnkK2EbwdFx3E",
-  "client_secret": "EHwkI3DR_UEWZpjwksQ_TmeLYAswAAhl3CVDhSt9czUYOK59xMTH917nDlw8MXItNc0KL3Xv7tB3TndP"})
+    "mode": "sandbox",  # sandbox or live
+    "client_id": "AdH9TKto-i55A59_fTE_EBenlB2BzMI7-Jn7nj6q31HwAdnFXObvrNuGs8m3CjIZBCqXnkK2EbwdFx3E",
+    "client_secret": "EHwkI3DR_UEWZpjwksQ_TmeLYAswAAhl3CVDhSt9czUYOK59xMTH917nDlw8MXItNc0KL3Xv7tB3TndP"})
 
 
 # paypal testing
@@ -427,13 +430,13 @@ def paypalpayment():
         orders = main.db.return_object("Order")
         order_list = orders["allorders"]
     today = date.today()
-    #new_order = Order.Order(u_cart, total_cost, data[0], "0", username, today)
+    # new_order = Order.Order(u_cart, total_cost, data[0], "0", username, today)
     main.order_management.create_new_order(u_cart, total_cost, data[0], 0, username, today)
-    #order_list.append(new_order)
-    #main.db.update_cart("Order", "allorders", order_list)
+    # order_list.append(new_order)
+    # main.db.update_cart("Order", "allorders", order_list)
     print("-----HELLO BODOH-------")
     print(order_list)
-    #print(new_order)
+    # print(new_order)
     print("---------BYE BODOH-------")
     payment = paypalrestsdk.Payment({
         "intent": "sale",
@@ -467,14 +470,14 @@ def execute():
     username = ""
     if 'username' in session:
         username = session['username']
-    #productList = []
+    # productList = []
     print(f"{username} THIS IS EXECUTE CODE")
     success = False
     payment = paypalrestsdk.Payment.find(request.form["paymentID"])
     if payment.execute({"payer_id": request.form["payerID"]}):
         print("Execute Sucess!")
         print(payment.amount)
-        #main.db.update_cart("Cart", username, productList)
+        # main.db.update_cart("Cart", username, productList)
         main.cart_management.clear_cart_debug(username)
         success = True
     else:
@@ -493,15 +496,16 @@ def feedback():
         main.db.update_cart('feedback', 'testfeedback', request.form['message'])
         return render_template("aboutUs.html")
 
-    if request.method=='GET':
+    if request.method == 'GET':
         try:
-            feedback=main.db.return_object('feedback')
-            feedback=feedback['testfeedback']
+            feedback = main.db.return_object('feedback')
+            feedback = feedback['testfeedback']
             print("This is the user feedback")
             print(feedback)
         except:
             print("There is no feedback")
     return render_template("feedback.html")
+
 
 # Link to aboutUs
 # Matt
@@ -510,8 +514,7 @@ def aboutUs():
     return render_template("aboutUs.html")
 
 
-
-#Hieu
+# Hieu
 @app.route('/adminItemDashboard', methods=['Get', 'Post'])
 def adminItemDashboard():
     inventory = main.get_inventory().values()
@@ -524,7 +527,8 @@ def adminItemDashboard():
     return render_template('adminItemDashboard.html', ItemList=inventory, input=search_function,
                            key_search=key, alarm_stock=10)
 
-#Hieu
+
+# Hieu
 @app.route('/createItem', methods=['Get', 'Post'])
 def addItem():
     item = main.get_inventory()
@@ -542,6 +546,7 @@ def addItem():
             item = Item.Wireless(createItemForm.item_id.data, createItemForm.item_name.data,
                                  cost, filename)
 
+        item.set_description(createItemForm.item_description.data)
         item.set_stock(createItemForm.item_quantity.data)
         main.product_management.update_item(item)
 
@@ -555,7 +560,8 @@ def addItem():
         return redirect(url_for('adminItemDashboard'))
     return render_template('adminCreateItem.html', form=createItemForm)
 
-#Hieu
+
+# Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
     inventory = main.get_inventory()
@@ -568,7 +574,8 @@ def addItemExcel():
             name = data['Name'][i]
             cost = data['Cost'][i]
             stock = data['Stock'][i]
-            image = 'none'
+            description = data['Description'][i]
+            image = 'default_img.jpeg'
             type = data['Type'][i]  # to determine the type of product for sorting purpose
 
             wired = ['w', 'wired', 'W', 'Wired']
@@ -579,6 +586,8 @@ def addItemExcel():
             elif type in wireless:
                 item = Item.Wireless(id, name, cost, image)
 
+
+
             if item.get_id() in inventory:
                 print('existing item. updating stock.')
                 existing_item = inventory[item.get_id()]
@@ -586,30 +595,37 @@ def addItemExcel():
                 print(new_stock)
                 existing_item.set_stock(new_stock)
                 print(existing_item.get_stock())
+                item.set_description(description)
 
                 main.product_management.modify_product(existing_item)
 
             else:
                 item.set_stock(stock)
+                item.set_description(description)
                 main.product_management.update_item(item)
         return redirect(url_for('adminItemDashboard'))
     return redirect(url_for('addItem'))
 
-#Hieu
+
+# Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
 def removeItem(id):
     inventory = main.get_inventory()
     removedItem = inventory[id]
-    try:
-        os.remove(f'files/{removedItem.get_file()}')
-    except:
-        print('error. file not found')
+    if removedItem.get_file() is not 'default_img.jpeg':
+        try:
+            os.remove(f'files/{removedItem.get_file()}')
+        except:
+            print('error. file not found')
+    else:
+        pass
 
     main.product_management.delete_item(removedItem.get_id())
 
     return redirect(url_for('adminItemDashboard'))
 
-#Hieu
+
+# Hieu
 @app.route('/updateItem/<id>', methods=['GET', 'POST'])
 def updateItem(id):
     inventory = main.get_inventory()
@@ -622,6 +638,7 @@ def updateItem(id):
         item.set_name(updateItemForm.item_name.data)
         item.set_cost(updateItemForm.item_cost.data)
         item.set_stock(updateItemForm.item_quantity.data)
+        item.set_description(updateItemForm.item_description.data)
 
         main.product_management.modify_product(item)
 
@@ -635,6 +652,8 @@ def updateItem(id):
         updateItemForm.item_quantity.data = item.get_stock()
         updateItemForm.item_cost.data = item.get_cost()
         updateItemForm.item_type.data = item.get_type()
+        updateItemForm.item_description = item.get_description()
+
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
 
@@ -650,7 +669,6 @@ def productDisplay():
         product_info = request.form["item_button"].split(",")  # List 0 = ID, 1 = Name, 2 = Price
         product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
         main.cart_management.add_to_cart(username, product)
-
 
     # # Get User cart -JH
     # username = ""
@@ -679,7 +697,8 @@ def productDisplay():
     #         product_list.append(product)
     #         main.db.update_cart("Cart", username, product_list)
 
-    return render_template('productDisplay.html', ItemList=inventory)
+    return render_template('productDisplay.html', ItemList=inventory, username=username)
+
 
 # Wilfred's delivery section
 
@@ -690,23 +709,23 @@ def trackorders():
     if 'username' in session:
         username = session['username']
     displayed_orders = {} #to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    test = main.order_management.retrieve_all_order_id()
     the_user_orders = {} # This will contain the individual user's orders.
     the_user_order_count = 1 # Store each order with the count as key for sorting.
-    for eachorder in orders_list: # loop through database with all orders
-        if eachorder.get_username() == username: # check and add whichever orders that belong to user to his own user orders dictionary
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
+    print("Retrieving orders")
+    print(test)
     return render_template('trackorders.html', displayed_orders=displayed_orders)
-
-
 
 @app.route('/trackordersOldest')
 def trackordersoldest():
@@ -715,21 +734,23 @@ def trackordersoldest():
     if 'username' in session:
         username = session['username']
     displayed_orders = {} #to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"] # creates a list with all order instances as each element.
+    test = main.order_management.retrieve_all_order_id()
     the_user_orders = {} # This will contain the individual user's orders.
     the_user_order_count = 1 # Store each order with the count as key for sorting.
-    for eachorder in orders_list: # loop through database with all orders
-        if eachorder.get_username() == username: # check and add whichever orders that belong to user to his own user orders dictionary
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
-    return render_template('trackorders.html', displayed_orders=displayed_orders)
+    print("Retrieving orders")
+    print(test)
+    return render_template('trackordersOldest.html', displayed_orders=displayed_orders)
 
 
 @app.route('/orderlog/<orderid>')
@@ -737,13 +758,15 @@ def orderlog(orderid):
     username = ""
     if 'username' in session:
         username = session['username']
-    test = main.db.return_object("Order") # Retrieve all orders dictionary
     current_order = {}
-    for i in test["allorders"]: # Loop thru the orders list to find the correct order, i = orderobject
-        if i.get_orderID() == orderid:
-            current_order["Current_Order"] = i # creates dictionary with orderobject as value
+    test = main.order_management.retrieve_all_order_id()
+    print("The order id is a{}a".format(orderid))
+    for i in test:
+        print("i is a{}a".format(i))
+        if str(i) == str(orderid):
+            current_order["Current_Order"] = main.order_management.retrieve_order_by_id(i)
         else:
-            pass
+            print("Order-id not found")
     c = current_order["Current_Order"] # c = order-object!
     if c.get_status() == "paymentpending":
         orderstage = "PaymentPending"
@@ -755,17 +778,17 @@ def orderlog(orderid):
         orderstage = "Delivered"
     else:
         orderstage = ""
-    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage="PaymentPending", orderlogCommentDict=c.get_order_log())
+    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage=orderstage, orderlogCommentDict=c.get_order_log())
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 
 
 @app.route('/orderlist/<orderid>')
 def orderlist(orderid):
-    test = main.db.return_object("Order") # Retrieve all orders dictionary
+    test = main.db.return_object("Order")  # Retrieve all orders dictionary
     current_order = {}
-    for i in test["allorders"]: # Loop thru the orders list to find the correct order, i = orderobject
+    for i in test["allorders"]:  # Loop thru the orders list to find the correct order, i = orderobject
         if i.get_orderID == orderid:
-            current_order["Current_Order"] = i # creates dictionary with orderid-orderobject pair
+            current_order["Current_Order"] = i  # creates dictionary with orderid-orderobject pair
         else:
             pass
     c = current_order["Current_Order"]
@@ -780,7 +803,7 @@ def deliverymanagementsystem():
 @app.route('/adminorderhistory')
 def adminorderhistory():
     displayed_orders = {}
-    test = main.db.return_object("Order") # Retrieve all orders dictionary
+    test = main.db.return_object("Order")  # Retrieve all orders dictionary
     orders_list = test["allorders"]
     all_orders = {}
     all_orders_count = {}
