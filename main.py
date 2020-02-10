@@ -13,11 +13,8 @@ from UserManagement import UserManagement
 from StorageHandler import StorageHandler
 from CartManagement import CartManagement
 from OrderManagement import OrderManagement
-from c_SalesManagement import SalesManagement
-from ProductManagement import ProductManagement
 from ProductManagement import ProductManagement
 from c_SalesManagement import SalesManagement
-from ProductManagement import *
 from oauth2client.service_account import ServiceAccountCredentials
 # from SessionManagement import SessionManagement
 
