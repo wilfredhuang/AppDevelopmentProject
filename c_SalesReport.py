@@ -71,9 +71,6 @@ class CSalesReport:
     def get_item_sold(self):
         return self.__items_sold
 
-    def add_sales_amount(self, sales_amount):
-        self.__sales_amount += sales_amount
-
     def add_items(self, item_list):
 
         for item in item_list:
