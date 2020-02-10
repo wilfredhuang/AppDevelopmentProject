@@ -5,70 +5,76 @@
 {% endblock %}
 
 {% block content %}
-    <script>
-        function addToCart() {
-            alert("Item has been added to cart. Thank you for your purchase!");
-        }
-    </script>
-    <form method="POST" action="">
+    <div class="container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <script>
+                    function addToCart() {
+                        alert("Item has been added to cart. Thank you for your purchase!");
+                    }
+                </script>
+                <form method="POST" action="">
 
-        <!-- Page Content -->
-        <div class="container">
+                    <!-- Page Content -->
+                    <div class="container">
 
-            <!-- Page Heading -->
-            <h1 class="my-4">Products
-                <small>Welcome {{ username }}!</small>
-            </h1>
+                        <!-- Page Heading -->
+                        <h1 class="my-4">Products
+                            <small>Welcome {{ username }}!</small>
+                        </h1>
 
-            <div class="row" id="1">
-                {% for item in ItemList %}
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="card h-100 text-center">
-                            <img class="img-fluid" alt="product-image"
+                        <div class="row" id="1">
+                            {% for item in ItemList %}
+                                <div class="col-lg-4 col-sm-6 mb-4">
+                                    <div class="card h-100 text-center">
+                                        <img class="img-fluid" alt="product-image"
                                              src="{{ url_for('static', filename='files/' + item.get_file()) }}">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    <a href="#">{{ item.get_name() }}</a>
-                                </h4>
-                                <p class="card-text">{{ item.get_description() }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <button type="submit" name="item_button" onclick="addToCart()"
-                                        value="{{ item.get_id() }},{{ item.get_name() }},{{ item.get_cost() }}"
-                                        class="btn btn-danger">Add to cart
-                                </button>
-                            </div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                <a href="#">{{ item.get_name() }}</a>
+                                            </h4>
+                                            <p class="card-text">{{ item.get_description() }}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button type="submit" name="item_button" onclick="addToCart()"
+                                                    value="{{ item.get_id() }},{{ item.get_name() }},{{ item.get_cost() }}"
+                                                    class="btn btn-danger">Add to cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <!-- /.row -->
+                        <!-- /.row -->
 
-            <!-- Pagination -->
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
+                        <!-- Pagination -->
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.container -->
+                </form>
+            </div>
         </div>
-        <!-- /.container -->
-    </form>
+    </div>
 {% endblock %}

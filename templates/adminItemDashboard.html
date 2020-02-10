@@ -2,119 +2,137 @@
 
 {% block content %}
     {% from "includes/_formHelper.html" import render_field %}
-    <h1 class="display-4">Products</h1>
-    <div>
-        <form method="POST" action="">
-            <div class="form-group">
-                {{ render_field(input.search, class='form-control') }}
-            </div>
-        </form>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Image</th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Cost</th>
-                <th>Stock</th>
-                <th></th>
-                <th></th>
-            <tr>
-            </thead>
-            <tbody>
-            {% if key_search == "" %} <!-- if no search is performed, display all -->
-                {% for item in ItemList %} <!-- This is to loop through all your objects in your database -->
-                    <tr>
-                        <td><img height='50px' width='50px' alt="product-image"
-                                 src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
-                        <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
-                        <td>{{ item.get_name() }}</td>
-                        <td>{{ item.get_cost() }}</td>
-                        {% if item.get_stock() > alarm_stock %}
-                            <td style="color:green">{{ item.get_stock() }}</td>
+    <div class="container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <h1 class="display-4">Products</h1>
+                <div>
+                    <form method="POST" action="">
+                        <div class="form-group">
+                            {{ render_field(input.search, class='form-search') }}
+                        </div>
+                    </form>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Cost</th>
+                            <th>Stock</th>
+                            <th></th>
+                            <th></th>
+                        <tr>
+                        </thead>
+                        <tbody>
+                        {% if key_search == "" %} <!-- if no search is performed, display all -->
+                            {% for item in ItemList %}
+                                <!-- This is to loop through all your objects in your database -->
+                                <tr>
+                                    <td><img height='50px' width='50px' alt="product-image"
+                                             src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
+                                    <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                                    <td>{{ item.get_name() }}</td>
+                                    <td>{{ item.get_cost() }}</td>
+                                    {% if item.get_stock() > alarm_stock %}
+                                        <td style="color:green">{{ item.get_stock() }}</td>
+                                    {% else %}
+                                        <td style="color:red">{{ item.get_stock() }}</td>
+                                    {% endif %}
+                                    <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a>
+                                    </td>
+                                    <td>
+                                        <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
+                                            <input type="submit" value="Delete" class="btn btn-danger"
+                                                   onclick="return confirm('Are you sure you want to delete this product?');">
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% elif key_search == "wired" or key_search == 'Wired' %} <!-- check attribute -->
+                            {% for item in ItemList %}
+                                {% if item.get_type() == 'W' %}
+                                    <tr>
+                                        <td><img height='50px' width='50px' alt="product-image"
+                                                 src="{{ url_for('static', filename='files/' + item.get_file()) }}">
+                                        </td>
+                                        <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                                        <td>{{ item.get_name() }}</td>
+                                        <td>{{ item.get_cost() }}</td>
+                                        {% if item.get_stock() > alarm_stock %}
+                                            <td style="color:green">{{ item.get_stock() }}</td>
+                                        {% else %}
+                                            <td style="color:red">{{ item.get_stock() }}</td>
+                                        {% endif %}
+                                        <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a>
+                                        </td>
+                                        <td>
+                                            <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
+                                                <input type="submit" value="Delete" class="btn btn-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this product?');">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% elif key_search == "wireless" or key_search == 'Wireless' %}
+                            {% for item in ItemList %}
+                                {% if item.get_type() == 'WL' %}
+                                    <tr>
+                                        <td><img height='50px' width='50px' alt="product-image"
+                                                 src="{{ url_for('static', filename='files/' + item.get_file()) }}">
+                                        </td>
+                                        <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                                        <td>{{ item.get_name() }}</td>
+                                        <td>{{ item.get_cost() }}</td>
+                                        {% if item.get_stock() > alarm_stock %}
+                                            <td style="color:green">{{ item.get_stock() }}</td>
+                                        {% else %}
+                                            <td style="color:red">{{ item.get_stock() }}</td>
+                                        {% endif %}
+                                        <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a>
+                                        </td>
+                                        <td>
+                                            <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
+                                                <input type="submit" value="Delete" class="btn btn-danger "
+                                                       onclick="return confirm('Are you sure you want to delete this product?');">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
                         {% else %}
-                            <td style="color:red">{{ item.get_stock() }}</td>
+                            {% for item in ItemList %}
+                                {% if key_search in item.get_id() or key_search in item.get_name() %}
+                                    <tr>
+                                        <td><img height='50px' width='50px' alt="product-image"
+                                                 src="{{ url_for('static', filename='files/' + item.get_file()) }}">
+                                        </td>
+                                        <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
+                                        <td>{{ item.get_name() }}</td>
+                                        <td>{{ item.get_cost() }}</td>
+                                        {% if item.get_stock() > alarm_stock %}
+                                            <td style="color:green">{{ item.get_stock() }}</td>
+                                        {% else %}
+                                            <td style="color:red">{{ item.get_stock() }}</td>
+                                        {% endif %}
+                                        <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a>
+                                        </td>
+                                        <td>
+                                            <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
+                                                <input type="submit" value="Delete" class="btn btn-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this product?');">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                        <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
-                        <td>
-                            <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
-                                <input type="submit" value="Delete" class="btn btn-danger">
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            {% elif key_search == "wired" or key_search == 'Wired' %} <!-- check attribute -->
-                {% for item in ItemList %}
-                    {% if item.get_type() == 'W' %}
-                        <tr>
-                            <td><img height='50px' width='50px' alt="product-image"
-                                     src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
-                            <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
-                            <td>{{ item.get_name() }}</td>
-                            <td>{{ item.get_cost() }}</td>
-                            {% if item.get_stock() > alarm_stock %}
-                                <td style="color:green">{{ item.get_stock() }}</td>
-                            {% else %}
-                                <td style="color:red">{{ item.get_stock() }}</td>
-                            {% endif %}
-                            <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
-                            <td>
-                                <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            {% elif key_search == "wireless" or key_search == 'Wireless' %}
-                {% for item in ItemList %}
-                    {% if item.get_type() == 'WL' %}
-                        <tr>
-                            <td><img height='50px' width='50px' alt="product-image"
-                                     src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
-                            <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
-                            <td>{{ item.get_name() }}</td>
-                            <td>{{ item.get_cost() }}</td>
-                            {% if item.get_stock() > alarm_stock %}
-                                <td style="color:green">{{ item.get_stock() }}</td>
-                            {% else %}
-                                <td style="color:red">{{ item.get_stock() }}</td>
-                            {% endif %}
-                            <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
-                            <td>
-                                <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                {% for item in ItemList %}
-                    {% if key_search in item.get_id() or key_search in item.get_name() %}
-                        <tr>
-                            <td><img height='50px' width='50px' alt="product-image"
-                                     src="{{ url_for('static', filename='files/' + item.get_file()) }}"></td>
-                            <td>{{ item.get_id() }}</td> <!-- display Object attribute -->
-                            <td>{{ item.get_name() }}</td>
-                            <td>{{ item.get_cost() }}</td>
-                            {% if item.get_stock() > alarm_stock %}
-                                <td style="color:green">{{ item.get_stock() }}</td>
-                            {% else %}
-                                <td style="color:red">{{ item.get_stock() }}</td>
-                            {% endif %}
-                            <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
-                            <td>
-                                <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                </form>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            </tbody>
+                        </tbody>
 
-        </table>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

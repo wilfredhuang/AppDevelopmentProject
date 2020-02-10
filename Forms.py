@@ -158,7 +158,7 @@ class CheckoutForm(Form):
     countries = SelectField("Country", choices=country_list)
     unit_number = StringField('Unit Number', [validators.DataRequired()])
     
-    
+#Hieu
 class CreateItemForm(Form):
     item_id = StringField('Item ID: ', [validators.Length(min=1,
                                                           max=150), validators.DataRequired()])
@@ -171,7 +171,7 @@ class CreateItemForm(Form):
     item_description = TextAreaField('Description', [validators.Optional()])
 
 
-
+#Hieu
 class SearchForm(Form):
     search = StringField('Search: ')
 

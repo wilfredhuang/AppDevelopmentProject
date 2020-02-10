@@ -156,7 +156,18 @@ def users(choice, username):
 # HF
 @app.route('/admin')
 def admin():
-    return render_template('admin.html', ItemList=main.get_inventory().values(), alarm_stock=10)
+    inventory = main.get_inventory()
+    wireless = []
+    wired = []
+    for i in inventory.values():
+        if i.get_type() == 'W':
+            wired.append(i)
+        elif i.get_type() == 'WL':
+            wireless.append(i)
+        else:
+            continue
+
+    return render_template('admin.html', ItemList=inventory.values(), alarm_stock=10, wired=len(wired), wireless=len(wireless))
 
 
 # Sales
@@ -654,7 +665,7 @@ def updateItem(id):
         updateItemForm.item_quantity.data = item.get_stock()
         updateItemForm.item_cost.data = item.get_cost()
         updateItemForm.item_type.data = item.get_type()
-        updateItemForm.item_description = item.get_description()
+
 
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
