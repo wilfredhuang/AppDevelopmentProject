@@ -405,6 +405,7 @@ def paypalpayment():
     total_cost = 0
     # Get cart
     u_cart = main.cart_management.retrieve_cart(username)
+    main.product_management.purchase_item(u_cart)
     for i in u_cart:
         item_list.append({"name": i.get_name(),
                           "sku": "1",
@@ -670,33 +671,6 @@ def productDisplay():
         product_info = request.form["item_button"].split(",")  # List 0 = ID, 1 = Name, 2 = Price
         product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
         main.cart_management.add_to_cart(username, product)
-
-    # # Get User cart -JH
-    # username = ""
-    # if 'username' in session:
-    #     username = session['username']
-    # u_cart = main.db.return_object("Cart")
-    # try:
-    #     u_cart = u_cart[username]
-    #     product_list = u_cart
-    # except:
-    #     product_list = []
-    #
-    # # Add product to cart -JH
-    # # Also check if item already is in cart, if it is, +1 quantity -JH
-    # item_exist = False
-    # if request.method == 'POST':
-    #     product_info = request.form["item_button"].split(",")  # List 0 = ID, 1 = Name, 2 = Price
-    #     for i in range(len(product_list)):
-    #         if product_info[1] == product_list[i].get_name():
-    #             product_list[i].add_quantity()
-    #             main.db.update_cart("Cart", username, product_list)
-    #             item_exist = True
-    #             break
-    #     if not item_exist:
-    #         product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
-    #         product_list.append(product)
-    #         main.db.update_cart("Cart", username, product_list)
 
     return render_template('productDisplay.html', ItemList=inventory, username=username)
 
