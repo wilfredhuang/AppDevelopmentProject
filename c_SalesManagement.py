@@ -20,6 +20,7 @@ class SalesManagement(ManagementSystem):
         self.__overall_sales_report = CSalesReport()
 
     def get_report(self, day, month, year):
+        print("getting report from {}-{}-{}".format(year, month, day))
         if(year in self._db):
 
             # if there is no sales found in the month before
@@ -32,6 +33,7 @@ class SalesManagement(ManagementSystem):
 
                 return None
             else:
+                print("report found")
                 return self._db[year][month][day]
 
         else:
@@ -189,7 +191,7 @@ class SalesManagement(ManagementSystem):
             print("UNABLE TO UPDATE OVERALL SALES DUE TO PARAMETER: (item_list) Empty")
 
         else:
-
+            print("updating overall sales")
             self.__overall_sales_report.add_items(item_list)
 
         temp_date = str(date)
@@ -198,6 +200,7 @@ class SalesManagement(ManagementSystem):
         month_key = int(temp_date[5:7])
         day_key = int(temp_date[8:])
 
+        print("updating {} {} {}".format(year_key, month_key, day_key))
         # if sales found in that year before
         if(year_key in self._db):
 
@@ -243,4 +246,4 @@ class SalesManagement(ManagementSystem):
             self._db[year_key][0] = CSalesReport()
             self._db[year_key][0].add_items(item_list)
 
-
+        self._handler.set_storage(self._key_name, self._db)

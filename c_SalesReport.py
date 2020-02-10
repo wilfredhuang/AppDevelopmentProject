@@ -28,44 +28,44 @@ class CSalesReport:
         return self.__num_transaction
 
     def get_popular_item(self):
-
         temp_quantity = 0
         temp_item = []
 
-        for item in self.__items_sold:
-            
-            if item.get_quantity() > temp_quantity:
-                temp_quantity = item.get_quantity()
-                temp_item = [item.get_name()]
+        for key, item in self.__items_sold.items():
 
-            elif item.get_quantity() == temp_quantity:
-                temp_item.append(item.get_name())
+            if item.quantity_sold > temp_quantity:
+                temp_quantity = item.quantity_sold
+                temp_item = [key]
+
+            elif item.quantity_sold == temp_quantity:
+                temp_item.append(key)
 
         if temp_item == []:
             return None
 
         else:
-            temp = [temp_item, temp_quantity]
+            temp = temp_item
             return temp
+
 
     def get_profit_item(self):
 
         temp_profit = 0.0
         temp_item = []
 
-        for item in self.__items_sold:
-            if (item.get_quantity() * item.get_cost()) > temp_profit:
-                temp_profit = (item.get_quantity() * item.get_cost())
-                temp_item = [item.get_name()]
+        for key, item in self.__items_sold.items():
+            if item.sales_earned > temp_profit:
+                temp_profit = item.sales_earned
+                temp_item = [key]
 
-            elif (item.get_quantity() * item.get_cost()) == temp_profit:
-                temp_item.append(item.get_name())
+            elif item.sales_earned == temp_profit:
+                temp_item.append(key)
 
         if temp_item == []:
             return None
 
         else:
-            temp = [temp_item, temp_profit]
+            temp = temp_item
             return temp
 
     def get_item_sold(self):
