@@ -19,11 +19,12 @@
         <div class="form-group">
             {{ render_field(form.item_quantity, class="form-control") }}
         </div>
-        <div id="prof">
-            <div class="form-group">
-                {{ render_field(form.item_type, class="form-control") }}
-            </div>
+        <div class="form-group">
+            {{ render_field(form.item_type, class="form-control") }}
         </div>
+        <div style="padding-top: 1em">
         <input type="submit" value="Submit" class="btn btn-primary"/>
+        </div>
+
     </form>
 {% endblock %}

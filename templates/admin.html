@@ -28,8 +28,7 @@
                         <th>Name</th>
                         <th>Cost</th>
                         <th>Stock</th>
-                        <th></th>
-                        <th></th>
+                        <th>Description</th>
                     <tr>
                     </thead>
                     <tbody>
@@ -45,12 +44,7 @@
                             {% else %}
                                 <td style="color:red">{{ item.get_stock() }}</td>
                             {% endif %}
-                            <td><a href="/updateItem/{{ item.get_id() }}" class="btn btn-warning">Update</a></td>
-                            <td>
-                                <form action="{{ url_for('removeItem', id=item.get_id()) }}" method="POST">
-                                    <input type="submit" value="Delete" class="btn btn-danger">
-                                </form>
-                            </td>
+                            <td>{{ item.get_description() }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
