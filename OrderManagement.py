@@ -27,7 +27,7 @@ class OrderManagement(ManagementSystem):
 
         while True:
             if unique_id in key_list:
-                unique_id = uuid.uuid4()
+                unique_id = str(uuid.uuid4())
             else:
                 break
 
@@ -54,7 +54,7 @@ class OrderManagement(ManagementSystem):
 
         if key_list == []:
 
-            return None 
+            return None
 
         else:
             return self._db[key]
