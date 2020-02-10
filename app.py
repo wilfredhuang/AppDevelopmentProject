@@ -769,16 +769,15 @@ def orderlog(orderid):
         else:
             print("Order-id not found")
     c = current_order["Current_Order"] # c = order-object!
-    if c.get_status() == "paymentpending":
-        orderstage = "PaymentPending"
-    elif c.get_status() == "processing":
+    print("Status is,", c.get_status())
+    if c.get_status() == 0:
         orderstage = "Processing"
-    elif c.get_status() == "shipped":
+    elif c.get_status() == 1:
         orderstage = "Shipped"
-    elif c.get_status() == "delivered":
+    elif c.get_status() == 2:
         orderstage = "Delivered"
     else:
-        orderstage = ""
+        orderstage = "PaymentPending"
     return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage=orderstage, orderlogCommentDict=c.get_order_log())
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 

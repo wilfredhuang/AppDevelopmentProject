@@ -1,11 +1,12 @@
 #standardDeliveryIcon {
-  margin-left:850px;
+  margin-left:950px;
+  margin-top:-65px;
 
 }
 
-#ETA {
-  margin-left:675px;
-
+#standardDelivery {
+  position:absolute;
+  top:130px;
 }
 
 #orderlogButton {
@@ -52,3 +53,8 @@ a:hover {
    text-decoration: none;
 }
 
+#ETA {
+  margin-left:1000px;
+  position:absolute;
+  top:230px;
+}
