@@ -14,11 +14,12 @@ class Order:
         self.__order_log_comment = 1
         self.__deliveryType = "Standard"
         self.__paymentMethod = "Paypal"
-        self.__userUnitNumber = "#09-1784"
-        self.__userPostalCode = "350155"
+        self.__userUnitNumber = ""
+        self.__userPostalCode = ""
         self.__shippingFee = float(5.99)
         self.__subtotal = float(self.__productPrice) - (self.__shippingFee)
         self.__total = self.__subtotal + self.__shippingFee
+        self.__shipment_receiver = ""
 
     def get_item_list(self):
         return self.__item_list
@@ -30,6 +31,8 @@ class Order:
         return self.__orderID
 
     def get_address(self):
+        display_list = self.__address.split(",")
+        self.__address = display_list[1]
         return self.__address
 
     def get_status(self):
@@ -82,10 +85,19 @@ class Order:
         return self.__paymentMethod
 
     def get_userUnitNumber(self):
+        display_list = self.__address.split(",")
+        self.__userUnitNumber = display_list[3]
         return self.__userUnitNumber
 
     def get_userPostalCode(self):
+        display_list = self.__address.split(",")
+        self.__userPostalCode = display_list[2]
         return self.__userPostalCode
+
+    def get_shipment_receiver(self):
+        display_list = self.__address.split(",")
+        self.__shipment_receiver = display_list[0]
+        return self.__shipment_receiver
 
     def get_subtotal(self):
         return self.__subtotal
@@ -95,6 +107,7 @@ class Order:
 
     def get_total(self):
         return self.__total
+
 
     def add_comment(self, time, comment):
         self.__order_log[self.__order_log_comment] = [time, comment]
