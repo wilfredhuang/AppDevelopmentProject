@@ -1,0 +1,82 @@
+
+{% extends "adminBase.html" %}
+{% block title %} Admin - Sales {% endblock %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sales.css') }}" >
+{% endblock %}
+
+
+{% from "includes/_formHelper.html" import render_field %}
+{% block content %}
+ <div class="container vertical-center ">
+    <div class="login-container">
+
+        <form novalidate method="POST" action="">
+            <div class="form-section"> <!-- form section -->
+                <h4>Date Selection for Sales</h4>
+                <!-- First group of Form Elements - Personal Information -->
+                <div class="">
+                    <div class="p-info"> <!-- Personal Information Elements -->
+
+                        <div class="row"> <!-- Name -->
+                            <div class="col">
+                                <div class="form-group">
+                                {{ render_field(form.day, class="form-control txt") }}
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                {{ render_field(form.month, class="form-control txt") }}
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                {{ render_field(form.year, class="form-control txt") }}
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                <input type="Submit" name="submit" value="Select Date" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div> <!-- End of Name -->
+
+                    </div> <!-- End of Personal Information Elements -->
+                </div> <!-- End of First group of Form Elements - Personal Information -->
+            </div> <!-- End of form section -->
+
+        </form>
+        <hr>
+        {% if sales == None %}
+            <h3 class="notice">There is no sales to display</h3>
+        {% else %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Total Sales</th>
+                    <th>Total Quantity Sold</th>
+                    <th>Number of Transaction</th>
+                    <th>Most Popular Item</th>
+                    <th>Most Profitable Item</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ sales.get_sales_amount() }}</td>
+                        <td>{{ sales.get_quantity_sold() }}</td>
+                        <td>{{ sales.get_num_transaction() }}</td>
+                        <td>{{ sales.get_popular_item() }}</td>
+                        <td>{{ sales.get_profit_item() }}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        {% endif %}
+    </div>
+ </div>
+
+
+{% endblock %}

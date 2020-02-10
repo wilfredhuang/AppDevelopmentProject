@@ -46,6 +46,7 @@ def username_duplication_check(form, field):
         raise ValidationError('Username have been used')
 
 
+# HF
 def username_login_check(form, field):
     global password_holder
     password_holder = None
@@ -63,6 +64,7 @@ def username_login_check(form, field):
         raise ValidationError('Username not found')
 
 
+# HF
 def password_login_check(form, field):
     if password_holder != None:
         if not PasswordHashing.verify_password(password_holder, field.data):
@@ -116,6 +118,28 @@ class AddressForm(Form):
     unit_number = StringField('Unit Number', [validators.DataRequired()])
 
 
+# HF
+class SalesForm(Form):
+    filter_list = ["year", "month", "day", "all"]
+    year_list = []
+    month_list = []
+    day_list = []
+
+    for i in range(1, 32):
+        day_list.append((i, i))
+
+    for i in range(1, 13):
+        month_list.append((i, i))
+
+    for i in range(2015, 2024):
+        year_list.append((i, i))
+
+    filter = SelectField("filter", choices=filter_list)
+    year = SelectField("year", choices=year_list)
+    month = SelectField("month", choices=month_list)
+    day = SelectField("day", choices=day_list)
+
+
 class CheckoutForm(Form):
     country_list = []
     url = "https://restcountries.eu/rest/v2/all?fields=name;alpha2Code"
@@ -144,3 +168,4 @@ class CreateItemForm(Form):
 
 class SearchForm(Form):
     search = StringField('Search: ')
+

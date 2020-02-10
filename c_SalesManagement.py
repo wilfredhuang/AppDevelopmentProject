@@ -19,6 +19,24 @@ class SalesManagement(ManagementSystem):
         super().__init__("Sales", "Sales Management", storage_handler)
         self.__overall_sales_report = CSalesReport()
 
+    def get_report(self, day, month, year):
+        if(year in self._db):
+
+            # if there is no sales found in the month before
+            if (self._db[year][month] == None):
+
+                return None
+
+            # if there is sales before in the month but not on that day
+            elif (self._db[year][month][day] == None):
+
+                return None
+            else:
+                return True
+
+        else:
+            return self._db[year][month][day]
+
     """
     def getDailySales(self):
 

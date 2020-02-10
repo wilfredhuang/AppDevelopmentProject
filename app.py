@@ -64,21 +64,21 @@ def home():
     return render_template('home.html', ItemList=ItemList)
 
 
-# Called For testing
+# Google Analytics
 # HF
 @app.route('/ga_main', methods=['POST', 'GET'])
 def ga_main():
 
     return render_template('googleAnalyticsAPI-Main.html')
 
-# Called For testing
+# Google Analytics
 # HF
 @app.route('/ga_2', methods=['POST', 'GET'])
 def ga_2():
     ac = main.get_access_token()
     return render_template('googleAnalyticsAPI2.html', ACCESS_TOKEN_FROM_SERVICE_ACCOUNT=ac)
 
-# Called For testing
+# Google Analytics
 # HF
 @app.route('/ga_ssa', methods=['POST', 'GET'])
 def ga_ssa():
@@ -176,6 +176,16 @@ def admin():
 
     return render_template('admin.html',ItemList=get_inventory().values(), alarm_stock=10)
 
+# Sales
+@app.route('/sales', methods=['POST', 'GET'])
+def sales():
+    sales_date_form = SalesForm(request.form)
+    temp_sales = None
+    if request.method == "POST":
+
+        temp_sales = main.sales_management.get_report(sales_date_form.year.data, sales_date_form.month.data, sales_date_form.day.data)
+
+    return render_template('sales.html', form=sales_date_form, sales=temp_sales)
 
 # Called when sign up button is clicked from the login page
 # HF

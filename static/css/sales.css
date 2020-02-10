@@ -1,0 +1,35 @@
+.p-info, .s-info {
+    margin: 20px;
+}
+
+.title{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-section {
+    margin-top: 50px;
+}
+
+.su-btn {
+    margin-top: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+input[type=submit] {
+    width: 50%;
+    display: inline-block;
+    padding-top:15px;
+    padding-right:10px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    margin-top: 15px;
+    margin-left: 15px;
+    //border: 1px solid #ccc;
+    //box-sizing: border-box;
+}
+
+.notice{
+    color: #de5c00
+}
