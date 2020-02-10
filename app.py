@@ -626,7 +626,7 @@ def addItemExcel():
             name = data['Name'][i]
             cost = data['Cost'][i]
             stock = data['Stock'][i]
-            image = 'none'
+            image = 'default_img.jpeg'
             type = data['Type'][i]  # to determine the type of product for sorting purpose
 
             wired = ['w', 'wired', 'W', 'Wired']
@@ -658,10 +658,13 @@ def addItemExcel():
 def removeItem(id):
     inventory = main.get_inventory()
     removedItem = inventory[id]
-    try:
-        os.remove(f'files/{removedItem.get_file()}')
-    except:
-        print('error. file not found')
+    if removedItem.get_file() is not 'default_img.jpeg':
+        try:
+            os.remove(f'files/{removedItem.get_file()}')
+        except:
+            print('error. file not found')
+    else:
+        pass
 
     main.product_management.delete_item(removedItem.get_id())
 
