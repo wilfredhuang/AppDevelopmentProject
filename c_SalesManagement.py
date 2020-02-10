@@ -20,7 +20,7 @@ class SalesManagement(ManagementSystem):
         self.__overall_sales_report = CSalesReport()
 
     def get_report(self, day, month, year):
-        print("getting report from {}-{}-{}".format(year, month, day))
+        print("getting report from year:{} month:{} day:{}".format(year, month, day))
         if(year in self._db):
 
             # if there is no sales found in the month before
@@ -200,7 +200,7 @@ class SalesManagement(ManagementSystem):
         month_key = int(temp_date[5:7])
         day_key = int(temp_date[8:])
 
-        print("updating {} {} {}".format(year_key, month_key, day_key))
+        print("updating year:{} month:{} day:{}".format(year_key, month_key, day_key))
         # if sales found in that year before
         if(year_key in self._db):
 
