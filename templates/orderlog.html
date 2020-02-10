@@ -120,11 +120,11 @@ Note:
             </tr>
             <tr>
                 <td> Subtotal</td>
-                <td> "$" {{ current_order.get_subtotal() }}</td>
+                <td> ${{ current_order.get_subtotal() }}</td>
             </tr>
             <tr>
                 <td> Shipping Fee</td>
-                <td> "$" + {{ current_order.get_shippingFee() }}</td>
+                <td> ${{ current_order.get_shippingFee() }}</td>
             </tr>
             <tr>
                 <td>
@@ -136,7 +136,7 @@ Note:
             </tr>
             <tr>
                 <td> Total</td>
-                <td><span id="totalsumamt"> "$" + {{ current_order.get_total() }}</span></td>
+                <td><span id="totalsumamt"> ${{ current_order.get_total() }}</span></td>
             </tr>
         </table>
     </div>
