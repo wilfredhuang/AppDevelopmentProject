@@ -16,8 +16,8 @@ class Order:
         self.__paymentMethod = "Paypal"
         self.__userUnitNumber = "#09-1784"
         self.__userPostalCode = "350155"
-        self.__subtotal = float(0)
-        self.__shippingFee = int(5.99)
+        self.__shippingFee = float(5.99)
+        self.__subtotal = float(self.__productPrice) - (self.__shippingFee)
         self.__total = self.__subtotal + self.__shippingFee
 
     def get_item_list(self):
