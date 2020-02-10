@@ -3,6 +3,7 @@ class Item():
         self.__id = str(id)
         self.__name = name
         self.__cost = cost
+        self.__description = ''
         self.__image_file = image_name
         self.__quantity = 1
         self.__stock = 0
@@ -28,20 +29,26 @@ class Item():
     def set_cost(self, cost):
         self.__cost = cost
 
-    def set_quantity(self, quantity):
-        self.__quantity = quantity
-
     def get_file(self):
         return self.__image_file
 
     def get_quantity(self):
         return self.__quantity
 
+    def set_quantity(self, quantity):
+        self.__quantity = quantity
+
     def get_stock(self):
         return self.__stock
 
     def set_stock(self, stock):
         self.__stock = int(stock)
+
+    def get_description(self):
+        return self.__description
+
+    def set_description(self,description):
+        self.__description = description
 
 
 class Wired(Item):

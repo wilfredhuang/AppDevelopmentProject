@@ -21,12 +21,10 @@ app.secret_key = SECRET_KEY
 main.init()
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
 # Hieu
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 # Hieu
 def retrieveFiles():
@@ -37,26 +35,10 @@ def retrieveFiles():
     return fileList
 
 
-# Hieu
-def get_inventory():
-    inventory = main.storage_handler.get_storage('Product')
-    if inventory is not None:
-        return inventory
-    else:
-        inventory = {}
-        return inventory
-
-
-# Hieu
-def get_sale():
-    sale = main.storage_handler.get_storage("Sale")
-    return sale
-
-
 # Main page / Homepage
 @app.route('/')
 def home():
-    itemDict = get_inventory().values()
+    itemDict = main.get_inventory().values()
     ItemList = []
     for i in itemDict:
         ItemList.append(i)
@@ -174,7 +156,7 @@ def users(choice, username):
 @app.route('/admin')
 def admin():
 
-    return render_template('admin.html',ItemList=get_inventory().values(), alarm_stock=10)
+    return render_template('admin.html',ItemList=main.get_inventory().values(), alarm_stock=10)
 
 # Sales
 @app.route('/sales', methods=['POST', 'GET'])
@@ -600,18 +582,20 @@ def aboutUs():
 #Hieu
 @app.route('/adminItemDashboard', methods=['Get', 'Post'])
 def adminItemDashboard():
+    inventory = main.get_inventory().values()
     search_function = SearchForm(request.form)
     key = ""
     if request.method == 'POST':
         key = search_function.search.data
     print(f'key is {key}')
 
-    return render_template('adminItemDashboard.html', ItemList=get_inventory().values(), input=search_function,
+    return render_template('adminItemDashboard.html', ItemList=inventory, input=search_function,
                            key_search=key, alarm_stock=10)
 
 #Hieu
 @app.route('/createItem', methods=['Get', 'Post'])
 def addItem():
+    item = main.get_inventory()
     createItemForm = CreateItemForm(request.form)
     if request.method == 'POST':
 
@@ -629,7 +613,6 @@ def addItem():
         item.set_stock(createItemForm.item_quantity.data)
         main.product_management.update_item(item)
 
-
         print(request.files)
         print(request.files['file'])
         print(filename)
@@ -643,9 +626,7 @@ def addItem():
 #Hieu
 @app.route('/addItemExcel', methods=['GET', 'POST'])
 def addItemExcel():
-    inventory = get_inventory()
-    item = ''
-
+    inventory = main.get_inventory()
     if request.method == 'POST':
         file = request.files['file']
         data = pd.read_excel(file)  # read the file
@@ -674,8 +655,7 @@ def addItemExcel():
                 existing_item.set_stock(new_stock)
                 print(existing_item.get_stock())
 
-                inventory[item.get_id()] = existing_item
-                main.product_management.update_item(existing_item)
+                main.product_management.modify_product(existing_item)
 
             else:
                 item.set_stock(stock)
@@ -686,7 +666,7 @@ def addItemExcel():
 #Hieu
 @app.route('/removeItem/<id>', methods=['POST'])
 def removeItem(id):
-    inventory = get_inventory()
+    inventory = main.get_inventory()
     removedItem = inventory[id]
     try:
         os.remove(f'files/{removedItem.get_file()}')
@@ -695,16 +675,16 @@ def removeItem(id):
 
     main.product_management.delete_item(removedItem.get_id())
 
-
     return redirect(url_for('adminItemDashboard'))
 
 #Hieu
 @app.route('/updateItem/<id>', methods=['GET', 'POST'])
 def updateItem(id):
+    inventory = main.get_inventory()
     updateItemForm = CreateItemForm(request.form)
-    itemInventory = get_inventory()
-    item = itemInventory.get(id)
     if request.method == 'POST' and updateItemForm.validate():
+
+        item = inventory.get(id)
 
         item.set_id(updateItemForm.item_id.data)
         item.set_name(updateItemForm.item_name.data)
@@ -717,6 +697,7 @@ def updateItem(id):
 
     else:
 
+        item = inventory.get(id)
         updateItemForm.item_id.data = item.get_id()
         updateItemForm.item_name.data = item.get_name()
         updateItemForm.item_quantity.data = item.get_stock()
@@ -725,11 +706,10 @@ def updateItem(id):
 
         return render_template('adminUpdateItem.html', form=updateItemForm)
 
-#Hieu und Jun Hui
+
 @app.route('/productDisplay', methods=["POST", "GET"])
 def productDisplay():
-    ItemList = []
-    ItemList = get_inventory().values()
+    inventory = main.get_inventory().values()
 
     username = ""
     if "username" in session:
@@ -767,7 +747,7 @@ def productDisplay():
     #         product_list.append(product)
     #         main.db.update_cart("Cart", username, product_list)
 
-    return render_template('productDisplay.html', ItemList=ItemList)
+    return render_template('productDisplay.html', ItemList=inventory)
 
 # Wilfred's delivery section
 
@@ -833,7 +813,7 @@ def orderlog(orderid):
         else:
             pass
     c = current_order["Current_Order"] # c = order-object!
-    if c.get_status() == "paymfentpending":
+    if c.get_status() == "paymentpending":
         orderstage = "PaymentPending"
     elif c.get_status() == "processing":
         orderstage = "Processing"
