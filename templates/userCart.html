@@ -10,7 +10,7 @@
 
 </div>
 
-<form method="POST" action="">
+
 <div class="container col-md-9">
     <div class="card">
         <div class="card-header shadow" style="background-color: rgb(33,37,41);">
@@ -21,6 +21,7 @@
             {% endif %}
         </div>
         <div class="card-body">
+            <form method="POST" action="">
             <div class="row">
                 <div class="col" style="background-color: #f2f2f2;">
                     <div class="table-responsive">
@@ -51,7 +52,8 @@
                         </table>
                     </div>
                 </div>
-            </div><br />
+            </div><br/>
+            </form>
             <hr/>
             <div class="container col-md-8" style="float: right;">
                 <div class="row">
@@ -84,10 +86,20 @@
                 </div>
             </div>
             <div class="row">
+                {% if cart_empty %}
+                <div class="col">
+                    <button class="btn btn-primary bg-primary border rounded border-white button-selected"
+                            onclick="alert('Your cart is empty!')"
+                            style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;">
+                        Checkout
+                    </button>
+                </div>
+                {% else %}
                 <div class="col"><a class="btn btn-primary bg-primary border rounded border-white button-selected" role="button" style="width: 25%;color: #f5f5f7;background: linear-gradient(#42a1ec,#0070c9);float: right;" href="/checkoutoptions">Checkout</a></div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-</div></form>
+</div>
 {% endblock %}
