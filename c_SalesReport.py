@@ -38,7 +38,7 @@ class CSalesReport:
                 temp_item = [key]
 
             elif item.quantity_sold == temp_quantity:
-                temp_item.append(key)
+                temp_item.append(','+key)
 
         if temp_item == []:
             return None
@@ -59,7 +59,7 @@ class CSalesReport:
                 temp_item = [key]
 
             elif item.sales_earned == temp_profit:
-                temp_item.append(key)
+                temp_item.append(','+key)
 
         if temp_item == []:
             return None
