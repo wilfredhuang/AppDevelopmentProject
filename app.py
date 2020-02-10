@@ -176,8 +176,9 @@ def sales():
     sales_date_form = SalesForm(request.form)
     temp_sales = None
     if request.method == "POST":
-        temp_sales = main.sales_management.get_report(sales_date_form.year.data, sales_date_form.month.data,
-                                                      sales_date_form.day.data)
+
+        temp_sales = main.sales_management.get_report(int(sales_date_form.day.data), int(sales_date_form.month.data),
+                                                      int(sales_date_form.year.data))
 
     return render_template('sales.html', form=sales_date_form, sales=temp_sales)
 
@@ -415,6 +416,7 @@ def paypalpayment():
     total_cost = 0
     # Get cart
     u_cart = main.cart_management.retrieve_cart(username)
+    main.product_management.purchase_item(u_cart)
     for i in u_cart:
         item_list.append({"name": i.get_name(),
                           "sku": "1",
@@ -681,33 +683,6 @@ def productDisplay():
         product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
         main.cart_management.add_to_cart(username, product)
 
-    # # Get User cart -JH
-    # username = ""
-    # if 'username' in session:
-    #     username = session['username']
-    # u_cart = main.db.return_object("Cart")
-    # try:
-    #     u_cart = u_cart[username]
-    #     product_list = u_cart
-    # except:
-    #     product_list = []
-    #
-    # # Add product to cart -JH
-    # # Also check if item already is in cart, if it is, +1 quantity -JH
-    # item_exist = False
-    # if request.method == 'POST':
-    #     product_info = request.form["item_button"].split(",")  # List 0 = ID, 1 = Name, 2 = Price
-    #     for i in range(len(product_list)):
-    #         if product_info[1] == product_list[i].get_name():
-    #             product_list[i].add_quantity()
-    #             main.db.update_cart("Cart", username, product_list)
-    #             item_exist = True
-    #             break
-    #     if not item_exist:
-    #         product = Product.Product(product_info[0], product_info[1], float(product_info[2]))
-    #         product_list.append(product)
-    #         main.db.update_cart("Cart", username, product_list)
-
     return render_template('productDisplay.html', ItemList=inventory, username=username)
 
 
@@ -779,16 +754,15 @@ def orderlog(orderid):
         else:
             print("Order-id not found")
     c = current_order["Current_Order"] # c = order-object!
-    if c.get_status() == "paymentpending":
-        orderstage = "PaymentPending"
-    elif c.get_status() == "processing":
+    print("Status is,", c.get_status())
+    if c.get_status() == 0:
         orderstage = "Processing"
-    elif c.get_status() == "shipped":
+    elif c.get_status() == 1:
         orderstage = "Shipped"
-    elif c.get_status() == "delivered":
+    elif c.get_status() == 2:
         orderstage = "Delivered"
     else:
-        orderstage = ""
+        orderstage = "PaymentPending"
     return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage=orderstage, orderlogCommentDict=c.get_order_log())
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 

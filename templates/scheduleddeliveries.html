@@ -4,24 +4,12 @@
 
 {% block content %}
     <script>
-        var sortValue;
-
-        function visitPage(v) {
-            v = document.getElementById("sortOption").value;
-            if (v === "Latest") {
-                window.location = '#';
-            }
-
-            if (v === "Oldest") {
-                window.location = '/trackordersOldest';
-            }
-        }
     </script>
     <div class="container">
         <h1> Ongoing Orders </h1>
         <span id="sortOrders"> Sort By </span>
         <label>
-            <select id="sortOption" onchange="visitPage(sortValue);">
+            <select id="sortOption" onchange="">
                 <option value="Latest">Latest</option>
                 <option value="Oldest">Oldest</option>
             </select>

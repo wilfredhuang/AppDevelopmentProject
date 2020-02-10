@@ -36,7 +36,7 @@ class ProductManagement(ManagementSystem):
         for item in item_list:
             if item.get_id() in key_list:
                 temp_item = self._db[item.get_id()]
-                temp_item.set_quantity(temp_item.get_quantity() - item.get_quantity())
+                temp_item.set_stock(temp_item.get_stock() - item.get_quantity())
                 self._db[item.get_id()] = temp_item
                 self._handler.set_storage(self._key_name, self._db)
                 print("existing item: {} found, purchasing {} item".format(item.get_id(), item.get_quantity()))

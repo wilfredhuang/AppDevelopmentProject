@@ -17,133 +17,138 @@ Note:
 
 {% block title %} Order Log {% endblock %}
 {% block content %}
-<div class="container">
-    <h1> My Orders </h1>
-</div>
-<!-- Start of Order Log -->
-<div class="container">
-    <div id="firstSection">
-        <hr>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-8">
-                    <span id="orderNo"> Order #{{ current_order.get_orderID() }} </span> <!-- to be stored -->
-                </div>
-                <div class="col-xs-4">
-                    <!-- to be stored -->
-                    <img src="../static/img/{{ current_order.get_deliveryType() }}Delivery.png" id="standardDeliveryIcon"
-                         alt="StandardDelivery.png"> {{ current_order.get_deliveryType() }} Delivery
+    <div class="container">
+        <h1> My Orders </h1>
+    </div>
+    <!-- Start of Order Log -->
+    <div class="container">
+        <div id="firstSection">
+            <hr>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <span id="orderNo"> Order #{{ current_order.get_orderID() }} </span> <!-- to be stored -->
+                    </div>
+                    <div class="col-xs-4">
+                        <!-- to be stored -->
+{#                        <img src="../static/img/{{ current_order.get_deliveryType() }}Delivery.png"#}
+{#                             id="standardDeliveryIcon"#}
+{#                             alt="StandardDelivery.png"> {{ current_order.get_deliveryType() }} Delivery#}
+                        <img src="../static/img/{{ current_order.get_deliveryType() }}Delivery.png"
+                             id="standardDeliveryIcon"
+                             alt="StandardDelivery.png">
+                        <span id="standardDelivery"> {{ current_order.get_deliveryType() }} Delivery </span>
+                    </div>
                 </div>
             </div>
+            <p> Placed on {{ current_order.get_date() }} </p>
+            <p> Paid by {{ current_order.get_paymentMethod() }} </p>
+            {#        <span id="authCode"> Authorisation Code {{ current_order.get_authCode() }} </span>#}
+            <span id="ETA"> ETA: {{ current_order.get_order_eta() }} Days </span>
         </div>
-        <p> Placed on {{ current_order.get_date() }} </p>
-        <p> Paid by {{current_order.get_paymentMethod()}} </p>
-{#        <span id="authCode"> Authorisation Code {{ current_order.get_authCode() }} </span>#}
-        <span id="ETA"> ETA: {{ current_order.get_order_eta() }} Days </span>
-    </div>
-    <div id="secondSection" class="container">
-        <hr>
-        <a href="orderlist"> <span id="orderlistButton">
+        <div id="secondSection" class="container">
+            <hr>
+            <a href="orderlist"> <span id="orderlistButton">
       Order List
       </span>
-        </a>
-    </div>
-    <div id="thirdSection" class="container">
-        <div>
-            <img id="deliveryStageVisual" src="../static/img/{{orderstage}}.PNG">
+            </a>
+        </div>
+        <div id="thirdSection" class="container">
+            <div>
+                <img id="deliveryStageVisual" src="../static/img/{{ orderstage }}.PNG">
+            </div>
+        </div>
+        <div id="fourthSection">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <table id="orderList">
+                <th> Order Log</th>
+                {% for i in orderlogCommentDict %}
+                    <tr>
+                        <td> {{ orderlogCommentDict[i][0] }}</td>
+                        <td> {{ orderlogCommentDict[i][1] }}</td>
+                    </tr>
+                {% endfor %}
+
+
+                <!--            <th> Order Log</th>
+                            <tr>
+                                <td> 15 Nov 2019 - 13:39</td>
+                                <td> Your package has been shipped with our logistics partner ABCexpress</td>
+                            </tr>
+                            <tr>
+                                <td>12 Nov 2019 - 16:43</td>
+                                <td> Package has been picked up by a logistics partner</td>
+                            </tr>
+                            <tr>
+                                <td> 11 Nov 2019 - 11:00</td>
+                                <td> Your package has been packed and is being handed over to a logistics partner.</td>
+                            </tr>
+                            <tr>
+                                <td> 10 Nov 2019 - 18:00</td>
+                                <td> Your order has been successfully verified.</td>
+                            </tr>
+                            <tr>
+                                <td> Date + Time</td>
+                                <td> Comment</td>
+                            </tr>-->
+            </table>
+        </div>
+        <br>
+        <br>
+        <br>
+        <hr>
+        <div id="fifthSection">
+            <table id="shippingaddresstable">
+                <th> Shipping Address</th>
+                <tr>
+                    <td> {{ current_order.get_shipment_receiver() }}</td>
+                </tr>
+                <tr>
+                    <td> {{ current_order.get_address() }}</td>
+                </tr>
+                <tr>
+                    <td> {{ current_order.get_userUnitNumber() }}</td>
+                </tr>
+                <tr>
+                    <td> {{ current_order.get_userPostalCode() }}</td>
+                </tr>
+
+            </table>
+            <table id="totalsum">
+                <tr>
+                    <th> Total Summary</th>
+                </tr>
+                <tr>
+                    <td> Subtotal</td>
+                    <td> ${{ current_order.get_subtotal() }}</td>
+                </tr>
+                <tr>
+                    <td> Shipping Fee</td>
+                    <td> ${{ current_order.get_shippingFee() }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <hr>
+                    </td>
+                    <td>
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td> Total</td>
+                    <td><span id="totalsumamt"> ${{ current_order.get_total() }}</span></td>
+                </tr>
+            </table>
         </div>
     </div>
-    <div id="fourthSection">
+    <div>
         <br>
         <br>
         <br>
-        <br>
-        <br>
-        <br>
-        <table id="orderList">
-            <th> Order Log</th>
-            {% for i in orderlogCommentDict %}
-            <tr>
-                <td> {{ orderlogCommentDict[i][0] }}</td>
-                <td> {{ orderlogCommentDict[i][1] }}</td>
-            </tr>
-            {% endfor %}
-
-
-<!--            <th> Order Log</th>
-            <tr>
-                <td> 15 Nov 2019 - 13:39</td>
-                <td> Your package has been shipped with our logistics partner ABCexpress</td>
-            </tr>
-            <tr>
-                <td>12 Nov 2019 - 16:43</td>
-                <td> Package has been picked up by a logistics partner</td>
-            </tr>
-            <tr>
-                <td> 11 Nov 2019 - 11:00</td>
-                <td> Your package has been packed and is being handed over to a logistics partner.</td>
-            </tr>
-            <tr>
-                <td> 10 Nov 2019 - 18:00</td>
-                <td> Your order has been successfully verified.</td>
-            </tr>
-            <tr>
-                <td> Date + Time</td>
-                <td> Comment</td>
-            </tr>-->
-        </table>
     </div>
-    <br>
-    <br>
-    <br>
-    <hr>
-    <div id="fifthSection">
-        <table id="shippingaddresstable">
-            <th> Shipping Address</th>
-            <tr>
-                <td> {{ current_order.get_username() }}</td>
-            </tr>
-            <tr>
-                <td> {{ current_order.get_address() }}</td>
-            </tr>
-            <tr>
-                <td> {{ current_order.get_userUnitNumber() }}</td>
-            </tr>
-            <tr>
-                <td> {{ current_order.get_userPostalCode() }}</td>
-            </tr>
-
-        </table>
-        <table id="totalsum">
-            <tr>
-                <th> Total Summary</th>
-            </tr>
-            <tr>
-                <td> Subtotal</td>
-                <td> ${{ current_order.get_subtotal() }}</td>
-            </tr>
-            <tr>
-                <td> Shipping Fee</td>
-                <td> ${{ current_order.get_shippingFee() }}</td>
-            </tr>
-            <tr>
-                <td>
-                    <hr>
-                </td>
-                <td>
-                    <hr>
-                </td>
-            </tr>
-            <tr>
-                <td> Total</td>
-                <td><span id="totalsumamt"> ${{ current_order.get_total() }}</span></td>
-            </tr>
-        </table>
-    </div>
-</div>
-<div>
-    <br>
-    <br>
-    <br>
-</div>
 {% endblock %}
