@@ -101,7 +101,7 @@ Note:
         <table id="shippingaddresstable">
             <th> Shipping Address</th>
             <tr>
-                <td> {{ current_order.get_username() }}</td>
+                <td> {{ current_order.get_shipment_receiver() }}</td>
             </tr>
             <tr>
                 <td> {{ current_order.get_address() }}</td>

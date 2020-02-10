@@ -14,12 +14,13 @@ class Order:
         self.__order_log_comment = 1
         self.__deliveryType = "Standard"
         self.__paymentMethod = "Paypal"
-        self.__userUnitNumber = ""
-        self.__userPostalCode = ""
+        self.__userUnitNumber = "user_unit_number"
+        self.__userPostalCode = "user_postal_code"
         self.__shippingFee = float(5.99)
         self.__subtotal = float(self.__productPrice) - (self.__shippingFee)
         self.__total = self.__subtotal + self.__shippingFee
-        self.__shipment_receiver = ""
+        self.__shipment_receiver = "Shipment_Receiver_Name"
+        self.__fake_address = self.__address
 
     def get_item_list(self):
         return self.__item_list
@@ -30,9 +31,15 @@ class Order:
     def get_orderID(self):
         return self.__orderID
 
+    def fake_address(self):
+        return self.__fake_address
+
     def get_address(self):
-        display_list = self.__address.split(",")
+        print("address attribute is {} at address before split".format(self.__address))
+        display_list = self.__fake_address.split(",")
+        print(display_list)
         self.__address = display_list[1]
+        print("address attribute is {} at address after split".format(self.__address))
         return self.__address
 
     def get_status(self):
@@ -85,17 +92,20 @@ class Order:
         return self.__paymentMethod
 
     def get_userUnitNumber(self):
-        display_list = self.__address.split(",")
+        print("address attribute is {} at userUnitNumber".format(self.__address))
+        display_list = self.__fake_address.split(",")
         self.__userUnitNumber = display_list[3]
         return self.__userUnitNumber
 
     def get_userPostalCode(self):
-        display_list = self.__address.split(",")
+        print("address attribute is {} at userPostalCode".format(self.__address))
+        display_list = self.__fake_address.split(",")
         self.__userPostalCode = display_list[2]
         return self.__userPostalCode
 
     def get_shipment_receiver(self):
-        display_list = self.__address.split(",")
+        print("address attribute is {} at shipment_receiver".format(self.__address))
+        display_list = self.__fake_address.split(",")
         self.__shipment_receiver = display_list[0]
         return self.__shipment_receiver
 
@@ -107,7 +117,6 @@ class Order:
 
     def get_total(self):
         return self.__total
-
 
     def add_comment(self, time, comment):
         self.__order_log[self.__order_log_comment] = [time, comment]
