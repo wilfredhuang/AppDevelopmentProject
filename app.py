@@ -166,8 +166,8 @@ def sales():
     temp_sales = None
     if request.method == "POST":
 
-        temp_sales = main.sales_management.get_report(int(sales_date_form.year.data), int(sales_date_form.month.data),
-                                                      int(sales_date_form.day.data))
+        temp_sales = main.sales_management.get_report(int(sales_date_form.day.data), int(sales_date_form.month.data),
+                                                      int(sales_date_form.year.data))
 
     return render_template('sales.html', form=sales_date_form, sales=temp_sales)
 
