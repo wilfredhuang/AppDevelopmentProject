@@ -1,21 +1,33 @@
 {% extends "base_no_footer.html" %}
 {% block title %} Home {% endblock %}
 {% block header %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users.css') }}" >
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ionicons.min.css') }}" >
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/Contact-Form-Clean.css') }}" >
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/users.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/ionicons.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/Contact-Form-Clean.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 {% endblock %}
 {% block content %}
-<div class="contact-clean">
-        <form method="post">
-            <h2 class="text-center" style="color: #2786dd;">Feedback Form</h2>
-            <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name"></div>
-            <div class="form-group"><input class="form-control is-invalid" type="email" name="email" placeholder="Email"><small class="form-text text-danger">Please enter a correct email address.</small></div>
-            <div class="form-group"><textarea class="form-control" name="message" placeholder="Thank you for your feedback! " rows="14"></textarea></div>
-            <div class="form-group"><button class="btn btn-primary" href="aboutUs" type="submit">send </button></div>
-        </form>
-    </div>
+    <div class="container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <div class="contact-clean">
+                    <form method="post">
+                        <h2 class="text-center" style="color: #2786dd;">Feedback Form</h2>
+                        <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name">
+                        </div>
+                        <div class="form-group"><input class="form-control is-invalid" type="email" name="email"
+                                                       placeholder="Email"><small class="form-text text-danger">Please
+                            enter a correct email address.</small></div>
+                        <div class="form-group"><textarea class="form-control" name="message"
+                                                          placeholder="Thank you for your feedback! "
+                                                          rows="14"></textarea></div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" href="aboutUs" type="submit">send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
