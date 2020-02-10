@@ -807,13 +807,13 @@ def orderlog(orderid):
     username = ""
     if 'username' in session:
         username = session['username']
-    test = main.db.return_object("Order") # Retrieve all orders dictionary
     current_order = {}
-    for i in test["allorders"]: # Loop thru the orders list to find the correct order, i = orderobject
-        if i.get_orderID() == orderid:
-            current_order["Current_Order"] = i # creates dictionary with orderobject as value
+    test = main.order_management.retrieve_all_order_id()
+    for i in test:
+        if i == orderid:
+            current_order["Current_Order"] = main.order_management.retrieve_order_by_id(i)
         else:
-            pass
+            print("Order-id not found")
     c = current_order["Current_Order"] # c = order-object!
     if c.get_status() == "paymentpending":
         orderstage = "PaymentPending"
@@ -825,7 +825,7 @@ def orderlog(orderid):
         orderstage = "Delivered"
     else:
         orderstage = ""
-    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage="PaymentPending", orderlogCommentDict=c.get_order_log())
+    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage=orderstage, orderlogCommentDict=c.get_order_log())
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 
 
