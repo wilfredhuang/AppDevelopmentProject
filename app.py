@@ -776,23 +776,24 @@ def trackorders():
     username = ""
     if 'username' in session:
         username = session['username']
-    displayed_orders = {}  # to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"]  # creates a list with all order instances as each element.
-    the_user_orders = {}  # This will contain the individual user's orders.
-    the_user_order_count = 1  # Store each order with the count as key for sorting.
-    for eachorder in orders_list:  # loop through database with all orders
-        if eachorder.get_username() == username:  # check and add whichever orders that belong to user to his own user orders dictionary
+    displayed_orders = {} #to be used for display in track orders page
+    test = main.order_management.retrieve_all_order_id()
+    the_user_orders = {} # This will contain the individual user's orders.
+    the_user_order_count = 1 # Store each order with the count as key for sorting.
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass  # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0], reverse=True)
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
+    print("Retrieving orders")
+    print(test)
     return render_template('trackorders.html', displayed_orders=displayed_orders)
-
 
 @app.route('/trackordersOldest')
 def trackordersoldest():
@@ -800,22 +801,24 @@ def trackordersoldest():
     username = ""
     if 'username' in session:
         username = session['username']
-    displayed_orders = {}  # to be used for display in track orders page
-    test = main.db.return_object("Order")
-    orders_list = test["allorders"]  # creates a list with all order instances as each element.
-    the_user_orders = {}  # This will contain the individual user's orders.
-    the_user_order_count = 1  # Store each order with the count as key for sorting.
-    for eachorder in orders_list:  # loop through database with all orders
-        if eachorder.get_username() == username:  # check and add whichever orders that belong to user to his own user orders dictionary
+    displayed_orders = {} #to be used for display in track orders page
+    test = main.order_management.retrieve_all_order_id()
+    the_user_orders = {} # This will contain the individual user's orders.
+    the_user_order_count = 1 # Store each order with the count as key for sorting.
+    for i in test:
+        eachorder = main.order_management.retrieve_order_by_id(i)
+        print("Object {}".format(eachorder))
+        if eachorder.get_username() == username:
             the_user_orders[the_user_order_count] = eachorder
             the_user_order_count += 1
         else:
-            pass  # Skip if order don't belong to user
-    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])  # Sort based on order-count
+            pass
+    sort_user_orders = sorted(the_user_orders.items(), key=lambda x: x[0])
     for i in sort_user_orders:
         displayed_orders[i[0]] = i[1]
-        print("Displayed_Orders: ", displayed_orders)
-    return render_template('trackorders.html', displayed_orders=displayed_orders)
+    print("Retrieving orders")
+    print(test)
+    return render_template('trackordersOldest.html', displayed_orders=displayed_orders)
 
 
 @app.route('/orderlog/<orderid>')
@@ -823,14 +826,14 @@ def orderlog(orderid):
     username = ""
     if 'username' in session:
         username = session['username']
-    test = main.db.return_object("Order")  # Retrieve all orders dictionary
     current_order = {}
-    for i in test["allorders"]:  # Loop thru the orders list to find the correct order, i = orderobject
-        if i.get_orderID() == orderid:
-            current_order["Current_Order"] = i  # creates dictionary with orderobject as value
+    test = main.order_management.retrieve_all_order_id()
+    for i in test:
+        if i == orderid:
+            current_order["Current_Order"] = main.order_management.retrieve_order_by_id(i)
         else:
-            pass
-    c = current_order["Current_Order"]  # c = order-object!
+            print("Order-id not found")
+    c = current_order["Current_Order"] # c = order-object!
     if c.get_status() == "paymentpending":
         orderstage = "PaymentPending"
     elif c.get_status() == "processing":
@@ -841,8 +844,7 @@ def orderlog(orderid):
         orderstage = "Delivered"
     else:
         orderstage = ""
-    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage="PaymentPending",
-                           orderlogCommentDict=c.get_order_log())
+    return render_template('orderlog.html', orderid=orderid, current_order=c, orderstage=orderstage, orderlogCommentDict=c.get_order_log())
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 
 

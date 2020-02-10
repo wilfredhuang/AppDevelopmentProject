@@ -7,7 +7,7 @@
     function visitPage() {
         var v = document.getElementById("sortOption").value;
         if (v === "Latest") {
-            window.location = '#';
+            window.location = '/trackorders';
         }
 
         if (v === "Oldest") {
@@ -21,7 +21,7 @@
     <label>
         <select id="sortOption" onchange="visitPage();">
             <option value="Latest">Latest</option>
-            <option value="Oldest">Oldest</option>
+            <option value="Oldest" selected>Oldest</option>
         </select>
     </label>
 </div>
@@ -42,7 +42,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-            <span> {{ displayed_orders[i].get_order_date() }} </span>
+            <span> {{ displayed_orders[i].get_date() }} </span>
         </div>
         <div class="col-sm-9">
             <span> <a href="#"> Order #{{ displayed_orders[i].get_orderID() }} </a> </span>
