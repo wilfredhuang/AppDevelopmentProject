@@ -38,8 +38,8 @@ Note:
         </div>
         <p> Placed on {{ current_order.get_order_date() }} </p>
         <p> Paid by {{current_order.get_paymentMethod()}} </p>
-        <span id="authCode"> Authorisation Code {{ current_order.get_authCode()] }} </span>
-        <span id="ETA"> ETA: {{ current_order.get_eta()] }} </span>
+{#        <span id="authCode"> Authorisation Code {{ current_order.get_authCode() }} </span>#}
+        <span id="ETA"> ETA: {{ current_order.get_eta() }} Days </span>
     </div>
     <div id="secondSection" class="container">
         <hr>
@@ -107,7 +107,7 @@ Note:
                 <td> {{ current_order.get_address() }}</td>
             </tr>
             <tr>
-                <td> {{ current_order.get_userAddressFloor() }}</td>
+                <td> {{ current_order.get_userUnitNumber() }}</td>
             </tr>
             <tr>
                 <td> {{ current_order.get_userPostalCode() }}</td>
