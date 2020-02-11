@@ -509,7 +509,7 @@ def feedback():
         print(request.form['message'])
         main.db.get_storage('feedback', True, True)
         main.db.update_cart('feedback', 'testfeedback', request.form['message'])
-        return render_template("aboutUs.html")
+        return redirect(url_for('home'))
 
     if request.method == 'GET':
         try:
@@ -519,6 +519,7 @@ def feedback():
             print(feedback)
         except:
             print("There is no feedback")
+
     return render_template("feedback.html")
 
 
@@ -579,7 +580,7 @@ def addItem():
             return render_template('adminCreateItem.html', form=createItemForm, errorMsg='Please enter valid values!')
     else:
         url_for('addItem', form=createItemForm)
-    return render_template('adminCreateItem.html', form=createItemForm, username = username)
+    return render_template('adminCreateItem.html', form=createItemForm)
 
 
 # Hieu
@@ -818,6 +819,26 @@ def adminorderhistory():
 def scheduleddeliveries():
     return render_template('scheduleddeliveries.html')
 
+
+# matt
+@app.route('/aboutus')
+def aboutus():
+    return render_template('AboutUs.html')
+
+# matt
+@app.route('/warrenty')
+def warrenty():
+    return render_template('Warrenty.html')
+
+# matt
+@app.route('/aboutus2')
+def aboutus2():
+    return render_template('AboutUs.html')
+
+# matt
+@app.route('/faq2')
+def faq1():
+    return render_template('FAQ.html')
 
 if __name__ == '__main__':
     app.run()
