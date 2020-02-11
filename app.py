@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 import Item
 import Product
 import User
+import Delivery
 from Forms import *
 
 UPLOAD_FOLDER = 'static/files'
@@ -768,45 +769,58 @@ def orderlog(orderid):
     # return render_template('orderlog.html', order_info=order_info, orderlogCommentDict = order_info["orderlogComment"], productname = "processing")
 
 
-@app.route('/orderlist/<orderid>')
-def orderlist(orderid):
-    test = main.db.return_object("Order")  # Retrieve all orders dictionary
-    current_order = {}
-    for i in test["allorders"]:  # Loop thru the orders list to find the correct order, i = orderobject
-        if i.get_orderID == orderid:
-            current_order["Current_Order"] = i  # creates dictionary with orderid-orderobject pair
-        else:
-            pass
-    c = current_order["Current_Order"]
-    return render_template('orderlist.html', current_order=c)
-
-
 @app.route('/deliverymanagementsystem')
 def deliverymanagementsystem():
     return render_template("deliverymanagementsystem.html")
 
-
-@app.route('/adminorderhistory')
-def adminorderhistory():
-    displayed_orders = {}
-    test = main.db.return_object("Order")  # Retrieve all orders dictionary
-    orders_list = test["allorders"]
-    all_orders = {}
-    all_orders_count = {}
-    for eachorder in orders_list:
-        all_orders[all_orders_count] = eachorder
-        all_orders_count += 1
+@app.route('/deliveryappointment', methods=['GET', 'POST'])
+def deliveryappointment():
+    form = DeliveryForm(request.form)
+    if request.method == "POST" and form.validate():
+        print("Creating delivery object...")
+        main.delivery_management.create_new_delivery(form.orderID.data, form.orderDate.data, form.receiverName.data, form.deliveryType.data, form.remarks.data)
+        main.db.get_storage("Delivery", True, True)
+        print("Main is .... ", main.db.get_storage("Delivery", True, True))
+        return redirect(url_for('scheduleddeliveries'))
+    username = ""
+    logged_in = False
+    if 'username' in session:
+        username = session['username']
+        user = main.user_management.get_user(username)
+        logged_in = True
+        return render_template("deliveryappointment.html", form=form, user=user, logged_in=logged_in)
     else:
-        pass  # Skip if order don't belong to user
-    sort_user_orders = sorted(all_orders.items(), key=lambda x: x[0])  # Sort based on order-count
-    for i in sort_user_orders:
-        displayed_orders[i[0]] = i[1]
-    return render_template('adminorderhistory.html', display_orders=displayed_orders)
+        return render_template("deliveryappointment.html", form=form)
 
 
 @app.route('/scheduleddeliveries')
 def scheduleddeliveries():
-    return render_template('scheduleddeliveries.html')
+    test = main.delivery_management.retrieve_all_order_id()
+    deliveryobjectdict = {}
+    for key in test:
+        deliveryobject = main.delivery_management.retrieve_order_by_id(key)
+        deliveryobjectdict[key] = deliveryobject
+        # print(main.delivery_management.retrieve_order_by_id(key).get_receiver_name() + "<-- name")
+    return render_template('scheduleddeliveries.html', d=deliveryobjectdict)
+
+
+
+@app.route('/updateUser/<str:id>/', methods=['GET', 'POST'])
+def updateUser(id):
+    form = DeliveryForm(request.form)
+    test = main.delivery_management.retrieve_all_order_id()
+    deliveryobjectdict = {}
+    for key in test:
+        deliveryobject = main.delivery_management.retrieve_order_by_id(key)
+        deliveryobjectdict[key] = deliveryobject
+    if request.method == 'POST' and DeliveryForm.validate():
+        for key in test:
+            if id == deliveryobject[key].get_orderID():
+                pass
+            else:
+                pass
+
+    return render_template('#', deliveryobject=deliveryobject)
 
 
 if __name__ == '__main__':

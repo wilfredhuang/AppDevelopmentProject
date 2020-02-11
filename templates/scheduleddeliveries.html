@@ -1,4 +1,4 @@
-{% extends 'base2.html' %}
+{% extends 'base.html' %}
 
 {% block title %} Delivery Management System{% endblock %}
 
@@ -6,52 +6,62 @@
     <script>
     </script>
     <div class="container">
-        <h1> Ongoing Orders </h1>
-        <span id="sortOrders"> Sort By </span>
-        <label>
-            <select id="sortOption" onchange="">
-                <option value="Latest">Latest</option>
-                <option value="Oldest">Oldest</option>
-            </select>
-        </label>
+        <h1> Scheduled Deliveries </h1>
         <span> &nbsp </span>
-        <a href="#"> Add Shipment </a>
+        <a href="deliveryappointment"> Add Appointment </a>
         <span> &nbsp </span>
-        <a href="#"> Delete Shipment </a>
     </div>
     <hr>
     <div class="container">
         <div class="row">
-            <div class="col-sm-3">
-                <span> To be shipped on  </span>
+            <div class="col-sm-2">
+                <span> Order ID  </span>
             </div>
-            <div class="col-sm-3">
-                <span> Order ID </span>
+            <div class="col-sm-2">
+                <span> Delivery Date </span>
             </div>
-            <div class="col-sm-3">
-                <span> Order Status </span>
+            <div class="col-sm-2">
+                <span> Recipient Name </span>
             </div>
-            <div class="col-sm-3">
-                <span> Update shipping information </span>
+            <div class="col-sm-2">
+                <span> Delivery Type </span>
+            </div>
+            <div class="col-sm-2">
+                <span> Remarks </span>
+            </div>
+            <div class="col-sm-1">
+                <span></span>
+            </div>
+            <div class="col-sm-1">
+                <span></span>
             </div>
         </div>
         <br>
         <hr>
     </div>
-    {% for i in test %}
+    {% for i in d %}
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                    <span>{{ test[i] }}</span>
+                <div class="col-sm-2">
+                    <span>{{ d[i].get_orderID() }}</span>
                 </div>
-                <div class="col-sm-3">
-                    <span> <a href="orderlog"> Order #{{ i }} </a> </span>
+                <div class="col-sm-2">
+                    <span> {{ d[i].get_orderDate() }}  </span>
                 </div>
-                <div class="col-sm-3">
-                    <span> In-Progress </a> </span>
+                <div class="col-sm-2">
+                    <span> {{ d[i].get_receiver_name() }} </span>
                 </div>
-                <div class="col-sm-3">
-                    <span> <a href="orderlog"> Update Order </a> </span>
+                <div class="col-sm-2">
+                    <span> {{ d[i].get_deliveryType() }}  </span>
+                </div>
+                <div class="col-sm-2">
+                    <span onclick="alert({{ d[i].get_remarks() }});"> {{ d[i].get_remarks() }} </span>
+                </div>
+                <div class="col-sm-1">
+                    <span> <a href="orderlog"> Update </a> </span>
+                </div>
+                <div class="col-sm-1">
+                    <span> <a href="orderlog"> Delete </a> </span>
                 </div>
             </div>
             <hr>
