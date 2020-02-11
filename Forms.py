@@ -1,8 +1,8 @@
+import requests
 from wtforms import *
 from wtforms.validators import EqualTo, ValidationError
 
 import PasswordHashing
-import requests
 import main
 
 password_holder = None
@@ -157,21 +157,24 @@ class CheckoutForm(Form):
     city = StringField('City', [validators.DataRequired()])
     countries = SelectField("Country", choices=country_list)
     unit_number = StringField('Unit Number', [validators.DataRequired()])
-    
-#Hieu
+
+
+# Hieu
 class CreateItemForm(Form):
     item_id = StringField('Item ID: ', [validators.Length(min=1,
                                                           max=150), validators.DataRequired()])
     item_name = StringField('Item Name: ', [validators.Length(min=1,
                                                               max=150), validators.DataRequired()])
-    item_cost = FloatField('Item Price: ',[validators.DataRequired()])
-    item_quantity = IntegerField('Item Quantity:', [validators.NumberRange(min=0, max=1000), validators.DataRequired()])
+    item_cost = FloatField('Item Price: ', [validators.DataRequired(), validators.NumberRange(min=0,
+                                                                                              message="Please enter valid number!")])
+    item_quantity = IntegerField('Item Quantity:',
+                                 [validators.NumberRange(min=0, message="Please enter valid number!"),
+                                  validators.DataRequired()])
     item_type = RadioField('Item Type: ', choices=[('W', 'Wired'),
                                                    ('WL', 'Wireless')], default='W', )
     item_description = TextAreaField('Description', [validators.Optional()])
 
 
-#Hieu
+# Hieu
 class SearchForm(Form):
     search = StringField('Search: ')
-
