@@ -172,6 +172,7 @@ def admin():
 
 
 # Sales
+# HF
 @app.route('/sales', methods=['POST', 'GET'])
 def sales():
     sales_date_form = SalesForm(request.form)
