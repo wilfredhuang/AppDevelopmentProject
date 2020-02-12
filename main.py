@@ -15,7 +15,6 @@ from CartManagement import CartManagement
 from OrderManagement import OrderManagement
 from ProductManagement import ProductManagement
 from c_SalesManagement import SalesManagement
-from DeliveryManagement import DeliveryManagement
 from oauth2client.service_account import ServiceAccountCredentials
 # from SessionManagement import SessionManagement
 db = None
@@ -28,7 +27,6 @@ cart_management = None
 order_management = None
 product_management = None
 sales_management = None
-delivery_management = None
 """
 Init is needed to setup the project when started
 All storage need to be created / retrieved before use
@@ -48,7 +46,6 @@ def init():
     global product_management
     global sales_management
     global product_management
-    global delivery_management
 
     storage_handler = StorageHandler()
     db = StorageManager()
@@ -58,7 +55,6 @@ def init():
     product_management = ProductManagement(storage_handler)
     sales_management = SalesManagement(storage_handler)
     order_management = OrderManagement(storage_handler, sales_management)
-    delivery_management = DeliveryManagement(storage_handler)
     # session_management = SessionManagement(storage_handler)
 
 

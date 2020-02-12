@@ -31,18 +31,12 @@ class OrderManagement(ManagementSystem):
             else:
                 break
 
-        print("Making new order object....")
         new_order = Order(item_list, total_cost, address, status, username, date, unique_id)
 
-        print("Adding uniqueid-object pair to db....")
         self._db[unique_id] = new_order
-        print("Key name is", self._key_name)
-        print("Set storage.....")
         self._handler.set_storage(self._key_name, self._db)
 
         self.__sales_management.add_sales(item_list, date)
-
-
         print("adding new order: {}".format(new_order.get_orderID()))
 
     def retrieve_all_order_id(self):

@@ -175,13 +175,3 @@ class CreateItemForm(Form):
 class SearchForm(Form):
     search = StringField('Search: ')
 
-# W
-
-
-class DeliveryForm(Form):
-    orderID = StringField('Order ID', [validators.Length(min=1, max=150), validators.DataRequired()])
-    orderDate = StringField('Order Date', [validators.Length(min=1, max=150), validators.DataRequired()])
-    receiverName = StringField('Receiver Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-    deliveryType = SelectField('Delivery Type', [validators.DataRequired()], choices=[('', 'Select'), ('S', 'Standard'), ('E', 'Priority')], default='')
-    remarks = TextAreaField('Remarks', [validators.Optional()])
-
