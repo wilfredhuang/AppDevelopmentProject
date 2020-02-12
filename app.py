@@ -153,9 +153,10 @@ def users(choice, username):
 
 
 # Called after admin login
-# HF
+# HF & Hieu
 @app.route('/admin')
 def admin():
+    user_list = main.storage_handler.get_storage("Users")
     inventory = main.get_inventory()
     wireless = []
     wired = []
@@ -167,7 +168,7 @@ def admin():
         else:
             continue
 
-    return render_template('admin.html', ItemList=inventory.values(), alarm_stock=10, wired=len(wired), wireless=len(wireless))
+    return render_template('admin.html', ItemList=inventory.values(), alarm_stock=10, wired=len(wired), wireless=len(wireless),userList=user_list, count=len(user_list))
 
 
 # Sales
@@ -508,7 +509,7 @@ def feedback():
         print(request.form['message'])
         main.db.get_storage('feedback', True, True)
         main.db.update_cart('feedback', 'testfeedback', request.form['message'])
-        return render_template("aboutUs.html")
+        return redirect(url_for('home'))
 
     if request.method == 'GET':
         try:
@@ -518,6 +519,7 @@ def feedback():
             print(feedback)
         except:
             print("There is no feedback")
+
     return render_template("feedback.html")
 
 
@@ -548,30 +550,36 @@ def addItem():
     item = main.get_inventory()
     createItemForm = CreateItemForm(request.form)
     if request.method == 'POST':
+        try:
 
-        filename = str(uuid.uuid4()) + createItemForm.item_id.data + '.jpg'
+            filename = str(uuid.uuid4()) + createItemForm.item_id.data + '.jpg'
 
-        cost = float(f'{createItemForm.item_cost.data :.2f}')
+            cost = float(f'{createItemForm.item_cost.data :.2f}')
 
-        if createItemForm.item_type.data == "W":
-            item = Item.Wired(createItemForm.item_id.data, createItemForm.item_name.data, cost,
-                              filename)
-        elif createItemForm.item_type.data == "WL":
-            item = Item.Wireless(createItemForm.item_id.data, createItemForm.item_name.data,
-                                 cost, filename)
+            if createItemForm.item_type.data == "W":
+                item = Item.Wired(createItemForm.item_id.data, createItemForm.item_name.data, cost,
+                                  filename)
+            elif createItemForm.item_type.data == "WL":
+                item = Item.Wireless(createItemForm.item_id.data, createItemForm.item_name.data,
+                                     cost, filename)
 
-        item.set_description(createItemForm.item_description.data)
-        item.set_stock(createItemForm.item_quantity.data)
-        main.product_management.update_item(item)
+            item.set_description(createItemForm.item_description.data)
+            item.set_stock(createItemForm.item_quantity.data)
+            main.product_management.update_item(item)
 
-        print(request.files)
-        print(request.files['file'])
-        print(filename)
+            print(request.files)
+            print(request.files['file'])
+            print(filename)
 
-        file = request.files['file']
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file = request.files['file']
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        return redirect(url_for('adminItemDashboard'))
+            return redirect(url_for('adminItemDashboard'))
+        except:
+            print("Error")
+            return render_template('adminCreateItem.html', form=createItemForm, errorMsg='Please enter valid values!')
+    else:
+        url_for('addItem', form=createItemForm)
     return render_template('adminCreateItem.html', form=createItemForm)
 
 
@@ -580,44 +588,47 @@ def addItem():
 def addItemExcel():
     inventory = main.get_inventory()
     if request.method == 'POST':
-        file = request.files['file']
-        data = pd.read_excel(file)  # read the file
+        try:
+            file = request.files['file']
+            data = pd.read_excel(file)  # read the file
 
-        for i in range(len(data.index.values)):
-            id = data['ID'][i]
-            name = data['Name'][i]
-            cost = data['Cost'][i]
-            stock = data['Stock'][i]
-            description = data['Description'][i]
-            image = 'default_img.jpeg'
-            type = data['Type'][i]  # to determine the type of product for sorting purpose
+            for i in range(len(data.index.values)):
+                id = data['ID'][i]
+                name = data['Name'][i]
+                cost = data['Cost'][i]
+                stock = data['Stock'][i]
+                description = data['Description'][i]
+                image = 'default_img.jpeg'
+                type = data['Type'][i]  # to determine the type of product for sorting purpose
 
-            wired = ['w', 'wired', 'W', 'Wired']
-            wireless = ['wl', 'wireless', 'Wl', 'Wireless', 'WL']
+                wired = ['w', 'wired', 'W', 'Wired']
+                wireless = ['wl', 'wireless', 'Wl', 'Wireless', 'WL']
 
-            if type in wired:
-                item = Item.Wired(id, name, cost, image)
-            elif type in wireless:
-                item = Item.Wireless(id, name, cost, image)
+                if type in wired:
+                    item = Item.Wired(id, name, cost, image)
+                elif type in wireless:
+                    item = Item.Wireless(id, name, cost, image)
 
 
 
-            if item.get_id() in inventory:
-                print('existing item. updating stock.')
-                existing_item = inventory[item.get_id()]
-                new_stock = existing_item.get_stock() + stock
-                print(new_stock)
-                existing_item.set_stock(new_stock)
-                print(existing_item.get_stock())
-                item.set_description(description)
+                if item.get_id() in inventory:
+                    print('existing item. updating stock.')
+                    existing_item = inventory[item.get_id()]
+                    new_stock = existing_item.get_stock() + stock
+                    print(new_stock)
+                    existing_item.set_stock(new_stock)
+                    print(existing_item.get_stock())
+                    item.set_description(description)
 
-                main.product_management.modify_product(existing_item)
+                    main.product_management.modify_product(existing_item)
 
-            else:
-                item.set_stock(stock)
-                item.set_description(description)
-                main.product_management.update_item(item)
-        return redirect(url_for('adminItemDashboard'))
+                else:
+                    item.set_stock(stock)
+                    item.set_description(description)
+                    main.product_management.update_item(item)
+            return redirect(url_for('adminItemDashboard'))
+        except:
+            return redirect(url_for('addItem'))
     return redirect(url_for('addItem'))
 
 
@@ -808,6 +819,26 @@ def adminorderhistory():
 def scheduleddeliveries():
     return render_template('scheduleddeliveries.html')
 
+
+# matt
+@app.route('/aboutus')
+def aboutus():
+    return render_template('AboutUs.html')
+
+# matt
+@app.route('/warrenty')
+def warrenty():
+    return render_template('Warrenty.html')
+
+# matt
+@app.route('/aboutus2')
+def aboutus2():
+    return render_template('AboutUs.html')
+
+# matt
+@app.route('/faq2')
+def faq1():
+    return render_template('FAQ.html')
 
 if __name__ == '__main__':
     app.run()

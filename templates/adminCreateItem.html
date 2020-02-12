@@ -1,5 +1,5 @@
 {% extends "adminBase.html" %}
-{% block title %}Status Audio - Create User{% endblock %}
+{% block title %}Admin - Create Item{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -8,6 +8,8 @@
                 {% from "includes/_formHelper.html" import render_field %}
 
                 <h1 class="display-4">Create Item</h1>
+
+                <h2 style="color:red">{{ errorMsg }}</h2>
 
                 <form method="POST" enctype="multipart/form-data" action="/createItem">
                     <div class="form-group">
